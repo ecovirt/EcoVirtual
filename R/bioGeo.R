@@ -3,6 +3,7 @@
 ######################################################################
 ################# Arquipelago: ilhas de diferentes tamanhos ###########
 ### Thu 17 Nov 2011 05:32:27 PM BRST Alexandre Adalardo
+
 arquip=function(nIsl,ar.min, ar.max, Nspp, chuva.total, abund, tmax, anima=TRUE)
 {
 	#n.ilhas=nIsl
@@ -142,6 +143,7 @@ if(Col=="dcr"){col=b}
 		Sys.sleep(.01)
 	}
 }
+
 #animaColExt(Ext='crs', Col="dcr")
 ####################################
 ###### Mon 21 Nov 2011 12:58:57 PM BRST Alexandre Adalardo
@@ -190,6 +192,7 @@ spp.area=function(c , z){
 #par(mfrow=c(2,2))
 #spp.area(c = 1.5 , z = .25)
 #spp.area(c = 2.1 , z = .25)
+
 iRain=function(Nspp , chuva , abund , tempo){
 	spp=paste("sp.",1:Nspp)
 	ilha=numeric()
@@ -203,6 +206,7 @@ iRain=function(Nspp , chuva , abund , tempo){
 	abline(h=Nspp,lty=3)
 	return(riq)
 	}
+
 # faca um teste:
 #iRain(Nspp=10, chuva=10, abund=c(10,10,10,10,10,10,10,10,10,10), tempo=10)
 
@@ -227,7 +231,9 @@ iCol=function(areas, Nspp, chuva.total, abund, tempo){
 	cat("c=",mod[[1]][1],"z=",mod[[1]][2],"\n")
 	return(riq)
 	}
+
 #arquip(areas=c(10,20,40,80),Nspp=1000,chuva.total=100,abund=rep(10,1000),tempo=10)
+
 iColExt=function(Nspp, chuva, abund, tempo, tx.ext){
 	spp=paste("sp.",1:Nspp,sep="")
 	ilha=numeric()
@@ -384,7 +390,7 @@ ext.game <- function(aposta=1,total=100){
 }
 
 #MELINA MODIFICOU A LEGENDA DA FUNCAO, LEGENDA ANTIGA:
-legend(total*0.5,dim(results)*0.8, legend=c("sp 1", "sp2"), lty=1, col=c("red", "blue")  )
+#legend(total*0.5,dim(results)*0.8, legend=c("sp 1", "sp2"), lty=1, col=c("red", "blue")  )
 
 #old<-par(mfrow=c(2,2))
 #ext.game(aposta=1,total=20)
@@ -481,7 +487,7 @@ sim.hub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01){
 #teste2 <- sim.hub2(j=2,ciclo=2e4,step=1e2,m=0.1)
 
 ## Com migracao de uma metacomunidade com especiacao
-### função elaborada por Paulo In[ácio Prado e modificada por Alexandre Adalardo Seg 21 Nov 2011 20:56:53 BRST 
+### funcao elaborada por Paulo Inacio Prado e modificada por Alexandre Adalardo Seg 21 Nov 2011 20:56:53 BRST 
 sim.hub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, nu=0.001)
 { 
   rich <- function(x)length(unique(x))

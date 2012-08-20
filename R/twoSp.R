@@ -97,5 +97,6 @@ plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupance", ylim=c(0,m
  
   invisible(pais)
 }
+
 #metaComp(tmax=100,cl=20,ln=20,fi1=0.1,fi2=0.4,i1=0.15,i2=0.9,pe=0.10, D=0.1,anima=TRUE)
 
