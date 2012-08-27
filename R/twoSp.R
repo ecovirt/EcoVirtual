@@ -31,6 +31,7 @@ return(resulta)
 #############################################################################
 #compLV(n01=10, n02=10,r1=0.05, r2=0.03, k1=80, k2=50, alfa=1.2, beta=0.5, tmax=200)
 ################################################################################
+
 metaComp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 {
 	pais<-array(0, dim=c(ln,cl,tmax))
@@ -83,6 +84,7 @@ metaComp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
     pais[,,tc]<-c(depois,nD)
     antes <- depois
   }
+          x11()
 		if(anima==TRUE)
 		{
 		metacomp.anima(pais)
@@ -98,5 +100,7 @@ plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupance", ylim=c(0,m
   invisible(pais)
 }
 
-#metaComp(tmax=100,cl=20,ln=20,fi1=0.1,fi2=0.4,i1=0.15,i2=0.9,pe=0.10, D=0.1,anima=TRUE)
+#metaComp(tmax=100,cl=20,ln=20,fi1=0.4,fi2=0.4,i1=0.1,i2=0.1,pe=0.05, D=0,anima=TRUE)
+
+#metaComp(tmax=100, cl=100, ln=100, fi1=0.1, fi2=0.4, i1=0.4, i2=0.5, pe=0.25, D=0)
 

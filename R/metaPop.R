@@ -92,13 +92,19 @@ meta.anima2(paisag)
 graf.fim(paisag)
 x11()
 F=pc/e
-plot(1:tf,c(fi,resultado),type="l",xlab="Time",ylab="Proportion of occupancy", ylim=c	(0,1),main=paste("Propagulus Rain and Rescue Effect","\n cols=",cl," rows=",ln," fi=",fi," pc=",pc," e=",e),font.lab=2,lwd=2) 
+if(F>1){F=1}
+pe.eq=e-pc
+if(pe.eq<0){pe.eq=0}
+plot(1:tf,c(fi,resultado),type="l",xlab="Time",ylab="Proportion of occupancy", ylim=c(0,1),main=paste("Propagulus Rain and Rescue Effect","\n cols=",cl," rows=",ln," fi=",fi," pc=",pc," e=",e),font.lab=2,lwd=2) 
 abline(h=F,col=2,lwd=2,lty=2) # equilibrio F
 points(1:tf,c(e*(1-fi),res),type='l',lwd=2,col="blue") # pe observado
-abline(h=e-pc,col="green",lwd=2,lty=2) # pe equilibrio
+abline(h=pe.eq,col="green",lwd=2,lty=2) # pe equilibrio
 legend("topright", legend=c("proportion of occupancy", "equilibrium F", "extintion probability(pe)", "pe equilibrium"), lty=c(1,2,1,2), col=c("black","red","blue", "green"), bty="n")
 return(paisag)
 }
+
+#meta.er(100,20,20,0.25,0.1,0.05)
+
 ########################################################
 
 

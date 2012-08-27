@@ -256,7 +256,7 @@ iColExt=function(Nspp, chuva, abund, tempo, tx.ext){
 	}
 #iColExt(Nspp=100, chuva=5, abund=rep(100,100), tempo=100, tx.ext=.1)
 
-#### biogeografia de Ilhas
+#### biogeografia de ilhas
 MW=function(areas , dist , P , a=1, b=-.01, c=1, d=-.01){
   par(mfrow=c(1,2))
   E=a+b*areas
