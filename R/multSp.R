@@ -42,7 +42,7 @@ resulta[1,(as.numeric(names(conta))+1)]<-conta
 	conta=table(cena[,,t])/N
 	resulta[t,(as.numeric(names(conta))+1)]<-conta
 	}
-X11()
+
 anima.cena(cena)
 x11()
 matplot( 1:tmax,resulta[,2:5], type="l", main="Niche Regeneration Model" , xlab="time", ylab="State proportion", lty=2:5, col=2:5)

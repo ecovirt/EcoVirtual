@@ -93,17 +93,20 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 		toff<-x11( width=5, height=5)
 		}
 	old<-par(mar=c(3,3,3,3))
-	plot(ci~rank,col="red",ylim=c(0,max(ci)*1.1), type="b", ann=FALSE, axes=FALSE)
-	axis(4, cex.axis=0.8)#, yaxp=c(0,3,3))
+	plot(ci~rank, col="red",ylim=c(0,max(ci)*1.2), type="b", ann=FALSE, axes=FALSE,)
+	axis(4, cex.axis=0.8, col.axis='red', col='red')#, yaxp=c(0,3,3))
 	par(new=TRUE)
 	plot(px~rank, ylim=c(0,fsp1),type="b", bty="n",  ann=FALSE, cex.axis=0.8)#yaxt="n", xaxp=c(0,10,5))
 	#axis(2, cex.axis=0.8)#, yaxp=c(0,0.2,4))
 	mtext("Specie competitive rank", 1, 2, cex=0.9)
 	mtext("Abundance", 2, 2, cex=0.9)
-	mtext("Colonization rate", 4, 2, cex=0.9)
+	mtext("Colonization rate", 4, 2, cex=0.9, col='red')
 	mtext("Trade-off Species Rank ", 3, 0, cex=1.2)
 	par(old)
 }
+
+#ex:
+gr.toff(rq =  10 , fsp1 =  0.2 , pe =  0.1 ,add=FALSE)
 
 ############################
 ### Sucessional Niche Graphic
