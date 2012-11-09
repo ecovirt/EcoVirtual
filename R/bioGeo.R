@@ -9,36 +9,43 @@ arquip=function(nIsl,ar.min, ar.max, Nspp, chuva.total, abund, tmax, anima=TRUE)
 	#n.ilhas=nIsl
 	ar.ampl=ar.max -ar.min
 	ar.isl= seq(ar.min, ar.max, length.out=nIsl)
+	#lado.isl=sqrt(ar.isl)
 	spp=1:Nspp
 	cena=array(0, dim=c(Nspp,nIsl, tmax)) 
-	local=1:100
-	
+	local=seq(0,ar.max, len=nIsl*10)
+		if(length(abund)==Nspp) {abund=abund/sum(abund)}else # um valor para cada especie
+		{
+		cat("\n valores de abundância não correspondem ao número de espécie, apenas o primeiro valor foi considerado\n")
+		if(abund<=1){abund = abund[1]*(1-abund[1])^((1:Nspp)-1); cat("\n modelo de distribuição geometrica de abundância\n")} else{
+							abund=rep(abund[1], Nspp) 
+							cat("\n distribuição equitativa de abundância\n")
+							}## modelo tilman geometrico ## todas espécies igualmente contribuem para a chuva
+		}
 	for(i in 1:tmax)
 		{
 		if(i>1)
 			{
 			cena[,,i]<-cena[,,(i-1)]
 			}
-		if(length(abund)==1 | sum(abund)==0){abund=rep(chuva.total/Nspp,Nspp)}
-			
 		chuva=sample(spp, chuva.total, prob=abund, replace=TRUE)
 		loc.x=sample(local, chuva.total, replace=TRUE)
 		loc.y=sample(local, chuva.total, replace=TRUE)
+#		nsemIlh=function(x,y,...){comp.isl<=x & comp.ils}
+#		outer(loc.x, loc.y, sum  )
 		#v.x=loc.x<ar.isl[l]
 		#v.y=loc.y<ar.isl[l]
 		#v.spp=unique(chuva[v.x & v.y])
 		#cena[v.spp,l,1]<-1
 		for(l in 1:nIsl)
 			{
-			v.x=loc.x<ar.isl[l]
-			v.y=loc.y<ar.isl[l]
+			v.x=loc.x<=ar.isl[l]
+			v.y=loc.y<=ar.isl[l]
 			v.spp=unique(chuva[v.x & v.y])
 			cena[v.spp,l,i]<-1
 			}
 		if(i>1 & anima==TRUE)	
-		anima.isl(cena[,,i],nIsl,ar.max,ar.isl, Nspp, loc.x, loc.y, chuva,i)
+		anima.isl(cena[,,i],ar.isl, Nspp, loc.x, loc.y, chuva,i)
 		}
-
 riq.tempo=t(apply(cena, c(2,3), sum))	
 x11()
 layout(matrix(data=c(1,2), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
@@ -58,37 +65,40 @@ abline(mod1, lty=2)
 rqz<-apply(cena, c(2,3), sum)
 clz<-diff(riq.tempo)
 matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(nIsl), bty="l", cex.lab=1.2, xlab="Species Number", ylab="Colonization (species)", cex.axis=1.2, main="Colonization Rate Curves", cex.main=1.2 )
-
 invisible(cena)
 }
 #######################################################
 #cena<-arquip(nIsl=10,ar.min=10, ar.max=100, Nspp=1000, chuva.total=100, abund=10, tmax=100, anima=FALSE)
 ########################################################
-anima.isl=function(dados, nIsl,ar.max, ar.isl, Nspp, loc.x, loc.y, chuva,i)
+anima.isl=function(dados, ar.isl, Nspp, loc.x, loc.y, chuva, i,...)
 {
 nspp=apply(dados,2, sum)
+comp.isl=sqrt(ar.isl)
+comp.max=max(comp.isl)
+ar.max=max(ar.isl)
+nIsl=length(ar.isl)
 layout(matrix(data=c(1,2), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
 old<-par(mar=c(0,2,3,2), oma=c(0,0,0,0))
-plot(0:ar.max, 0:ar.max, usr=c(0,ar.max,0,ar.max), type="n", yaxt="n", xaxt="n", xlab="", ylab="", bty="n", main="Passive Sampling and Area ")
+plot(0:comp.max, 0:comp.max, usr=c(0,comp.max,0,comp.max), type="n", yaxt="n", xaxt="n", xlab="", ylab="", bty="n", main="Passive Sampling and Area ")
 #grid(ar.max,ar.max)   
-segments(x0=c(0,0,ar.max,0), y0=c(0,0,0,ar.max), x1=c(0,rep(ar.max,3)), y1=c(ar.max,0,ar.max,ar.max))
-segments(x0=c(rep(0,nIsl), ar.isl), y0=c(ar.isl,rep(0,nIsl)), x1=c(ar.isl,ar.isl), y1=c(ar.isl,ar.isl))
+segments(x0=c(0,0,comp.max,0), y0=c(0,0,0,comp.max), x1=c(0,rep(comp.max,3)), y1=c(comp.max,0,comp.max,comp.max))
+segments(x0=c(rep(0,nIsl), comp.isl), y0=c(comp.isl,rep(0,nIsl)), x1=c(comp.isl,comp.isl), y1=c(comp.isl,comp.isl))
 col.spp=rainbow(Nspp)
-col.func=colorRamp(c("white", "green3"))
+col.func=colorRamp(c("white", "green4"))
 col.riq=rgb(col.func(seq(0,1, length.out=Nspp)), max=255)
 #par(new=TRUE)
 		for(f in nIsl:1)
 			{
-			vert=ar.isl[f]
+			vert=comp.isl[f]
 			polygon(x=c(0,vert, vert,0),y=c(0,0,vert,vert), col=col.riq[nspp[f]] )
 			}
 points(loc.x,loc.y, col=col.spp[chuva], pch=16)			
-par(mar=c(2,2,1,2))#, oma=c(0,0,0,0))#, mgp=c(1,0,0), omd=c(0,0,0,0))
+par(mar=c(2,2,1,3))#, oma=c(0,0,0,0))#, mgp=c(1,0,0), omd=c(0,0,0,0))
 image(x=1:Nspp, y=1, matrix(data=1:Nspp, nrow=Nspp,ncol=1),col=col.riq, ylab="",xlab=paste("time", i), xaxt="n", yaxt="n", main="Richness")
-axis(3, at=c(1.5,Nspp),tick=FALSE, labels=c("0", Nspp))
+axis(3, at=c(1.5,Nspp),tick=FALSE, labels=c("0", Nspp), mgp=c(0,0,0))
 polygon(x=c(0,Nspp,Nspp,0), y=c(0,0,Nspp,Nspp))
 par(old)
-Sys.sleep(.1)
+Sys.sleep(.005)
 }
 
 ##########
@@ -175,7 +185,7 @@ text(rep(6,nIsl),2:(nIsl+1), dist)
 segments(4.5,nIsl+2, 6.5, nIsl+2)
 segments(4.5, nIsl+3, 4.5, 1)
 par(def.par)
-return(ex)
+invisible(ex)
 }
 
 ######################################
@@ -204,7 +214,7 @@ iRain=function(Nspp , chuva , abund , tempo){
 	plot(0:tempo,c(0,riq),type="l",lwd=2,bty='n',xlab="time",ylab="number of species",
 	 font.lab=2,col=2,ylim=c(0,Nspp),main=c("Island richness",paste("(Nspp=",Nspp," ; rain=",chuva,")")))
 	abline(h=Nspp,lty=3)
-	return(riq)
+	invisible(riq)
 	}
 
 # faca um teste:
@@ -229,7 +239,7 @@ iCol=function(areas, Nspp, chuva.total, abund, tempo){
 		xlab="Island area",ylab="Number of species",ylim=c(1,Nspp))
 	abline(mod,lty=2)
 	cat("c=",mod[[1]][1],"z=",mod[[1]][2],"\n")
-	return(riq)
+	invisible(riq)
 	}
 
 #arquip(areas=c(10,20,40,80),Nspp=1000,chuva.total=100,abund=rep(10,1000),tempo=10)
@@ -252,7 +262,7 @@ iColExt=function(Nspp, chuva, abund, tempo, tx.ext){
 	 font.lab=2,col=2,ylim=c(0,Nspp),
 	 main=c("Island Richness",paste("Nspp =",Nspp," ; rain =",chuva,"; tx.ext = ",tx.ext)))
 	abline(h=Nspp,lty=3)
-	return(riq)
+	invisible(riq)
 	}
 #iColExt(Nspp=100, chuva=5, abund=rep(100,100), tempo=100, tx.ext=.1)
 
@@ -268,7 +278,14 @@ MW=function(areas , dist , P , a=1, b=-.01, c=1, d=-.01){
   
   curve(I[1]-I[1]*x/P,0,P,bty="n",xaxt="n",yaxt="n",xlab="Species number",
         ylab="Rates",font.lab=2,lwd=2,ylim=c(0,1))
-  curve((E[1]/P)*x,0,P,lwd=2,add=TRUE)
+  curve((E[1]/P)*x,0,P,lwd=2,add=TR	for(i in 2:length(time))
+	{
+		for(j in 1:n)
+		{
+		lines(time[1:i], rwData[1:i,j], col=ncolors[j], lty=j )
+		}
+ 	 sys.Sleep(0.01)
+	}UE)
   abline(v=0)
   abline(h=0)
   mtext("P",side=1,at=P,font=2)
@@ -300,7 +317,7 @@ MW=function(areas , dist , P , a=1, b=-.01, c=1, d=-.01){
        xlab="Island area",ylab="Species number",ylim=c(1,P))
   abline(lm(log10(spp)~log10(areas),data=ex),lty=3)
   
-  return(ex)
+  invisible(ex)
   par(mfrow=c(1,2))
 }
 
@@ -314,7 +331,14 @@ MW.2.0=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=
 	Tn=numeric()
 	for(i in 1:length(areas)){Tn[i]=I[i]*E[i]/(I[i]+E[i])}
 
-	curve(I[1]-I[1]*x/P,0,P,bty="n",xaxt="n",yaxt="n",xlab="Species number",
+	curve(I[1]-I[1]*x/P,0,P,bty="n",	for(i in 2:length(time))
+	{
+		for(j in 1:n)
+		{
+		lines(time[1:i], rwData[1:i,j], col=ncolors[j], lty=j )
+		}
+ 	 sys.Sleep(0.01)
+	}xaxt="n",yaxt="n",xlab="Species number",
 	 ylab="Rates",font.lab=2,lwd=2,ylim=c(0,1),main="Equilibrium")
 	curve((E[1]/P)*x,0,P,lwd=2,add=TRUE)
 	abline(v=0)
@@ -349,13 +373,20 @@ MW.2.0=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=
 	 xlab="Island area",ylab="Species number",ylim=c(1,P))
 	abline(lm(log10(spp)~log10(areas),data=ex),lty=3)
 
-	return(ex)
+	invisible(ex)
 	}
+########################################
 ########### MODELOS NULO ###############
-rand.walk <- function(n=1,step=1,ciclo=1e5,cont=1e3,x1=NULL){
-  if(is.null(x1)){
-    x1 <- sample(1:200,n,replace=TRUE)
-  }
+########################################
+randWalk <- function(n=1,step=1,ciclo=1e5,x1max=200, alleq=FALSE){
+  cont=round(ciclo/100)
+  sleep=1/cont 
+  if(cont>5e4){sleep=0}
+      if(alleq){
+                x1=rep(x1max,n)  
+               }else{
+                    x1 <- sample(1:x1max,n,replace=TRUE)
+                    }
   results <- matrix(NA,nrow=1+ciclo/cont,ncol=n) 
   results[1,] <- x1
   X <- x1
@@ -368,12 +399,40 @@ rand.walk <- function(n=1,step=1,ciclo=1e5,cont=1e3,x1=NULL){
   }
   results[is.na(results)] <- 0
   time <- seq(0,ciclo,by=cont)
-  matplot(time,results,type="l", col=rainbow(n),lwd=2, xlab="Steps",  main="Randon Walk",ylab="Distance from the edge")
-  abline(h=0,lwd=4)
+  animaRandWalk(rwData=results, time= time, sleep=sleep)
+  invisible(results)
+#  matplot(time,results,type="l", col=rainbow(n),lwd=2, xlab="Steps",  main="Randon Walk",ylab="Distance from the edge")
+#  abline(h=0,lwd=4)
 }
-#rand.walk(n=10,step=10,ciclo=1e4,cont=1e3)
-#rand.walk(n=10,step=2,ciclo=1e4,cont=1e3)
-#rand.walk(n=10,step=2,ciclo=5e4,cont=1e3)
+#rd1<-randWalk(n=10,step=10,ciclo=1e4)
+#randWalk(n=10,step=1,ciclo=1e4)
+randWalk(n=10,step=1,ciclo=1e4, x1max=300, alleq=TRUE)
+#rand.walk(n=100,step=2,ciclo=2e5)
+###################
+## animaRandWalk
+################### 
+animaRandWalk = function(rwData, time, sleep=0.1)
+{
+#par( )
+xplus=max(time)*0.1
+ymax=max(apply(rwData, 2, max))[1]
+plot(time, rwData[,which.max(apply(rwData, 2, max))[1]], xlab="Steps", ylab="Distance from the edge",cex.axis=1.2, cex.lab=1.2,ylim=c(-.1* ymax,ymax), main="Randon Walk", cex.main=1.5, type="n", xlim=c(0,max(time)))
+
+polygon(x=c(-xplus, -xplus, max(time)+xplus, max(time)+xplus), y=c(ymax*-0.15,0,0,ymax*-0.15), col="gray")
+text(max(time)/2, -0.05* ymax, labels="Absortion Surface", col="red", cex=1.5)
+ncolors= rainbow(n)
+n=dim(rwData)[2]
+	for(i in 2:length(time))
+	{
+		for(j in 1:n)
+		{
+		lines(time[1:i], rwData[1:i,j], col=ncolors[j], lty=j )
+		}
+ 	 Sys.sleep(sleep)
+	}
+}
+
+
 
 ##### Game
 ext.game <- function(aposta=1,total=100){
