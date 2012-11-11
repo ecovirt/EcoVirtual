@@ -3,7 +3,6 @@
 ######################################################################
 ################# Arquipelago: ilhas de diferentes tamanhos ###########
 ### Thu 17 Nov 2011 05:32:27 PM BRST Alexandre Adalardo
-
 arquip=function(nIsl,ar.min, ar.max, Nspp, chuva.total, abund, tmax, anima=TRUE)
 {
 	#n.ilhas=nIsl
@@ -406,7 +405,7 @@ randWalk <- function(n=1,step=1,ciclo=1e5,x1max=200, alleq=FALSE){
 }
 #rd1<-randWalk(n=10,step=10,ciclo=1e4)
 #randWalk(n=10,step=1,ciclo=1e4)
-randWalk(n=10,step=1,ciclo=1e4, x1max=300, alleq=TRUE)
+#randWalk(n=10,step=1,ciclo=1e4, x1max=300, alleq=TRUE)
 #rand.walk(n=100,step=2,ciclo=2e5)
 ###################
 ## animaRandWalk
@@ -433,47 +432,96 @@ n=dim(rwData)[2]
 }
 
 
-
-##### Game
-ext.game <- function(aposta=1,total=100){
+###################
+## Zero Sum Game ##
+###################
+extGame <- function(aposta=1,total=100, tmax=2){
   X <- total/2
   results <- X
+  t0=Sys.time()
   while(X>0&X<total){
     X <- X+sample(c(aposta,-1*aposta),1)
     results <- c(results,X)
+    ti=Sys.time()
+    time.sim=round(difftime(ti, t0, unit="min"), 1)
+    if(time.sim>tmax)
+    {
+    cat("\ntimeout, no losers!\n")
+    break()
+    }
   }
-  plot(1:length(results),results, type="l", col="blue",ylim=c(0,total), xlab="Cicle", ylab="Number of Individuals")
-  lines(1:length(results),total-results, col="red")
-  abline(h=c(0,total),lty=2)
-  legend(total*0.9, legend=c("sp 1", "sp2"), lty=1, col=c("red", "blue")  )
+  animaGame(results, total)
+  invisible(results)
 }
 
-#MELINA MODIFICOU A LEGENDA DA FUNCAO, LEGENDA ANTIGA:
-#legend(total*0.5,dim(results)*0.8, legend=c("sp 1", "sp2"), lty=1, col=c("red", "blue")  )
-
 #old<-par(mfrow=c(2,2))
-#ext.game(aposta=1,total=20)
-#ext.game(aposta=1,total=50)
-#ext.game(aposta=1,total=100)
-#ext.game(aposta=1,total=200)
+#extGame(aposta=1,total=20)
+#extGame(aposta=1,total=50)
+#extGame(aposta=1,total=100)
+#extGame(aposta=1,total=200)
 #par(old)
+animaGame = function(xGame, total, sleep=0.01)
+{
+xmax=length(xGame)
+xseq=1:xmax
+	if(xmax>1e3){sleep=0}
+	if(xmax>1e4)
+	{
+	indx=ceiling(seq(1,xmax, len=1000)) 
+	xGame=xGame[indx]
+	xseq=xseq[indx]
+	}
+plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Number of Individuals",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", sub=paste("Maximum number of indivíduals = ", total), cex.sub=0.9)
+abline(h=total/2, lty=2, col="red")
+cores= c("blue","black")
+#n=dim(rwData)[2]
+	for(i in 2:xmax)
+	{
+		lines(xseq[1:i], xGame[1:i], col=cores[1], lty=2)
+		lines(xseq[1:i], total - xGame[1:i], col=cores[2], lty=3)
+ 	 Sys.sleep(sleep)
+	}
+	polygon(x=c(-.2* xmax, -.2* xmax, xmax+ 0.1*xmax, xmax+ 0.1*xmax), y=c(-.2*total,0,0,-.2* total), col="gray")
+	polygon(x=c(-.2*xmax, -.2*xmax, xmax+ 0.1*xmax, xmax+ 0.1*xmax), y=c(total,total+total*.5,total +total*.5,total), col="gray")
+	text(xmax/2, - 0.05* total, labels="Loser", col="red", cex=1.5)
+	text(xmax/2, total + 0.05* total, labels="Winner", col="green", cex=1.5)
+}
+
 
 
 ##Modelo neutro sem imigracao 
-sim.hub1=function(S= 100, j=10, D=1, ciclo=1e4, step=1000){ 
+simHub1=function(S= 100, j=10, D=1, ciclo=1e4){
+stepseq=round(seq(101, ciclo+1, len=100))
+step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
   rich <- function(x)length(unique(x))
   J <- S*j
   ##Matrizes para guardar os resultados
   ## matriz da especie de cada individuo por ciclo
-  ind.mat=matrix(nrow=J,ncol=1+ciclo/step) 
+  ind.mat=matrix(nrow=J,ncol=100+length(stepseq)) 
   ##CONDICOES INICIAIS##
   ##Deduzidas de acordo com o modelo de Hubbell:
   ## Todas as especies comecam com o mesmo numero de individuos (j=J/S)
   ind.mat[,1] <- rep(1:S,each=j)
   cod.sp <- ind.mat[,1]
+#################################################################
+###########      incluindo 100 primeiros ciclos          ########
+#################################################################
+      for(k in 2:100){
+      ##Indice dos individuos que morrem
+      mortek <- sample(1:J,D)
+      ##Indice dos individuos que produzem filhotes para substituir os mortos
+      novosk <- sample(1:J,D,replace=T)
+      ##Substituindo
+      cod.sp[mortek]<-cod.sp[novosk]
+      ind.mat[,k] <- cod.sp
+      }
+####################################################################
+####################################################################
+	cont=100
   ##Aqui comecam as simulacoes
-  for(i in 2:(1+ciclo/step)){
+  for(i in 1:length(stepseq)){
+  cont=cont+1
     for(j in 1:step){
       ##Indice dos individuos que morrem
       morte <- sample(1:J,D)
@@ -483,25 +531,53 @@ sim.hub1=function(S= 100, j=10, D=1, ciclo=1e4, step=1000){
       cod.sp[morte]<-cod.sp[novos]
     }
     ## A cada step ciclos os resultados sao gravados
-    ind.mat[,i] <- cod.sp
+    ind.mat[,cont] <- cod.sp
   }
-  tempo <- seq(0,ciclo,by=step)
+  tempo <- c(0:99,stepseq)
   colnames(ind.mat) <- tempo
-  invisible(ind.mat)
+
   plot(tempo,apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), type="l", main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/ciclo"), cex.sub=0.7) 
+  invisible(ind.mat)
 }
 
 #par(mfrow=c(2,2))
-#sim.hub1(j=2,ciclo=2e4,step=1e2)
-#sim.hub1(j=5,ciclo=2e4,step=1e2)
-#sim.hub1(j=10,ciclo=2e4,step=1e2)
-#sim.hub1(j=20,ciclo=2e4,step=1e2)
+#sim.hub1(j=2,ciclo=2e4)
+#sim.hub1(j=5,ciclo=2e4)
+#sim.hub1(j=10,ciclo=2e4)
+#sim.hub1(j=20,ciclo=2e4)
 #par(mfrow=c(1,1))
 ##
-
+animaHub=function(dadoHub, sleep=0.1)
+{
+ciclo=colnames(dadoHub)
+nsp=length(unique(dadoHub[,1]))
+nind=dim(dadoHub)[1]
+nindsp=table(dadoHub[,1])[[1]]
+nsim=dim(dadoHub)[2]
+cor=rainbow(nsim)
+mcor<-c("#FFFFFF00","#FFFFFF")
+hmat=matrix(dadoHub[,1],ncol=nsp )
+old<-par(mar=c(2,2,2,2))
+image(hmat, col=cor, xaxt="n", yaxt="n")
+mtext(text="simulation ", side=1, adj=0)
+grid(nx=nindsp, ny=nsp)
+#mtext(text="                   1", side=1, col="white",adj=0)
+	for (i in 2:nsim)
+	{
+	mtext(text=paste("                    ", ciclo[i-1]), side=1, col="white", adj=0)
+	mvf=dadoHub[,i-1]!=dadoHub[,i]
+	matm<-matrix(mvf, ncol=nsp)
+	image(matm,col=mcor, add=TRUE)
+	hmat=matrix(dadoHub[,i],ncol=nsp )
+	image(hmat, col=cor, add=TRUE)
+	mtext(text=paste("                    ", ciclo[i]), side=1, adj=0)
+	Sys.sleep(sleep)
+	}
+}
+animaHub(dadoHub)
 
 ## Com migracao de uma metacomunidade com a composicao inicial
-sim.hub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01){ 
+simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01){ 
   ## Tamanho da comunidade
   rich <- function(x)length(unique(x))
   J <- S*j
@@ -509,7 +585,7 @@ sim.hub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01){
   ## matriz da especie de cada individuo por ciclo
   ind.mat=matrix(nrow=J,ncol=1+ciclo/step) 
   ##CONDICOES INICIAIS##
-  ## Todas as especies comecam com o mesmo numero de individuos (j=J/S)
+  ## Todas as especies comecam com o meamo numero de individuos (j=J/S)
   ## Rotulo de especies para cada um dos inividuos
   ind.mat[,1] <- rep(1:S,each=j)
   ## Repetindo este rotulo no vetor que sofrera modificacoes
@@ -547,7 +623,7 @@ sim.hub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01){
 
 ## Com migracao de uma metacomunidade com especiacao
 ### funcao elaborada por Paulo Inacio Prado e modificada por Alexandre Adalardo Seg 21 Nov 2011 20:56:53 BRST 
-sim.hub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, nu=0.001)
+simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, nu=0.001)
 { 
   rich <- function(x)length(unique(x))
   ## Tamanho da metacomunidade
