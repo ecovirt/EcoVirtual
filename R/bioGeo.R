@@ -3,6 +3,9 @@
 ######################################################################
 ################# Arquipelago: ilhas de diferentes tamanhos ###########
 ### Thu 17 Nov 2011 05:32:27 PM BRST Alexandre Adalardo
+## fuction Rich
+rich <- function(x)length(unique(x))
+####################################
 arquip=function(nIsl,ar.min, ar.max, Nspp, chuva.total, abund, tmax, anima=TRUE)
 {
 	#n.ilhas=nIsl
@@ -405,8 +408,9 @@ plot(time, rwData[,which.max(apply(rwData, 2, max))[1]], xlab="Steps", ylab="Dis
 
 polygon(x=c(-xplus, -xplus, max(time)+xplus, max(time)+xplus), y=c(ymax*-0.15,0,0,ymax*-0.15), col="gray")
 text(max(time)/2, -0.05* ymax, labels="Absortion Surface", col="red", cex=1.5)
-ncolors= rainbow(n)
 n=dim(rwData)[2]
+#ncolors= terrain.colors(n)
+ncolors= rainbow(n)
 	for(i in 2:length(time))
 	{
 		for(j in 1:n)
@@ -521,19 +525,18 @@ step=stepseq[2]- stepseq[1]
   }
   tempo <- c(0:99,stepseq)
   colnames(ind.mat) <- tempo
-
-  plot(tempo,apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), type="l", main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/ciclo"), cex.sub=0.7) 
+  animaHub1(dadoHub=ind.mat)
   invisible(ind.mat)
 }
 
 #par(mfrow=c(2,2))
-#sim.hub1(j=2,ciclo=2e4)
-#sim.hub1(j=5,ciclo=2e4)
-#sim.hub1(j=10,ciclo=2e4)
-#sim.hub1(j=20,ciclo=2e4)
+#simHub1(j=2,ciclo=2e4)
+#simHub1(j=5,ciclo=2e4)
+#simHub1(j=10,ciclo=2e4)
+#simHub1(j=20,ciclo=2e4)
 #par(mfrow=c(1,1))
 ##
-animaHub=function(dadoHub, sleep=0.1)
+animaHub1=function(dadoHub, sleep=0.1)
 {
 ciclo=colnames(dadoHub)
 nsp=length(unique(dadoHub[,1]))
@@ -541,7 +544,8 @@ nind=dim(dadoHub)[1]
 nindsp=table(dadoHub[,1])[[1]]
 nsim=dim(dadoHub)[2]
 cor=rainbow(nsim)
-mcor<-c("#FFFFFF00","#FFFFFF")
+#cor=terrain.colors(nsim)[nsim:1]
+mcor<-c("#FFFFFF00","#000000")
 hmat=matrix(dadoHub[,1],ncol=nsp )
 old<-par(mar=c(2,2,2,2))
 image(hmat, col=cor, xaxt="n", yaxt="n")
@@ -559,6 +563,8 @@ grid(nx=nindsp, ny=nsp)
 	mtext(text=paste("                    ", ciclo[i]), side=1, adj=0)
 	Sys.sleep(sleep)
 	}
+x11()
+  plot(as.numeric(colnames(dadoHub)),apply(dadoHub,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,nsp), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",nsp," J=",nind), sub=paste("Mean extintion=",(nsp-rich(dadoHub[,ncol(dadoHub)]))/ciclo,"sp/ciclo"), cex.sub=0.7) 
 }
 #animaHub(dadoHub)
 
