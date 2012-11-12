@@ -277,14 +277,8 @@ MW=function(areas , dist , P , a=1, b=-.01, c=1, d=-.01){
   
   curve(I[1]-I[1]*x/P,0,P,bty="n",xaxt="n",yaxt="n",xlab="Species number",
         ylab="Rates",font.lab=2,lwd=2,ylim=c(0,1))
-  curve((E[1]/P)*x,0,P,lwd=2,add=TR	for(i in 2:length(time))
-	{
-		for(j in 1:n)
-		{
-		lines(time[1:i], rwData[1:i,j], col=ncolors[j], lty=j )
-		}
- 	 sys.Sleep(0.01)
-	}UE)
+  curve((E[1]/P)*x,0,P,lwd=2,add=TRUE)	
+
   abline(v=0)
   abline(h=0)
   mtext("P",side=1,at=P,font=2)
@@ -330,15 +324,7 @@ MW.2.0=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=
 	Tn=numeric()
 	for(i in 1:length(areas)){Tn[i]=I[i]*E[i]/(I[i]+E[i])}
 
-	curve(I[1]-I[1]*x/P,0,P,bty="n",	for(i in 2:length(time))
-	{
-		for(j in 1:n)
-		{
-		lines(time[1:i], rwData[1:i,j], col=ncolors[j], lty=j )
-		}
- 	 sys.Sleep(0.01)
-	}xaxt="n",yaxt="n",xlab="Species number",
-	 ylab="Rates",font.lab=2,lwd=2,ylim=c(0,1),main="Equilibrium")
+	curve(I[1]-I[1]*x/P,0,P,bty="n", xaxt="n",yaxt="n",xlab="Species number",	 ylab="Rates",font.lab=2,lwd=2,ylim=c(0,1),main="Equilibrium")
 	curve((E[1]/P)*x,0,P,lwd=2,add=TRUE)
 	abline(v=0)
 	abline(h=0)
@@ -574,7 +560,7 @@ grid(nx=nindsp, ny=nsp)
 	Sys.sleep(sleep)
 	}
 }
-animaHub(dadoHub)
+#animaHub(dadoHub)
 
 ## Com migracao de uma metacomunidade com a composicao inicial
 simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01){ 
