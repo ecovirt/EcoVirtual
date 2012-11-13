@@ -477,10 +477,11 @@ cores= c("blue","black")
 	text(xmax/2, total + 0.05* total, labels="Winner", col="green", cex=1.5)
 }
 
-
-
-##Modelo neutro sem imigracao 
-simHub1=function(S= 100, j=10, D=1, ciclo=1e4){
+###################################################
+##############################
+##Modelo neutro sem imigracao #################
+simHub1=function(S= 100, j=10, D=1, ciclo=1e4, anima=TRUE)
+{
 stepseq=round(seq(101, ciclo+1, len=100))
 step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
@@ -525,12 +526,17 @@ step=stepseq[2]- stepseq[1]
   }
   tempo <- c(0:99,stepseq)
   colnames(ind.mat) <- tempo
+if(anima==TRUE)
+  {
   animaHub1(dadoHub=ind.mat)
+  }
+  x11()
+    plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/length(ciclo),"sp/ciclo"), cex.sub=0.8) 
   invisible(ind.mat)
 }
 
 #par(mfrow=c(2,2))
-#simHub1(j=2,ciclo=2e4)
+#simHub1(S=100,j=2, D=1, ciclo=2e4, anima=TRUE)
 #simHub1(j=5,ciclo=2e4)
 #simHub1(j=10,ciclo=2e4)
 #simHub1(j=20,ciclo=2e4)
@@ -539,52 +545,90 @@ step=stepseq[2]- stepseq[1]
 animaHub1=function(dadoHub, sleep=0.1)
 {
 ciclo=colnames(dadoHub)
-nsp=length(unique(dadoHub[,1]))
+#nsp=length(unique(dadoHub[,1]))
+maxsp=max(dadoHub)[1]
 nind=dim(dadoHub)[1]
-nindsp=table(dadoHub[,1])[[1]]
+#nindsp=table(dadoHub[,1])[[1]]
 nsim=dim(dadoHub)[2]
-cor=rainbow(nsim)
-#cor=terrain.colors(nsim)[nsim:1]
+## definindo o tamanho do retangulo
+    lado<-round(sqrt(nind))
+    lado2<-ceiling(nind/lado)
+    lastLine=lado*lado2 - nind
+#cor=c("#000000",rainbow(maxsp))
+cor=c("#000000", terrain.colors(maxsp))
 mcor<-c("#FFFFFF00","#000000")
-hmat=matrix(dadoHub[,1],ncol=nsp )
+hmat=(matrix(c(rep(0, lastLine),dadoHub[,1] ),ncol=lado, nrow=lado2))
 old<-par(mar=c(2,2,2,2))
 image(hmat, col=cor, xaxt="n", yaxt="n")
 mtext(text="simulation ", side=1, adj=0)
-grid(nx=nindsp, ny=nsp)
+grid(nx=lado2, ny=lado)
 #mtext(text="                   1", side=1, col="white",adj=0)
 	for (i in 2:nsim)
 	{
 	mtext(text=paste("                    ", ciclo[i-1]), side=1, col="white", adj=0)
 	mvf=dadoHub[,i-1]!=dadoHub[,i]
-	matm<-matrix(mvf, ncol=nsp)
+	matm<-matrix(c(rep(TRUE, lastLine),mvf ),ncol=lado, nrow=lado2)
 	image(matm,col=mcor, add=TRUE)
-	hmat=matrix(dadoHub[,i],ncol=nsp )
+	Sys.sleep(sleep)
+	hmat=(matrix(c(rep(0, lastLine),dadoHub[,i] ),ncol=lado, nrow=lado2))
 	image(hmat, col=cor, add=TRUE)
+	grid(nx=lado2, ny=lado)
 	mtext(text=paste("                    ", ciclo[i]), side=1, adj=0)
 	Sys.sleep(sleep)
 	}
-x11()
-  plot(as.numeric(colnames(dadoHub)),apply(dadoHub,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,nsp), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",nsp," J=",nind), sub=paste("Mean extintion=",(nsp-rich(dadoHub[,ncol(dadoHub)]))/ciclo,"sp/ciclo"), cex.sub=0.7) 
 }
-#animaHub(dadoHub)
-
-## Com migracao de uma metacomunidade com a composicao inicial
-simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01){ 
+#animaHub1(dadoHub)
+#################################################################
+## Com migracao de uma metacomunidade com a composicao inicial ##
+#################################################################
+simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, anima=TRUE)
+{ 
+  stepseq=round(seq(101, ciclo+1, len=100))
+  step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
   rich <- function(x)length(unique(x))
   J <- S*j
   ##Matrizes para guardar os resultados
   ## matriz da especie de cada individuo por ciclo
-  ind.mat=matrix(nrow=J,ncol=1+ciclo/step) 
+  ind.mat=matrix(nrow=J,ncol=100+length(stepseq))
   ##CONDICOES INICIAIS##
   ## Todas as especies comecam com o meamo numero de individuos (j=J/S)
   ## Rotulo de especies para cada um dos inividuos
   ind.mat[,1] <- rep(1:S,each=j)
   ## Repetindo este rotulo no vetor que sofrera modificacoes
   cod.sp <- ind.mat[,1]
+#########################################
+#### primeiras 100 simulações  #####
+########################################
+    for(k in 2:100)
+    {
+      ##Indice dos individuos que morrem
+      morte <- sample(1:J,D)
+      ## Indice dos individuos mortos que serao repostos por migrantes
+      defora <- sample(c(TRUE,FALSE),size=D,replace=TRUE,prob=c(m,1-m))
+      ##Indice dos individuos que produzem filhotes para substituir os mortos
+      novosd <- sample(1:J,D-sum(defora),replace=TRUE)
+      novosf <- sample(1:J,sum(defora),replace=TRUE)
+      ##Substituindo
+      ## Mortos por propagulos de dentro
+      if(length(novosd)>0){
+        cod.sp[morte[!defora]]<-cod.sp[novosd]
+      }
+      ## Mortos por propagulos de fora
+      if(length(novosf)>0){
+        cod.sp[morte[defora]]<-ind.mat[,1][novosf]
+      }
+    ## A cada step ciclos os resultados sao gravados
+    ind.mat[,k] <- cod.sp
+  }
+#####################################################
+#####################################################
+	cont=100
   ##Aqui comecam as simulacoes
-  for(i in 2:(1+ciclo/step)){
-    for(j in 1:step){
+  for(i in 1:length(stepseq)){
+  cont=cont+1
+    for(j in 1:step)
+    {
       ##Indice dos individuos que morrem
       morte <- sample(1:J,D)
       ## Indice dos individuos mortos que serao repostos por migrantes
@@ -603,32 +647,39 @@ simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01){
       }
     }
     ## A cada step ciclos os resultados sao gravados
-    ind.mat[,i] <- cod.sp
+    ind.mat[,cont] <- cod.sp
   }
-  tempo <- seq(0,ciclo,by=step)
+  tempo <- c(0:99,stepseq)
   colnames(ind.mat) <- tempo
-  invisible(ind.mat)
+  if(anima==TRUE)
+  {
+  animaHub1(dadoHub=resultados$comunidade)
+  }
+  ########### grafico interno ###############
+  x11()
   plot(tempo,apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species", type="l",
        main="Neutral Dynamics - Original Community Colonization",sub=paste( "S=",S," J=",J," m=",m,"Mean Extintion rate =",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/ciclo"),ylim=c(0,S), cex.sub=0.7)
-  }
-#teste2 <- sim.hub2(j=2,ciclo=2e4,step=1e2,m=0.1)
-
+  invisible(ind.mat)
+}
+#teste2 <- simHub2(j=2,ciclo=2e4,step=1e2,m=0.1)
+###########################################################################
 ## Com migracao de uma metacomunidade com especiacao
 ### funcao elaborada por Paulo Inacio Prado e modificada por Alexandre Adalardo Seg 21 Nov 2011 20:56:53 BRST 
-simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, nu=0.001)
-{ 
-  rich <- function(x)length(unique(x))
+simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, m=0.01, nu=0.001, anima=TRUE)
+{
+  stepseq=round(seq(101, ciclo+1, len=100))
+  step=stepseq[2]- stepseq[1]
   ## Tamanho da metacomunidade
   Jm <- Sm*jm
-  cores<-c("#FFFFFF", topo.colors(Sm))
+  #cores<-c("#FFFFFF", topo.colors(Sm)) # preto = #000000
   ## Tamanho da comunidade
   J <- S*j
   ##Matrizes para guardar os resultados
   ## matriz da especie de cada individuo por ciclo
   ## Na metacomunidade
-  meta.mat=matrix(nrow=Jm,ncol=1+ciclo/step) 
+  meta.mat=matrix(nrow=Jm,ncol=100+length(stepseq)) 
   ## Na comunidade
-  ind.mat=matrix(nrow=J,ncol=1+ciclo/step)
+  ind.mat=matrix(nrow=J,ncol=100+length(stepseq))
   ##CONDICOES INICIAIS##
   ## Todas as especies comecam com o mesmo numero de individuos (j=J/S)
   ## METACOMUNIDADE
@@ -640,9 +691,53 @@ simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01,
   ind.mat[,1] <- rep(1:S,each=j)
   ## Repetindo este rotulo no vetor que sofrera modificacoes
   cod.sp <- ind.mat[,1]
+#########################################
+#### primeiras 100 simulações  #####
+########################################
+    for(k in 2:100)
+    {
+      ##Indice dos individuos que morrem
+      ## Na comunidade
+      morte <- sample(1:J,D)
+      ## Na metacomunidade
+      meta.morte <- sample(1:Jm,D)
+      ## Indice dos individuos mortos da comunidade que serao repostos por migrantes 
+      defora <- sample(c(TRUE,FALSE),size=D,replace=TRUE,prob=c(m,1-m))
+      ## Indice dos individuos mortos da metacomunidade que serao repostos por novas especies 
+      meta.defora <- sample(c(TRUE,FALSE),size=D,replace=TRUE,prob=c(nu,1-nu))
+      ##Indice dos individuos que produzem filhotes para substituir os mortos da comunidade
+      novosd <- sample(1:J,D-sum(defora),replace=TRUE)
+      novosf <- sample(1:Jm,sum(defora),replace=TRUE)
+      ##Indice dos individuos que produzem filhotes para substituir os mortos da metacomunidade
+      meta.novosd <- sample(1:Jm,D-sum(meta.defora),replace=TRUE)
+      meta.novosf <- sample(1:Jm,sum(meta.defora),replace=TRUE)
+      ##Substituindo
+      ## Na metacomunidade ##
+      ## Mortos por propagulos de dentro
+      if(length(meta.novosd)>0){
+        meta.sp[meta.morte[!meta.defora]]<-meta.sp[meta.novosd]
+      }
+      ## Mortos por novas especies
+      if(length(meta.novosf)>0){
+        meta.sp[meta.morte[meta.defora]]<-max(meta.sp)+1
+      }
+      ## Na comunidade ##
+      ## Mortos por propagulos de dentro
+      if(length(novosd)>0){
+        cod.sp[morte[!defora]]<-cod.sp[novosd]
+      }
+      ## Mortos por propagulos de fora
+      if(length(novosf)>0){
+        cod.sp[morte[defora]]<-meta.sp[novosf]
+      }
+      ind.mat[,k] <- cod.sp
+      meta.mat[,k] <- meta.sp
+    }
+#####################################################
+	cont=100
   ##Aqui comecam as simulacoes
-  for(i in 2:(1+ciclo/step))
-  {
+  for(i in 1:length(stepseq)){
+  cont=cont+1
     for(j in 1:step)
     {
       ##Indice dos individuos que morrem
@@ -681,38 +776,28 @@ simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01,
       }
     }
     ## A cada step ciclos os resultados sao gravados
-    ind.mat[,i] <- cod.sp
-    meta.mat[,i] <- meta.sp
-    quad<-sqrt(J)
-    if(is.integer(quad))
-    {
-    image(matrix(cod.sp,ncol=quad, nrow=quad), col=topo.colors(Sm),xaxt="n", yaxt="n", main=" Null Community Dynamics", sub=paste("time =",(i-1) * ciclo/step ))
-    }
-    else
-    {
-    lad1=ceiling(quad)
-    lad2=floor(quad)
-    are=lad1^2
-    vaz=are-J
-    cod.aj<-c(rep(1,vaz),cod.sp+1)
-    
-    image(matrix(cod.aj, ncol=lad1, nrow=lad2), col=cores,xaxt="n", yaxt="n", main=" Null Community Dynamics", sub=paste("time =",(i-1) * ciclo/step ))
-	}
+    ind.mat[,cont] <- cod.sp
+    meta.mat[,cont] <- meta.sp
   }
-  tempo <- seq(0,ciclo,by=step)
+  tempo <- c(0:99,stepseq)
   colnames(ind.mat) <- tempo
   colnames(meta.mat) <- tempo
- 
   resultados <- list(metacomunidade=meta.mat,comunidade=ind.mat)
-  ## Graficos
+  if(anima==TRUE)
+  {
+  animaHub1(dadoHub=resultados$comunidade)
+  }
+  ########### grafico interno ###############
   x11()
   plot(tempo,apply(meta.mat,2,rich), xlab="Time (cicles)", ylab="Number of species", type="l",
        main="Neutra Dynamics - Metacomunity Colonization" ,sub=paste( "Jm=",Jm," nu=",nu," Theta=",2*Jm*nu, "S=",S," J=",J," m=",m, " Mean Extintion Rate=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/ciclo"), col="blue",  ylim=c(0,max(apply(meta.mat,2,rich))), cex.sub=0.7)
   lines(tempo,apply(ind.mat,2,rich),col="red")
   text(ciclo/2 ,length(unique(ind.mat[,round(dim(ind.mat)[2]/2)]))*1.3, "Community", col="red")
   text(ciclo/2 ,length(unique(meta.mat[,round(dim(ind.mat)[2]/2)]))*0.95, "Metacommunity", col="blue")
+ ##############################################
   invisible(resultados)
-  }
+}
 
-#teste3 <- sim.hub3(j=10, ciclo=2e4,step=1e2,m=0.1)
+#dadoHub <- simHub3(j=10, ciclo=2e4,m=0.1, anima=FALSE)
 #teste3 <- sim.hub3(j=2, ciclo=2e5,step=1e3,nu=0.00001,m=0.1)
+
