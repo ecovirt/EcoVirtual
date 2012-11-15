@@ -1,4 +1,5 @@
-###### Biogeography functions - ECOVIRTUAL PACKAGE 
+######################################################
+###### Biogeography functions - ECOVIRTUAL PACKAGE ###
 ############# Specie Area relationship ###############
 ######################################################################
 ################# Arquipelago: ilhas de diferentes tamanhos ###########
@@ -14,21 +15,20 @@ arquip=function(nIsl,ar.min, ar.max, Nspp, chuva.total, abund, tmax, anima=TRUE)
 	#lado.isl=sqrt(ar.isl)
 	spp=1:Nspp
 	cena=array(0, dim=c(Nspp,nIsl, tmax)) 
-	local=seq(0,ar.max, len=nIsl*10)
-		if(length(abund)==Nspp) {abund=abund/sum(abund)}else # um valor para cada especie
+	local=seq(0, ar.max , len=nIsl*10)
+	local[c(1,nIsl*10)]=local[c(2, nIsl*10-1)] 
+	locxy<-list()
+	sprain<-list()
+		if(length(abund)==Nspp) {abund=abund/sum(abund)}else{
+			cat("\n valores de abundância não correspondem ao número de espécie, apenas o primeiro valor foi considerado\n")
+			abund=abund[1]
+			if(abund==0 | abund>=1){abund=rep(1/Nspp, Nspp);cat("\n distribuição equitativa de abundância\n")}else{
+				if(abund<=1 & abund>0){abund = abund*(1-abund)^((1:Nspp)-1); cat("\n modelo de distribuição geometrica de abundância\n")}
+				}
+		}## modelo tilman geometrico ## todas especies igualmente contribuem para a chuva
+	for(i in 2:tmax)
 		{
-		cat("\n valores de abundância não correspondem ao número de espécie, apenas o primeiro valor foi considerado\n")
-		if(abund<=1){abund = abund[1]*(1-abund[1])^((1:Nspp)-1); cat("\n modelo de distribuição geometrica de abundância\n")} else{
-							abund=rep(abund[1], Nspp) 
-							cat("\n distribuição equitativa de abundância\n")
-							}## modelo tilman geometrico ## todas espécies igualmente contribuem para a chuva
-		}
-	for(i in 1:tmax)
-		{
-		if(i>1)
-			{
-			cena[,,i]<-cena[,,(i-1)]
-			}
+		cena[,,i]<-cena[,,(i-1)]
 		chuva=sample(spp, chuva.total, prob=abund, replace=TRUE)
 		loc.x=sample(local, chuva.total, replace=TRUE)
 		loc.y=sample(local, chuva.total, replace=TRUE)
@@ -38,17 +38,23 @@ arquip=function(nIsl,ar.min, ar.max, Nspp, chuva.total, abund, tmax, anima=TRUE)
 		#v.y=loc.y<ar.isl[l]
 		#v.spp=unique(chuva[v.x & v.y])
 		#cena[v.spp,l,1]<-1
+		locxy[[i]]<-cbind(loc.x, loc.y)
+		sprain[[i]]<-chuva
 		for(l in 1:nIsl)
 			{
-			v.x=loc.x<=ar.isl[l]
-			v.y=loc.y<=ar.isl[l]
-			v.spp=unique(chuva[v.x & v.y])
-			cena[v.spp,l,i]<-1
+			v_x=loc.x<=ar.isl[l]
+			v_y=loc.y<=ar.isl[l]
+			v_spp=unique(chuva[v_x & v_y])
+			cena[v_spp,l,i]<-1
 			}
-		if(i>1 & anima==TRUE)	
-		anima.isl(cena[,,i],ar.isl, Nspp, loc.x, loc.y, chuva,i)
+#		if(i>1 & anima==TRUE)	
+#		animaIsl(cena[,,i],ar.isl, Nspp, loc.x, loc.y, chuva,i)
 		}
-riq.tempo=t(apply(cena, c(2,3), sum))	
+riq.tempo=t(apply(cena, c(2,3), sum))
+	if(i>1 & anima==TRUE)
+	{
+	animaIsl(riq.tempo, ar.isl, locxy, sprain)
+	}
 x11()
 layout(matrix(data=c(1,2), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
 old<-par(mar=c(5,4,3,3))#, oma=c(0,0,0,0))			
@@ -67,44 +73,47 @@ abline(mod1, lty=2)
 rqz<-apply(cena, c(2,3), sum)
 clz<-diff(riq.tempo)
 matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(nIsl), bty="l", cex.lab=1.2, xlab="Species Number", ylab="Colonization (species)", cex.axis=1.2, main="Colonization Rate Curves", cex.main=1.2 )
+
 invisible(cena)
 }
 #######################################################
-#cena<-arquip(nIsl=10,ar.min=10, ar.max=100, Nspp=1000, chuva.total=100, abund=10, tmax=100, anima=FALSE)
+#cena<-arquip(nIsl=10,ar.min=10, ar.max=100, Nspp=1000, chuva.total=100, abund=10, tmax=100, anima=TRUE)
 ########################################################
-anima.isl=function(dados, ar.isl, Nspp, loc.x, loc.y, chuva, i,...)
+animaIsl=function(riq.tempo, ar.isl, locxy, sprain)
 {
-nspp=apply(dados,2, sum)
-comp.isl=sqrt(ar.isl)
-comp.max=max(comp.isl)
-ar.max=max(ar.isl)
-nIsl=length(ar.isl)
-layout(matrix(data=c(1,2), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
-old<-par(mar=c(0,2,3,2), oma=c(0,0,0,0))
-plot(0:comp.max, 0:comp.max, usr=c(0,comp.max,0,comp.max), type="n", yaxt="n", xaxt="n", xlab="", ylab="", bty="n", main="Passive Sampling and Area ")
-#grid(ar.max,ar.max)   
+Nspp=max(riq.tempo)
+maxt=dim(riq.tempo)[1]
+nIsl<-length(ar.isl)
+comp.max<-max(ar.isl)
+tempo=length(riq.tempo)
+col_spp=rainbow(max(riq.tempo))
+col_func=colorRamp(c("white", "green3"))
+col_riq=rgb(col_func(seq(0,1, length.out=Nspp)), max=255)
+## aqui inicia o grafico
+layout(matrix(data=c(2,1), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
+old<-par(mar=c(2,2,1,3))
+image(x=1:Nspp, y=1, matrix(data=1:Nspp, nrow=Nspp,ncol=1),col=col_riq, ylab="",xlab=paste("cicle", 1:length(maxt)), xaxt="n", yaxt="n", main="Richness")
+axis(3, at=c(1.5,Nspp),tick=FALSE, labels=c("0", Nspp), mgp=c(0,0,0))
+polygon(x=c(1.5,1.5,Nspp,Nspp), y=c(0.6,1.4,1.4,0.6), lwd=2)
+plot(0:comp.max, 0:comp.max, usr=c(0,comp.max,0,comp.max), type="n", yaxt="n", xaxt="n", xlab="", ylab="", bty="n", main="Passive Sampling and Area ",mar=c(0,2,3,2), oma=c(0,0,0,0))
 segments(x0=c(0,0,comp.max,0), y0=c(0,0,0,comp.max), x1=c(0,rep(comp.max,3)), y1=c(comp.max,0,comp.max,comp.max))
-segments(x0=c(rep(0,nIsl), comp.isl), y0=c(comp.isl,rep(0,nIsl)), x1=c(comp.isl,comp.isl), y1=c(comp.isl,comp.isl))
-col.spp=rainbow(Nspp)
-col.func=colorRamp(c("white", "green4"))
-col.riq=rgb(col.func(seq(0,1, length.out=Nspp)), max=255)
-#par(new=TRUE)
+segments(x0=c(rep(0,nIsl), ar.isl), y0=c(ar.isl,rep(0,nIsl)), x1=c(ar.isl,ar.isl), y1=c(ar.isl,ar.isl))
+	for (i in 2:maxt)
+	{
+	lxy=locxy[[i]]
+	nspp=riq.tempo[i,]
 		for(f in nIsl:1)
 			{
-			vert=comp.isl[f]
-			polygon(x=c(0,vert, vert,0),y=c(0,0,vert,vert), col=col.riq[nspp[f]] )
+			vert=ar.isl[f]
+			polygon(x=c(0,vert, vert,0),y=c(0,0,vert,vert), col=col_riq[nspp[f]] )
 			}
-points(loc.x,loc.y, col=col.spp[chuva], pch=16)			
-par(mar=c(2,2,1,3))#, oma=c(0,0,0,0))#, mgp=c(1,0,0), omd=c(0,0,0,0))
-image(x=1:Nspp, y=1, matrix(data=1:Nspp, nrow=Nspp,ncol=1),col=col.riq, ylab="",xlab=paste("time", i), xaxt="n", yaxt="n", main="Richness")
-axis(3, at=c(1.5,Nspp),tick=FALSE, labels=c("0", Nspp), mgp=c(0,0,0))
-polygon(x=c(0,Nspp,Nspp,0), y=c(0,0,Nspp,Nspp))
+	points(lxy[,1],lxy[,2], col=col_spp[sprain[[i]]], pch=16)
+	Sys.sleep(.1)
+	}
 par(old)
-Sys.sleep(.005)
 }
-
-##########
-graColExt=function(E , I , P, areas=areas)
+#########################################
+grColExt=function(E , I , P, areas)
 {
 	S = I*P/(I+E) ; T = I*E/(I+E)
 	nIsl=length(E)
@@ -125,8 +134,8 @@ graColExt=function(E , I , P, areas=areas)
 	points(S[i],T[i],col=corIsl[i],pch=16,cex=1)
 	if(length(unique(areas))>1)
 		{
-		siz.ar=2 +(areas/max(areas))
-		points(S[i],T[i],col=corIsl[i],cex=siz.ar[i])
+		siz_ar=2 +(areas/max(areas))
+		points(S[i],T[i],col=corIsl[i],cex=siz_ar[i])
 		}
 	segments(S[i],T[i],S[i],0,lty=3,col=corIsl[i])
 	segments(S[i],T[i],0,T[i],lty=3,col=corIsl[i])
@@ -135,27 +144,22 @@ graColExt=function(E , I , P, areas=areas)
 #	mtext("I",side=2,at=I,font=2,las=1, line=2)
 #	mtext("E",side=4,at=E,font=2,las=1)
 }
-# testando... graColExt(E = .5 , I = .5 , P = 100)
+# testando... grColExt(E = .5 , I = .5 , P = 100, areas=1:10)
 ####################################
 #######################################
 animaColExt=function(minimo=0.01, maximo=1, ciclos=100, Ext="crs", Col="dcr")
 {
 a=seq(from=minimo,to=maximo,length.out=ciclos)
 b=seq(from=maximo, to=minimo, length.out=ciclos)
-nt=length(a)
+#nt=length(a)
 if(Ext=="fix"){ext=rep(0.5,nt)}
 if(Ext=="crs"){ext=a}
 if(Ext=="dcr"){ext=b}
 if(Col=="fix"){col=rep(0.5,nt)}
 if(Col=="crs"){col=a}
 if(Col=="dcr"){col=b}
-	for(i in 1:nt)
-	{
-		graColExt(E=ext[i],I=col[i],P=100, areas=1)
-		Sys.sleep(.01)
-	}
+grColExt(E=ext,I=col,P=100, areas=1)
 }
-
 #animaColExt(Ext='crs', Col="dcr")
 ####################################
 ###### Mon 21 Nov 2011 12:58:57 PM BRST Alexandre Adalardo
@@ -164,7 +168,7 @@ bioGeoIsl=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01,e=0, 
 x11()
 nf <- layout(matrix(c(1,2), 2, 1),widths=c(1), heights=c(4,1))
 #layout.show(nf)
-def.par<-par(mar=c(4,7,3,7))
+def_par<-par(mar=c(4,7,3,7))
   E=((a+b*areas)*peso.A+(g+h*dist)*(1-peso.A))
   I=((c+d*dist)*peso.A+(e+f*areas)*(1-peso.A))
 #E=((b*areas)*peso.A + (h*dist)*(1-peso.A))
@@ -176,7 +180,7 @@ E[E<=0]<-0.001
 S=I*P/(I+E)
 T=I*E/(I+E)
 nIsl=length(areas)
-graColExt(E=E , I=I , P=P, areas=areas)
+grColExt(E=E , I=I , P=P, areas=areas)
 ex=data.frame(areas=areas,spp=S,dist=dist)
 par(mar=c(0,0,0,0))
 plot(1:10, 1:10, type="n", xlab="", ylab="", bty="n", xaxt="n", yaxt="n")
@@ -186,7 +190,7 @@ text(rep(5,nIsl),2:(nIsl+1), areas)
 text(rep(6,nIsl),2:(nIsl+1), dist)
 segments(4.5,nIsl+2, 6.5, nIsl+2)
 segments(4.5, nIsl+3, 4.5, 1)
-par(def.par)
+par(def_par)
 invisible(ex)
 }
 
@@ -194,16 +198,15 @@ invisible(ex)
 ###teste
 #bioGeoIsl(areas=c(5,10,50,80) , dist=c(10,100,100,10), P=100 , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=.01, g=0, h=.01)
 ###########################
-
-spp.area=function(c , z){
+sppArea=function(c , z){
 	curve(expr = c*x^z , from=1, to=10^10, xlab="Area", ylim=c(1,500),
 	 ylab="Species number", font.lab=2, lwd=2, col=2, main=paste("c = ",c,"; z = ",z))
 	curve(expr = c*x^z , from=1, to=10^10, xlab="Area", ylim=c(1,500),
 	 ylab="Species number", font.lab=2, lwd=2, col=2, main=paste("c = ",c,"; z = ",z), log="xy")
 	}
 #par(mfrow=c(2,2))
-#spp.area(c = 1.5 , z = .25)
-#spp.area(c = 2.1 , z = .25)
+#spp_area(c = 1.5 , z = .25)
+#spp_area(c = 2.1 , z = .25)
 
 iRain=function(Nspp , chuva , abund , tempo){
 	spp=paste("sp.",1:Nspp)
@@ -304,7 +307,6 @@ MW=function(areas , dist , P , a=1, b=-.01, c=1, d=-.01){
     segments(S[i],Tn[i],S[i],0,lty=3,col=i+1)
     segments(S[i],Tn[i],0,Tn[i],lty=3,col=i+1)
   }
-  
   ex=data.frame(areas=areas,spp=S,dist=dist)
   y=lm(S~areas)[[1]][1]
   z=lm(S~areas)[[1]][2]	
@@ -312,7 +314,6 @@ MW=function(areas , dist , P , a=1, b=-.01, c=1, d=-.01){
        main=c("Equilibrium",paste("c = ",round(y,2),"; z = ",round(z,2))),
        xlab="Island area",ylab="Species number",ylim=c(1,P))
   abline(lm(log10(spp)~log10(areas),data=ex),lty=3)
-  
   invisible(ex)
   par(mfrow=c(1,2))
 }
@@ -326,7 +327,6 @@ MW.2.0=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=
 	for(i in 1:length(areas)){S[i]=I[i]*P/(I[i]+E[i])}
 	Tn=numeric()
 	for(i in 1:length(areas)){Tn[i]=I[i]*E[i]/(I[i]+E[i])}
-
 	curve(I[1]-I[1]*x/P,0,P,bty="n", xaxt="n",yaxt="n",xlab="Species number",	 ylab="Rates",font.lab=2,lwd=2,ylim=c(0,1),main="Equilibrium")
 	curve((E[1]/P)*x,0,P,lwd=2,add=TRUE)
 	abline(v=0)
@@ -339,7 +339,6 @@ MW.2.0=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=
 	points(S[1],Tn[1],col=2,pch=16,cex=1.3)
 	segments(S[1],Tn[1],S[1],0,lty=3,col=2)
 	segments(S[1],Tn[1],0,Tn[1],lty=3,col=2)
-
 	for(i in 2:length(areas)){
 		curve(I[i]-I[i]*x/P,0,P,lwd=2,ylim=c(0,1),add=TRUE,lty=i)
 		curve((E[i]/P)*x,0,P,lwd=2,add=TRUE,lty=i)
@@ -351,16 +350,13 @@ MW.2.0=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=
 		segments(S[i],Tn[i],S[i],0,lty=3,col=i+1)
 		segments(S[i],Tn[i],0,Tn[i],lty=3,col=i+1)
 		}
-
 	ex=data.frame(areas=areas,spp=S,dist=dist)
 	y=lm(S~areas)[[1]][1]
 	z=lm(S~areas)[[1]][2]
-
 	plot(spp~areas,data=ex,log="xy",font.lab=2,pch=16,col=2,bty="l",
 	 main=c("Species-area relationship",paste("c = ",round(y,2),"; z = ",round(z,2))),
 	 xlab="Island area",ylab="Species number",ylim=c(1,P))
 	abline(lm(log10(spp)~log10(areas),data=ex),lty=3)
-
 	invisible(ex)
 	}
 ########################################
@@ -387,6 +383,7 @@ randWalk <- function(n=1,step=1,ciclo=1e5,x1max=200, alleq=FALSE){
   }
   results[is.na(results)] <- 0
   time <- seq(0,ciclo,by=cont)
+  x11()
   animaRandWalk(rwData=results, time= time, sleep=sleep)
   invisible(results)
 #  matplot(time,results,type="l", col=rainbow(n),lwd=2, xlab="Steps",  main="Randon Walk",ylab="Distance from the edge")
@@ -399,7 +396,7 @@ randWalk <- function(n=1,step=1,ciclo=1e5,x1max=200, alleq=FALSE){
 ###################
 ## animaRandWalk
 ################### 
-animaRandWalk = function(rwData, time, sleep=0.1)
+animaRandWalk = function(rwData, time=2, sleep=0.1)
 {
 #par( )
 xplus=max(time)*0.1
@@ -420,8 +417,6 @@ ncolors= rainbow(n)
  	 Sys.sleep(sleep)
 	}
 }
-
-
 ###################
 ## Zero Sum Game ##
 ###################
@@ -433,17 +428,17 @@ extGame <- function(aposta=1,total=100, tmax=2){
     X <- X+sample(c(aposta,-1*aposta),1)
     results <- c(results,X)
     ti=Sys.time()
-    time.sim=round(difftime(ti, t0, unit="min"), 1)
+    time.sim=round(difftime(ti, t0, units="min"), 1)
     if(time.sim>tmax)
     {
     cat("\ntimeout, no losers!\n")
     break()
     }
   }
+  x11()
   animaGame(results, total)
   invisible(results)
 }
-
 #old<-par(mfrow=c(2,2))
 #extGame(aposta=1,total=20)
 #extGame(aposta=1,total=50)
@@ -477,18 +472,19 @@ cores= c("blue","black")
 	text(xmax/2, total + 0.05* total, labels="Winner", col="green", cex=1.5)
 }
 
-###################################################
-##############################
-##Modelo neutro sem imigracao #################
+################################################################
+############## Neutral Model without Imigration ################
+################################################################
 simHub1=function(S= 100, j=10, D=1, ciclo=1e4, anima=TRUE)
 {
-stepseq=round(seq(101, ciclo+1, len=100))
-step=stepseq[2]- stepseq[1]
+if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
+  stepseq=round(seq(101, ciclo+1, len=100))
+  step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
   rich <- function(x)length(unique(x))
   J <- S*j
   ##Matrizes para guardar os resultados
-  ## matriz da especie de cada individuo por ciclo
+  #simHub1(S=10,j=10, D=1, ciclo=2e4, anima=TRUE)# matriz da especie de cada individuo por ciclo
   ind.mat=matrix(nrow=J,ncol=100+length(stepseq)) 
   ##CONDICOES INICIAIS##
   ##Deduzidas de acordo com o modelo de Hubbell:
@@ -498,19 +494,22 @@ step=stepseq[2]- stepseq[1]
 #################################################################
 ###########      incluindo 100 primeiros ciclos          ########
 #################################################################
-      for(k in 2:100){
+      for(k in 2:100)
+      {
       ##Indice dos individuos que morrem
       mortek <- sample(1:J,D)
       ##Indice dos individuos que produzem filhotes para substituir os mortos
-      novosk <- sample(1:J,D,replace=T)
+      novosk <- sample(1:J,D,replace=TRUE)
       ##Substituindo
       cod.sp[mortek]<-cod.sp[novosk]
       ind.mat[,k] <- cod.sp
       }
-####################################################################
-####################################################################
+###########################
 	cont=100
+	tempo=0:99
   ##Aqui comecam as simulacoes
+if(!is.null(stepseq))
+{
   for(i in 1:length(stepseq)){
   cont=cont+1
     for(j in 1:step){
@@ -524,7 +523,8 @@ step=stepseq[2]- stepseq[1]
     ## A cada step ciclos os resultados sao gravados
     ind.mat[,cont] <- cod.sp
   }
-  tempo <- c(0:99,stepseq)
+tempo <- c(tempo,stepseq)
+}
   colnames(ind.mat) <- tempo
 if(anima==TRUE)
   {
@@ -534,55 +534,19 @@ if(anima==TRUE)
     plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/length(ciclo),"sp/ciclo"), cex.sub=0.8) 
   invisible(ind.mat)
 }
-
 #par(mfrow=c(2,2))
-#simHub1(S=100,j=2, D=1, ciclo=2e4, anima=TRUE)
+
+#simHub1(S=10,j=10, D=1, ciclo=2e4, anima=TRUE)
 #simHub1(j=5,ciclo=2e4)
 #simHub1(j=10,ciclo=2e4)
 #simHub1(j=20,ciclo=2e4)
 #par(mfrow=c(1,1))
-##
-animaHub1=function(dadoHub, sleep=0.1)
-{
-ciclo=colnames(dadoHub)
-#nsp=length(unique(dadoHub[,1]))
-maxsp=max(dadoHub)[1]
-nind=dim(dadoHub)[1]
-#nindsp=table(dadoHub[,1])[[1]]
-nsim=dim(dadoHub)[2]
-## definindo o tamanho do retangulo
-    lado<-round(sqrt(nind))
-    lado2<-ceiling(nind/lado)
-    lastLine=lado*lado2 - nind
-#cor=c("#000000",rainbow(maxsp))
-cor=c("#000000", terrain.colors(maxsp))
-mcor<-c("#FFFFFF00","#000000")
-hmat=(matrix(c(rep(0, lastLine),dadoHub[,1] ),ncol=lado, nrow=lado2))
-old<-par(mar=c(2,2,2,2))
-image(hmat, col=cor, xaxt="n", yaxt="n")
-mtext(text="simulation ", side=1, adj=0)
-grid(nx=lado2, ny=lado)
-#mtext(text="                   1", side=1, col="white",adj=0)
-	for (i in 2:nsim)
-	{
-	mtext(text=paste("                    ", ciclo[i-1]), side=1, col="white", adj=0)
-	mvf=dadoHub[,i-1]!=dadoHub[,i]
-	matm<-matrix(c(rep(TRUE, lastLine),mvf ),ncol=lado, nrow=lado2)
-	image(matm,col=mcor, add=TRUE)
-	Sys.sleep(sleep)
-	hmat=(matrix(c(rep(0, lastLine),dadoHub[,i] ),ncol=lado, nrow=lado2))
-	image(hmat, col=cor, add=TRUE)
-	grid(nx=lado2, ny=lado)
-	mtext(text=paste("                    ", ciclo[i]), side=1, adj=0)
-	Sys.sleep(sleep)
-	}
-}
-#animaHub1(dadoHub)
 #################################################################
-## Com migracao de uma metacomunidade com a composicao inicial ##
+## Null Model Simulation with imigration from a Metacommunity  ##
 #################################################################
 simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, anima=TRUE)
 { 
+if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
   stepseq=round(seq(101, ciclo+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
@@ -597,9 +561,9 @@ simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, anima=TRUE)
   ind.mat[,1] <- rep(1:S,each=j)
   ## Repetindo este rotulo no vetor que sofrera modificacoes
   cod.sp <- ind.mat[,1]
-#########################################
-#### primeiras 100 simulações  #####
-########################################
+####################################
+#### primeiras 100 simulacoes  #####
+####################################
     for(k in 2:100)
     {
       ##Indice dos individuos que morrem
@@ -621,7 +585,6 @@ simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, anima=TRUE)
     ## A cada step ciclos os resultados sao gravados
     ind.mat[,k] <- cod.sp
   }
-#####################################################
 #####################################################
 	cont=100
   ##Aqui comecam as simulacoes
@@ -653,7 +616,7 @@ simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, anima=TRUE)
   colnames(ind.mat) <- tempo
   if(anima==TRUE)
   {
-  animaHub1(dadoHub=resultados$comunidade)
+  animaHub1(dadoHub=ind.mat)
   }
   ########### grafico interno ###############
   x11()
@@ -662,11 +625,14 @@ simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, anima=TRUE)
   invisible(ind.mat)
 }
 #teste2 <- simHub2(j=2,ciclo=2e4,step=1e2,m=0.1)
-###########################################################################
-## Com migracao de uma metacomunidade com especiacao
+###########################################################
+########## Null Model Simulation 3 ########################
+## Imigracao and speciation from a metacommunity ##########
+###########################################################
 ### funcao elaborada por Paulo Inacio Prado e modificada por Alexandre Adalardo Seg 21 Nov 2011 20:56:53 BRST 
 simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, m=0.01, nu=0.001, anima=TRUE)
 {
+if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
   stepseq=round(seq(101, ciclo+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da metacomunidade
@@ -691,9 +657,9 @@ simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, m=0.01, nu=0.001, 
   ind.mat[,1] <- rep(1:S,each=j)
   ## Repetindo este rotulo no vetor que sofrera modificacoes
   cod.sp <- ind.mat[,1]
-#########################################
-#### primeiras 100 simulações  #####
-########################################
+###################################
+#### primeiras 100 simulacoes #####
+###################################
     for(k in 2:100)
     {
       ##Indice dos individuos que morrem
@@ -789,15 +755,67 @@ simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, m=0.01, nu=0.001, 
   }
   ########### grafico interno ###############
   x11()
+  mrich<-apply(meta.mat,2,rich)
+  crich<-apply(ind.mat,2,rich)
+  ymax<-max(c(mrich,crich))
+  ymax=ymax*1.1
   plot(tempo,apply(meta.mat,2,rich), xlab="Time (cicles)", ylab="Number of species", type="l",
-       main="Neutra Dynamics - Metacomunity Colonization" ,sub=paste( "Jm=",Jm," nu=",nu," Theta=",2*Jm*nu, "S=",S," J=",J," m=",m, " Mean Extintion Rate=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/ciclo"), col="blue",  ylim=c(0,max(apply(meta.mat,2,rich))), cex.sub=0.7)
+       main="Neutra Dynamics - Metacomunity Colonization" ,sub=paste( "Jm=",Jm," nu=",nu," Theta=",2*Jm*nu, "S=",S," J=",J," m=",m, " Mean Extintion Rate=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/ciclo"), col="blue",  ylim=c(0,ymax), cex.sub=0.7)
   lines(tempo,apply(ind.mat,2,rich),col="red")
-  text(ciclo/2 ,length(unique(ind.mat[,round(dim(ind.mat)[2]/2)]))*1.3, "Community", col="red")
-  text(ciclo/2 ,length(unique(meta.mat[,round(dim(ind.mat)[2]/2)]))*0.95, "Metacommunity", col="blue")
- ##############################################
+  text(tempo[length(tempo)*.6] ,crich[length(tempo)*.6]*1.1, "Community", col="red")
+  text(tempo[length(tempo)*.9] ,mrich[length(tempo)*.9]*1.1, "Metacommunity", col="blue")
   invisible(resultados)
 }
-
 #dadoHub <- simHub3(j=10, ciclo=2e4,m=0.1, anima=FALSE)
-#teste3 <- sim.hub3(j=2, ciclo=2e5,step=1e3,nu=0.00001,m=0.1)
+#teste3 <- simHub3(j=2, ciclo=2e3,nu=0.00001,m=0.1)
+#############################################################
+############### animation for neutral models ################
+#############################################################
+animaHub1=function(dadoHub, sleep=0.1)
+{
+library(tcltk)
+#nsp=length(unique(dadoHub[,1]))
+maxsp=max(dadoHub)[1]
+nind=dim(dadoHub)[1]
+#nindsp=table(dadoHub[,1])[[1]]
+nsim=dim(dadoHub)[2]
+ciclo=as.numeric(colnames(dadoHub))
+pb = tkProgressBar(title = "Simulation Progress", max = nsim)
+riq=apply(dadoHub, 2, rich)
+## definindo o tamanho do retangulo
+    lado<-round(sqrt(nind))
+    lado2<-ceiling(nind/lado)
+    lastLine=lado*lado2 - nind
+#cor=c("#000000",rainbow(maxsp))
+#cor=c(terrain.colors(maxsp))
+#if(lastLine !=0){cor=c("#000000", cor)}
+cor=c("#000000", rainbow(maxsp+round(maxsp*0.5)))
+mcor<-c("#FFFFFF00","#000000")
+spcol<-c(rep(0, lastLine),dadoHub[,1] )
+hmat=matrix(spcol,ncol=lado, nrow=lado2)
+#cormat=matrix(cor[factor(spcol, levels=0:maxsp)], ncol=lado, nrow=lado2)
+old<-par(mar=c(2,2,2,2))
+image(hmat, col=cor[sort(unique(as.numeric(hmat)))+1], xaxt="n", yaxt="n")
+#mtext(text="simulation ", side=1, adj=0)
+grid(nx=lado2, ny=lado)
+#mtext(text="                   1", side=1, col="white",adj=0)
+	for (i in 2:nsim)
+	{
+	#if(riq[i]==1){cor=cor[unique(dadoHub[,i])[1]]}
+#	mtext(text=paste("                    ", ciclo[i-1]), side=1, col="white", adj=0)
+	mvf=dadoHub[,i-1]!=dadoHub[,i]
+	matm<-matrix(c(rep(TRUE, lastLine),mvf ),ncol=lado, nrow=lado2)
+	image(matm,col=mcor, add=TRUE)
+	Sys.sleep(sleep)
+	spcol<-c(rep(0, lastLine),dadoHub[,i] )
+	hmat=(matrix(spcol,ncol=lado, nrow=lado2))
+	image(hmat, col=cor[sort(unique(as.numeric(hmat)))+1], add=TRUE)
+	grid(nx=lado2, ny=lado)
+#	mtext(text=paste("                    ", ciclo[i]), side=1, adj=0)
+	setTkProgressBar(pb, value = i, label = paste("Simulation #", ciclo[i], sep="")) 
+	}
+	close(pb)
+}
+#animaHub1(dadoHub)
+
 
