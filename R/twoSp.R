@@ -31,10 +31,7 @@ return(resulta)
 #############################################################################
 #compLV(n01=10, n02=10,r1=0.05, r2=0.03, k1=80, k2=50, alfa=1.2, beta=0.5, tmax=200)
 ################################################################################
-
-
-
-meta.comp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
+metaComp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 {
 	pais<-array(0, dim=c(ln,cl,tmax))
 #if(D=0)
@@ -89,22 +86,18 @@ meta.comp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
           x11()
 		if(anima==TRUE)
 		{
-		metacomp.anima(pais)
+		animaMetaComp(pais)
 		}
 x11()  
-plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupance", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; ln=",ln,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="red")
-  lines(1:tmax,resultado[,3],col="blue", lwd=2)
-  abline(h=F1,col="red",lwd=1.5,lty=2)
-  if(F2>0)abline(h=F2,col="blue",lwd=1.5,lty=2)
-  if(F2<0)abline(h=0, col='blue',lwd=1.5,lty=2)
-          
+plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupance", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; ln=",ln,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
+  lines(1:tmax,resultado[,3],col="green", lwd=2)
+  abline(h=F1,col="blue",lwd=1.5,lty=2)
+  if(F2>0)abline(h=F2,col="green",lwd=1.5,lty=2)
+  if(F2<0)abline(h=0, col="green",lwd=1.5,lty=2)
   if(D>0)abline(h=1-D,lty=2)
-  legend("topright",legend= c("Best competitor", "Inferior competitor"),col=c("red","blue"),lty=2, bty="n", title="Equilibrium without Habitat destruction")
- 
+  legend("topright",legend= c("Best competitor", "Inferior competitor"),col=c("blue","green"),lty=2, bty="n", title="Equilibrium without Habitat destruction")
   invisible(pais)
 }
-
-#meta.comp(tmax=100,cl=20,ln=20,fi1=0.4,fi2=0.4,i1=0.1,i2=0.1,pe=0.05, D=0,anima=TRUE)
-
-#meta.comp(tmax=100, cl=100, ln=100, fi1=0.1, fi2=0.4, i1=0.4, i2=0.5, pe=0.25, D=0)
+#metaComp(tmax=100,cl=20,ln=20,fi1=0.4,fi2=0.4,i1=0.1,i2=0.1,pe=0.05, D=0,anima=TRUE)
+#metaComp(tmax=100, cl=100, ln=100, fi1=0.1, fi2=0.4, i1=0.4, i2=0.5, pe=0.25, D=0)
 
