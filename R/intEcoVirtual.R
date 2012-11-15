@@ -4,7 +4,7 @@
 ############################
 ### graficos metacomunidade
 #####################
-metacomp.anima=function(dados)
+animaMetaComp=function(dados)
 {
 nsim=dim(dados)[3]
 ln=dim(dados)[1]
@@ -27,10 +27,7 @@ grid(ln,cl)
 	Sys.sleep(.1)
 	}
 }
-###############################################
-
-
-###################
+#######################
 anima <-function(dados)
 {
 x11()
@@ -41,8 +38,8 @@ x11()
 	Sys.sleep(.2)
 	}
 }
-########################################################
-meta.anima2=function(dados)
+##########################
+animaMeta2=function(dados)
 {
 nsim=dim(dados)[3]
 ln=dim(dados)[1]
@@ -60,7 +57,7 @@ image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , brea
 	}
 }
 ###############################################
-graf.fim=function(dados)
+grFim=function(dados)
 {
 op=par(mfrow=c(2,2))
 nsim=dim(dados)[3]
@@ -80,7 +77,7 @@ par(op)
 ###############################
 #Trade-off Multispecies Graphic
 ### 
-gr.toff=function(rq, fsp1,pe,add=FALSE,...)
+grToff=function(rq, fsp1,pe,add=FALSE,...)
 {
 #	rq <- as.numeric(tclvalue(rqVar))
 #	fsp1 <- as.numeric(tclvalue(fsp1Var))
@@ -104,14 +101,12 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 	mtext("Trade-off Species Rank ", 3, 0, cex=1.2)
 	par(old)
 }
-
 #ex:
-gr.toff(rq =  10 , fsp1 =  0.2 , pe =  0.1 ,add=FALSE)
-
+#grToff(rq =  10 , fsp1 =  0.2 , pe =  0.1 ,add=FALSE)
 ############################
 ### Sucessional Niche Graphic
 ############################
-anima.cena=function(dados)
+animaCena=function(dados)
 {
 nt=dim(dados)[3]
 x11()
@@ -133,21 +128,20 @@ image(dados[,,nt], main= paste("Patches occupancy\n \t time=", nt ),  bty="n",xa
 grid(dim(dados)[2],dim(dados)[1])
 par(op)
 }
-
 ##################################
-graf.com=function(medias, desvios, minimo, maximo)
+grCom=function(medias, desvios, minimo, maximo)
 {
   nsp=length(medias)
   cor=rainbow(nsp)
-  curve(dnorm.trunc(x, medias[1], desvios[1], maximo=maximo, minimo=minimo),from=minimo, to=maximo, ylim=c(0,1), ylab="Population Density", xlab="Gradient Value", main="Species Distribution", col=cor[1])
+  curve(dnormTrunc(x, medias[1], desvios[1], maximo=maximo, minimo=minimo),from=minimo, to=maximo, ylim=c(0,1), ylab="Population Density", xlab="Gradient Value", main="Species Distribution", col=cor[1])
 	for (i in 2:nsp)
  	{
- 	curve(dnorm.trunc(x, medias[i], desvios[i], maximo=maximo, minimo=minimo),from=minimo, to=maximo,add=TRUE, col=cor[i], lty=2)
+ 	curve(dnormTrunc(x, medias[i], desvios[i], maximo=maximo, minimo=minimo),from=minimo, to=maximo,add=TRUE, col=cor[i], lty=2)
  	} 
-text(medias+1, dnorm.trunc(medias, medias, desvios,maximo=maximo,minimo=minimo)+0.5, labels=(paste("sp",(1:(nsp)),sep="_")), col=cor, cex=0.8)
+text(medias+1, dnormTrunc(medias, medias, desvios,maximo=maximo,minimo=minimo)+0.5, labels=(paste("sp",(1:(nsp)),sep="_")), col=cor, cex=0.8)
 }  
 ###################################
-dnorm.trunc=function(x, minimo=-Inf, maximo=Inf, media=0, desvio=1)
+dnormTrunc=function(x, minimo=-Inf, maximo=Inf, media=0, desvio=1)
 {
 res=numeric(length(x))
 x.prov=dnorm(x,mean=media, sd=desvio)
@@ -158,14 +152,14 @@ x.prov/ampl.norm
 ####################################
 ### f para truncar a amostra ###
 ###################################
-pnorm.trunc=function(x,minimo=-Inf, maximo=Inf, media=0, desvio=1)
+pnormTrunc=function(x,minimo=-Inf, maximo=Inf, media=0, desvio=1)
 {
 denom <- pnorm(maximo, mean=media, sd=desvio) - pnorm(minimo, mean=media, sd=desvio)
 qtmp <- pnorm(x, mean=media, sd=desvio) - pnorm(minimo, mean=media, sd=desvio)
 qtmp/denom
 }
 ##### Proportion of species at each sample
-prob.ssp=function(medias, desvios, amostra, minimo, maximo)
+probS=function(medias, desvios, amostra, minimo, maximo)
 {
 nsp=length(medias)
 namostra=length(amostra)
@@ -176,15 +170,15 @@ colnames(resulta)=paste("plot", 1:namostra, sep="_")
   {
 	for(i in 1:nsp)
 	{
-	resulta[i,k]= pnorm.trunc(amostra[k]+1,minimo=minimo, maximo=maximo, media=medias[i], desvio=desvios[i])- pnorm.trunc(amostra[k],minimo=minimo, maximo=maximo, media=medias[i], desvio=desvios[i] )
+	resulta[i,k]= pnormTrunc(amostra[k]+1,minimo=minimo, maximo=maximo, media=medias[i], desvio=desvios[i])- pnormTrunc(amostra[k],minimo=minimo, maximo=maximo, media=medias[i], desvio=desvios[i] )
 	}
   }
 invisible(resulta)
 }
-#############################
+####################################
 ######### Func Distancia Bray-Curtis
 ####################################
-ddis.bc<-function(dados)
+distBC<-function(dados)
 	{
 	nplot=dim(dados)[2]
 	similar=matrix(NA,ncol=nplot,nrow=nplot)
@@ -204,7 +198,7 @@ ddis.bc<-function(dados)
 ###########################
 ####Polar-Ordination Func
 ########################
-ordena.polar=function(dist)
+ordenaPolar=function(dist)
 {
 somadist1.cont=apply(dist, 1, sum, na.rm=TRUE) + apply(dist,2,sum, na.rm=TRUE)
 nomes.parc=names(somadist1.cont)
@@ -269,12 +263,11 @@ sim<-function(dados, indice="bc")
 #  dend.cont1=as.dendrogram(clas.cont1, hang=-1)
 #  plot(dend.cont1)
 
-
 #############################
 rich <- function(x)length(unique(x))
 #####################
 ###### Grafico biog ilha
-grafeq=function(E , I , P){
+grFreq=function(E , I , P){
 	S = I*P/(I+E) ; T = I*E/(I+E)
 	curve(I-I*x/P,0,P,bty="n",xaxt="n",yaxt="n",xlab="Species number",
 	 ylab="Taxas",font.lab=2,lwd=2,ylim=c(0,1))
