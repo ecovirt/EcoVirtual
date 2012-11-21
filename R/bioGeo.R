@@ -364,7 +364,7 @@ MW.2.0=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=
 ########################################
 randWalk <- function(n=1,step=1,ciclo=1e5,x1max=200, alleq=FALSE){
   cont=round(ciclo/100)
-  sleep=1/cont 
+  sleep=0.01
   if(cont>5e4){sleep=0}
       if(alleq){
                 x1=rep(x1max,n)  
@@ -473,7 +473,7 @@ cores= c("blue","black")
 }
 
 ################################################################
-############## Neutral Model without Imigration ################
+############## Neutral Model without Immigration ################
 ################################################################
 simHub1=function(S= 100, j=10, D=1, ciclo=1e4, anima=TRUE)
 {
@@ -542,7 +542,7 @@ if(anima==TRUE)
 #simHub1(j=20,ciclo=2e4)
 #par(mfrow=c(1,1))
 #################################################################
-## Null Model Simulation with imigration from a Metacommunity  ##
+## Null Model Simulation with immigration from a Metacommunity  ##
 #################################################################
 simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, anima=TRUE)
 { 
@@ -627,7 +627,7 @@ if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
 #teste2 <- simHub2(j=2,ciclo=2e4,step=1e2,m=0.1)
 ###########################################################
 ########## Null Model Simulation 3 ########################
-## Imigracao and speciation from a metacommunity ##########
+## Immigracao and speciation from a metacommunity ##########
 ###########################################################
 ### funcao elaborada por Paulo Inacio Prado e modificada por Alexandre Adalardo Seg 21 Nov 2011 20:56:53 BRST 
 simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, m=0.01, nu=0.001, anima=TRUE)
