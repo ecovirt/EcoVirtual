@@ -456,7 +456,7 @@ xseq=1:xmax
 	xGame=xGame[indx]
 	xseq=xseq[indx]
 	}
-plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Number of Individuals",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", sub=paste("Maximum number of indivíduals = ", total), cex.sub=0.9)
+plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Number of Individuals",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", sub=paste("Maximum number of individuals = ", total), cex.sub=0.9)
 abline(h=total/2, lty=2, col="red")
 cores= c("blue","black")
 #n=dim(rwData)[2]
@@ -531,7 +531,7 @@ if(anima==TRUE)
   animaHub1(dadoHub=ind.mat)
   }
   x11()
-    plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/length(ciclo),"sp/ciclo"), cex.sub=0.8) 
+    plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/cicle"), cex.sub=0.8) 
   invisible(ind.mat)
 }
 #par(mfrow=c(2,2))
@@ -621,7 +621,7 @@ if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
   ########### grafico interno ###############
   x11()
   plot(tempo,apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species", type="l",
-       main="Neutral Dynamics - Original Community Colonization",sub=paste( "S=",S," J=",J," m=",m,"Mean Extintion rate =",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/ciclo"),ylim=c(0,S), cex.sub=0.7)
+       main="Neutral Dynamics - Original Community Colonization",sub=paste( "S=",S," J=",J," m=",m,"Mean Extintion rate =",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/cicle"),ylim=c(0,S), cex.sub=0.7)
   invisible(ind.mat)
 }
 #teste2 <- simHub2(j=2,ciclo=2e4,step=1e2,m=0.1)
@@ -760,7 +760,7 @@ if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
   ymax<-max(c(mrich,crich))
   ymax=ymax*1.1
   plot(tempo,apply(meta.mat,2,rich), xlab="Time (cicles)", ylab="Number of species", type="l",
-       main="Neutra Dynamics - Metacomunity Colonization" ,sub=paste( "Jm=",Jm," nu=",nu," Theta=",2*Jm*nu, "S=",S," J=",J," m=",m, " Mean Extintion Rate=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/ciclo"), col="blue",  ylim=c(0,ymax), cex.sub=0.7)
+       main="Neutra Dynamics - Metacomunity Colonization" ,sub=paste( "Jm=",Jm," nu=",nu," Theta=",2*Jm*nu, "S=",S," J=",J," m=",m, " Mean Extintion Rate=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/cicle"), col="blue",  ylim=c(0,ymax), cex.sub=0.7)
   lines(tempo,apply(ind.mat,2,rich),col="red")
   text(tempo[length(tempo)*.6] ,crich[length(tempo)*.6]*1.1, "Community", col="red")
   text(tempo[length(tempo)*.9] ,mrich[length(tempo)*.9]*1.1, "Metacommunity", col="blue")
@@ -790,7 +790,8 @@ riq=apply(dadoHub, 2, rich)
     lastLine=lado*lado2 - nind
 cormix=sample(rainbow(maxsp+10))
 #if(lastLine !=0){cor=c("#000000", cor)}
-cor=c("#000000", cormix)
+#ffffff
+cor=c("#FFFFFF", cormix)
 mcor<-c("#FFFFFF00","#000000")
 spcol<-c(rep(0, lastLine),dadoHub[,1])
 ############ escala das especies da metapopulacao ########
