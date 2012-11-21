@@ -8,7 +8,6 @@ Simulate a metapopulation dynamics with two species with differente competition 
 }
 \usage{
 metaComp(tmax,ln,cl,fi1,fi2,i1,i2,pe, D, anima=TRUE)
-metacomp.anima(dados)
 }
 \arguments{
   \item{tmax}{final time, numeric
@@ -29,7 +28,7 @@ metacomp.anima(dados)
 }
   \item{D}{habitat destruction, proportion 
 }
-  \item{dados}{object created by metaComp function 
+  \item{anima}{show animation,  logical 
 }
 }
 \value{
@@ -42,7 +41,7 @@ Gotelli, N.J. 1991. Metapopulation models: the rescue effect, the propagule rain
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 \examples{
-metaComp(tmax=100,cl=100,ln=100,fi1=0.1,fi2=0.4,i1=0.4,i2=0.5,pe=0.25)
+metaComp(tmax=100,cl=20,ln=20,fi1=0.1,fi2=0.4,i1=0.4,i2=0.5,pe=0.25)
 }
 \keyword{metapopulation}
 \keyword{simulation}

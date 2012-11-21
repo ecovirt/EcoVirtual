@@ -2,30 +2,28 @@
 \title{Internal EcoVirtual objects}
 \alias{MW}
 \alias{MW.2.0}
-\alias{anima.cena}
-\alias{com.compete}
-\alias{ddis.bc}
-\alias{dnorm.trunc}
-\alias{ext.game}
-\alias{gr.toff}
-\alias{graf.com}
-\alias{grafeq}
+\alias{comCompete}
+\alias{distBC}
+\alias{dnormTrunc}
+\alias{extGame}
 \alias{iCol}
 \alias{iRain}
-\alias{ordena.polar}
-\alias{pnorm.trunc}
-\alias{prob.ssp}
-\alias{reg.nicho}
+\alias{ordenaPolar}
+\alias{pnormTrunc}
+\alias{probS}
+\alias{regNicho}
 \alias{rich}
 \alias{sim}
-\alias{sim.hub1}
-\alias{sim.hub2}
-\alias{sim.hub3}
-\alias{spp.area}
+\alias{simHub1}
+\alias{simHub2}
+\alias{simHub3}
+\alias{bioGeoIsl}
+\alias{arquip}
+\alias{sppArea}
 \alias{sucMatrix}
 \alias{compete}
 \alias{iColExt}
-\alias{rand.walk}
+\alias{randWalk}
 \description{Internal EcoVirtual objects.}
 \details{These are not to be called by the user.}
 \keyword{internal}

@@ -1,19 +1,42 @@
 \name{anima}
 \alias{anima}
-\alias{graf.fim}
-\alias{meta.anima2}
+\alias{animaMeta2}
+\alias{animaCena}
+\alias{animaColExt}
+\alias{animaGame}
+\alias{animaHub1}
+\alias{animaIsl}
+\alias{animaMeta2}
+\alias{animaMetaComp}
+\alias{animaRandWalk}
+\alias{grCom}
+\alias{grFim}
+\alias{grFreq}
+\alias{grToff}
+\alias{graColExt}
 \title{
 EcoVirtual Graphics and Amimations
 }
 \description{
-Graphics and animation of the simulation results
+Graphics and animations of the simulations results
 }
 \usage{
-anima(dados)
+grToff(rq, fsp1,pe,add=FALSE, ...)
 }
 \arguments{
-  \item{dados}{
-Must be a 3D array producted by EcoVirtual function
+  \item{rq}{
+number of species
+}
+  \item{fsp1}{
+initial proportion for the most abundance species 
+}
+  \item{pe}{
+extinction probability
+}
+  \item{add}{plot in the actual device or in a new one, logical 
+}
+ \item{...}{
+another argments passed to grToff
 }
 }
 \value{
@@ -21,5 +44,8 @@ Represent the simulation result in a graphic device
 }
 \author{
 Alexandre Adalardo
+}
+\examples{
+grToff(rq =  10 , fsp1 =  0.2 , pe =  0.1 ,add=FALSE)
 }
 \keyword{ simulation }
