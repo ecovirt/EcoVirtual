@@ -766,6 +766,7 @@ if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
   text(tempo[length(tempo)*.9] ,mrich[length(tempo)*.9]*1.1, "Metacommunity", col="blue")
   invisible(resultados)
 }
+# hub3<-simHub3(Sm=200, jm=20, S= 10, j=100, D=1, ciclo=1e4, m=0.01, nu=0.001, anima=TRUE)
 #dadoHub <- simHub3(j=10, ciclo=2e4,m=0.1, anima=FALSE)
 #teste3 <- simHub3(j=2, ciclo=2e3,nu=0.00001,m=0.1)
 #############################################################
@@ -776,6 +777,7 @@ animaHub1=function(dadoHub, sleep=0.1)
 library(tcltk)
 #nsp=length(unique(dadoHub[,1]))
 maxsp=max(dadoHub)[1]
+uniqsp=unique(as.numeric(dadoHub))
 nind=dim(dadoHub)[1]
 #nindsp=table(dadoHub[,1])[[1]]
 nsim=dim(dadoHub)[2]
@@ -786,16 +788,20 @@ riq=apply(dadoHub, 2, rich)
     lado<-round(sqrt(nind))
     lado2<-ceiling(nind/lado)
     lastLine=lado*lado2 - nind
-#cor=c("#000000",rainbow(maxsp))
-#cor=c(terrain.colors(maxsp))
+cormix=sample(rainbow(maxsp+10))
 #if(lastLine !=0){cor=c("#000000", cor)}
-cor=c("#000000", rainbow(maxsp+round(maxsp*0.5)))
+cor=c("#000000", cormix)
 mcor<-c("#FFFFFF00","#000000")
-spcol<-c(rep(0, lastLine),dadoHub[,1] )
+spcol<-c(rep(0, lastLine),dadoHub[,1])
+############ escala das especies da metapopulacao ########
+layout(matrix(data=c(2,1), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
+old<-par(mar=c(2,2,1,2))
+image(x=1:maxsp, y=1, matrix(data=1:maxsp, nrow=maxsp,ncol=1),col=rainbow(maxsp), ylab="",xlab="", xaxt="n", yaxt="n", main="Metacommunity Species colors", cex.main=0.8)
+axis(3, at = c(1,maxsp), labels = c(1, maxsp), tick = FALSE, mgp=c(1,0,0), cex.axis=0.8)
 hmat=matrix(spcol,ncol=lado, nrow=lado2)
 #cormat=matrix(cor[factor(spcol, levels=0:maxsp)], ncol=lado, nrow=lado2)
-old<-par(mar=c(2,2,2,2))
-image(hmat, col=cor[sort(unique(as.numeric(hmat)))+1], xaxt="n", yaxt="n")
+par(mar=c(2,2,2,2))
+image(hmat, col=cor[sort(unique(as.numeric(hmat)))], xaxt="n", yaxt="n")
 #mtext(text="simulation ", side=1, adj=0)
 grid(nx=lado2, ny=lado)
 #mtext(text="                   1", side=1, col="white",adj=0)
@@ -808,8 +814,12 @@ grid(nx=lado2, ny=lado)
 	image(matm,col=mcor, add=TRUE)
 	Sys.sleep(sleep)
 	spcol<-c(rep(0, lastLine),dadoHub[,i] )
-	hmat=(matrix(spcol,ncol=lado, nrow=lado2))
-	image(hmat, col=cor[sort(unique(as.numeric(hmat)))+1], add=TRUE)
+	cores=cor[sort(unique(spcol)+1)]
+	scol<-sort(unique(spcol))
+	lcol<-length(scol)
+	mcol<-match(spcol, scol)
+	hmat=(matrix(mcol,ncol=lado, nrow=lado2))
+	image(hmat, col=cores, add=TRUE)
 	grid(nx=lado2, ny=lado)
 #	mtext(text=paste("                    ", ciclo[i]), side=1, adj=0)
 	setTkProgressBar(pb, value = i, label = paste("Simulation #", ciclo[i], sep="")) 
