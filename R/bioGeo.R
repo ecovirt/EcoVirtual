@@ -811,7 +811,7 @@ grid(nx=lado2, ny=lado)
 	#if(riq[i]==1){cor=cor[unique(dadoHub[,i])[1]]}
 #	mtext(text=paste("                    ", ciclo[i-1]), side=1, col="white", adj=0)
 	mvf=dadoHub[,i-1]!=dadoHub[,i]
-	matm<-matrix(c(rep(TRUE, lastLine),mvf ),ncol=lado, nrow=lado2)
+	matm<-matrix(c(rep(FALSE, lastLine),mvf ),ncol=lado, nrow=lado2)
 	image(matm,col=mcor, add=TRUE)
 	Sys.sleep(sleep)
 	spcol<-c(rep(0, lastLine),dadoHub[,i] )
@@ -827,6 +827,6 @@ grid(nx=lado2, ny=lado)
 	}
 	close(pb)
 }
-#animaHub1(dadoHub)
+#animaHub1(dadoHub$comunidade)
 
 
