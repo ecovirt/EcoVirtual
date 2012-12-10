@@ -158,9 +158,11 @@ if(Ext=="dcr"){ext=b}
 if(Col=="fix"){col=rep(0.5,nt)}
 if(Col=="crs"){col=a}
 if(Col=="dcr"){col=b}
+x11()
 grColExt(E=ext,I=col,P=100, areas=1)
 }
 #animaColExt(Ext='crs', Col="dcr")
+
 ####################################
 ###### Mon 21 Nov 2011 12:58:57 PM BRST Alexandre Adalardo
 bioGeoIsl=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01,e=0, f=.01,g=0, h=.01)
