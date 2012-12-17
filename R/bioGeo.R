@@ -64,11 +64,12 @@ image(x=1:nIsl, y=1, matrix(data=1:nIsl, nrow=nIsl,ncol=1),col=rainbow(nIsl), yl
 pos.x=1:(nIsl)
 area.isl=round(ar.isl^2,0)
 axis(1,at=pos.x, area.isl, cex.axis=0.8)
+
 x11()
 par(mfrow=c(2,1))
 riq.final<-riq.tempo[tmax,]
 mod1<-lm(log10(riq.final)~log10(area.isl))
-plot(area.isl,riq.final,log="xy",pch=16,col=2,bty="l",main=paste("Nº Islands=",nIsl,"; Nº spp=",Nspp,"; Time=",tmax),xlab="Island Area",ylab="Number of species",ylim=c(1,max(riq.final)))
+plot(area.isl,riq.final,log="xy",pch=16,col=2,bty="l",main=paste("Nº Islands=",nIsl,"; Nº spp=",Nspp,"; Time=",tmax), sub=paste("c=",round(10^coef(mod1)[1],2),"; z=",round(coef(mod1)[2],2)),xlab="Island Area",ylab="Number of species",ylim=c(1,max(riq.final)))
 abline(mod1, lty=2)
 rqz<-apply(cena, c(2,3), sum)
 clz<-diff(riq.tempo)
@@ -77,7 +78,7 @@ matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(nIsl), bty="l", cex.lab=1.2
 invisible(cena)
 }
 #######################################################
-#cena<-arquip(nIsl=10,ar.min=10, ar.max=100, Nspp=1000, chuva.total=100, abund=10, tmax=100, anima=TRUE)
+#arquip(nIsl=10,ar.min=10, ar.max=100, Nspp=1000, chuva.total=100, abund=10, tmax=100, anima=TRUE)
 ########################################################
 animaIsl=function(riq.tempo, ar.isl, locxy, sprain)
 {
@@ -207,8 +208,8 @@ sppArea=function(c , z){
 	 ylab="Species number", font.lab=2, lwd=2, col=2, main=paste("c = ",c,"; z = ",z), log="xy")
 	}
 #par(mfrow=c(2,2))
-#spp_area(c = 1.5 , z = .25)
-#spp_area(c = 2.1 , z = .25)
+#sppArea(c = 1.5 , z = .25)
+#sppArea(c = 2.1 , z = .25)
 
 iRain=function(Nspp , chuva , abund , tempo){
 	spp=paste("sp.",1:Nspp)
