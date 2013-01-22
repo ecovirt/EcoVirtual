@@ -1,4 +1,7 @@
 ######## Population Dynamcis for EcoVirtual Package #################### 
+
+##########################################################################
+######## crescimento exponencial
 crescExp <- function(N0,lambda,r, tmax) 
 {
 #r=log(lambda)
@@ -13,13 +16,17 @@ resulta[1,2:3] <- N0
 	resulta[t,2] <- N0*(exp(r*(t-1))) 
 	resulta[t,3] <- N0*(lambda^(t-1)) 
 	}
+x11()
 plot(resulta[,1],resulta[,2],type="l",lty=2, main= "Exponential Growth", xlab="time(t)", ylab="population size (N)", col="red")
 points(resulta[,1],resulta[,3])
 legend("topleft",c("discrete growth","continuous"),lty=c(2,NA_integer_),pch=c(NA_integer_, 1), col=c(2,1), bty="n")
 text(x=tmax*0.4, y= resulta[(tmax/2),2], paste("r=", r), col="blue")
 invisible(resulta)
 }
+
 #crescExp(N0=100,lambda=1.05,r=log(1.05), tmax=20)
+
+
 ########################################################################
 ############# Exponencial com Estocasticidade Ambiental
 estExp <- function(N0,r,varr,tmax) 
@@ -46,9 +53,12 @@ text(x=tmax*0.4, y= resulta[(tmax/2),2], paste("r=", r), col="blue")
 text(x=tmax*0.6, y= resulta[(tmax/2),2], paste("var=", varr), col="blue")
 invisible(resulta)
 }
+
 #estExp(N0=1000,r=0.0488,varr=0.005,tmax=100) 
 
 ##########################################################################
+### crescimento populacional com taxas de nascimento e morte na pop
+
 estDem=function(N0, b, d, tmax)
 {
 resulta=matrix(0,ncol=11, nrow=(tmax+1))
@@ -99,6 +109,7 @@ y.max=max(resulta[,c(5,6,10,11)])* 1.2
 y.min=min(resulta[,c(5,6,10,11)])* 0.8
 nt=dim(resulta)[1]-1
 
+x11()
 old=par(mfrow=c(2,1), mar=c(5,4,2,2), cex.lab=0.7, cex.axis=0.7,cex.main=0.8)
 plot(resulta[1:nt,"time"] ,resulta[1:nt,"b.dt"],type="l", main="Birth and Death Rates",cex.main=0.7,ylim=c(y.min,y.max),xlab="Time", ylab="Rate", lty=2)
 lines(resulta[1:nt,"time"], resulta[1:nt,"d.dt"], col="red",lty=2) 
@@ -112,9 +123,11 @@ legend("bottomright", legend=c("Deterministic Model", "Stochastic Model"),lty=c(
 par(old)
 invisible(resulta)
 }
+
 #estDem(N0=100, b=0.55, d=0.5, tmax=50)
 
 #######################################################################
+#### crescimento logístico
 crescLog=function(N0, r, K, tmax)
 {
 resulta=matrix(rep(NA,3*tmax),ncol=3)
@@ -136,9 +149,11 @@ text(x=2, y=K, "Carying capacity", col="blue",adj=c(0,0))
 text(x=tmax*0.5, y= resulta[(tmax/2),2], paste("r=", r),pos=3)
 invisible(resulta)
 }
-crescLog(N0=10, r=0.05, K=80, tmax=100)
+
+#crescLog(N0=10, r=0.05, K=80, tmax=100)
 
 ################################################################
+
 discrLog<-function(N0, rd, K, tmax)
   {
   Nt=c(N0,numeric(tmax))
@@ -152,6 +167,7 @@ return(Nt)
 #discrLog(N0=10, rd=0.05, K=80, tmax=100)
 
 #############################################################
+#####
 atrBif=function(N0, K, tmax, nrd,maxrd=3)
 {
 rd.s=seq(1,maxrd,length=nrd)
@@ -185,6 +201,7 @@ crescAtr<-function( N0, lambda,varl,rd,K, tmax)
       resulta[t,2]=0
       }
     }
+  x11()
 op <- par(mfrow = c(2, 2)) # 2 x 2 pictures on one plot
 plot(resulta[,1],resulta[,2],main="Exponential growth", sub=paste("lamb= ", lambda, "  var= ",
 varl), type="l",lty=2,xlab="Time (t)", ylab="Population size (N)")
@@ -197,6 +214,7 @@ points(resulta[1:(tmax-1),3],resulta[2:tmax,3],pch=20)
 par(op)
 invisible(resulta)
 }
+
 #crescAtr(N0=610, lambda=1.1,varl=0.05,rd=2.99,K=600, tmax=100)
 
 ###################################################
@@ -303,6 +321,6 @@ res=rep(0,N0)
 return(res)
 }
 
-sobrevive(0.5,200)
+#sobrevive(0.5,200)
 
 ##########################################	

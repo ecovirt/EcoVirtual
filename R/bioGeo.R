@@ -4,8 +4,10 @@
 ######################################################################
 ################# Arquipelago: ilhas de diferentes tamanhos ###########
 ### Thu 17 Nov 2011 05:32:27 PM BRST Alexandre Adalardo
+
 ## fuction Rich
 rich <- function(x)length(unique(x))
+
 ####################################
 arquip=function(nIsl,ar.min, ar.max, Nspp, chuva.total, abund, tmax, anima=TRUE)
 {
@@ -51,6 +53,7 @@ arquip=function(nIsl,ar.min, ar.max, Nspp, chuva.total, abund, tmax, anima=TRUE)
 #		animaIsl(cena[,,i],ar.isl, Nspp, loc.x, loc.y, chuva,i)
 		}
 riq.tempo=t(apply(cena, c(2,3), sum))
+          x11()
 	if(i>1 & anima==TRUE)
 	{
 	animaIsl(riq.tempo, ar.isl, locxy, sprain)
@@ -69,18 +72,19 @@ x11()
 par(mfrow=c(2,1))
 riq.final<-riq.tempo[tmax,]
 mod1<-lm(log10(riq.final)~log10(area.isl))
-plot(area.isl,riq.final,log="xy",pch=16,col=2,bty="l",main=paste("Nº Islands=",nIsl,"; Nº spp=",Nspp,"; Time=",tmax), sub=paste("c=",round(10^coef(mod1)[1],2),"; z=",round(coef(mod1)[2],2)),xlab="Island Area",ylab="Number of species",ylim=c(1,max(riq.final)))
+plot(area.isl,riq.final,log="xy",pch=16,col=rainbow(nIsl),bty="l",main=paste("Nº Islands=",nIsl,"; Nº spp=",Nspp,"; Time=",tmax), sub=paste("c=",round(10^coef(mod1)[1],2),"; z=",round(coef(mod1)[2],2)),xlab="Island Area",ylab="Number of species",ylim=c(1,max(riq.final)))
 abline(mod1, lty=2)
 rqz<-apply(cena, c(2,3), sum)
 clz<-diff(riq.tempo)
-matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(nIsl), bty="l", cex.lab=1.2, xlab="Species Number", ylab="Colonization (species)", cex.axis=1.2, main="Colonization Rate Curves", cex.main=1.2 )
+matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(nIsl), bty="l", cex.lab=1.2, xlab="Species Number", ylab="Colonization (species/cicle)", cex.axis=1.2, main="Colonization Rate Curves", cex.main=1.2 )
 
 invisible(cena)
 }
 #######################################################
 #arquip(nIsl=10,ar.min=10, ar.max=100, Nspp=1000, chuva.total=100, abund=10, tmax=100, anima=TRUE)
 ########################################################
-animaIsl=function(riq.tempo, ar.isl, locxy, sprain)
+#########################################################
+animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq)
 {
 Nspp=max(riq.tempo)
 maxt=dim(riq.tempo)[1]
@@ -114,6 +118,8 @@ segments(x0=c(rep(0,nIsl), ar.isl), y0=c(ar.isl,rep(0,nIsl)), x1=c(ar.isl,ar.isl
 par(old)
 }
 #########################################
+
+########################################
 grColExt=function(E , I , P, areas)
 {
 	S = I*P/(I+E) ; T = I*E/(I+E)
@@ -140,19 +146,23 @@ grColExt=function(E , I , P, areas)
 		}
 	segments(S[i],T[i],S[i],0,lty=3,col=corIsl[i])
 	segments(S[i],T[i],0,T[i],lty=3,col=corIsl[i])
-	Sys.sleep(0.5)
+	Sys.sleep(0.1)
 	}	
 #	mtext("I",side=2,at=I,font=2,las=1, line=2)
 #	mtext("E",side=4,at=E,font=2,las=1)
 }
-# testando... grColExt(E = .5 , I = .5 , P = 100, areas=1:10)
-####################################
+
+###################################################
+#grColExt(E = .5 , I = .5 , P = 100, areas=1:10)
+#############################################
+
+
 #######################################
 animaColExt=function(minimo=0.01, maximo=1, ciclos=100, Ext="crs", Col="dcr")
 {
 a=seq(from=minimo,to=maximo,length.out=ciclos)
 b=seq(from=maximo, to=minimo, length.out=ciclos)
-#nt=length(a)
+nt=length(a)
 if(Ext=="fix"){ext=rep(0.5,nt)}
 if(Ext=="crs"){ext=a}
 if(Ext=="dcr"){ext=b}
@@ -162,10 +172,12 @@ if(Col=="dcr"){col=b}
 x11()
 grColExt(E=ext,I=col,P=100, areas=1)
 }
-#animaColExt(Ext='crs', Col="dcr")
 
 ####################################
-###### Mon 21 Nov 2011 12:58:57 PM BRST Alexandre Adalardo
+#animaColExt(Ext='crs', Col="dcr")
+##################################
+
+####################################
 bioGeoIsl=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01,e=0, f=.01,g=0, h=.01)
 {
 x11()
@@ -198,10 +210,12 @@ invisible(ex)
 }
 
 ######################################
-###teste
 #bioGeoIsl(areas=c(5,10,50,80) , dist=c(10,100,100,10), P=100 , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=.01, g=0, h=.01)
 ###########################
+
+#############################333
 sppArea=function(c , z){
+          x11()
 	curve(expr = c*x^z , from=1, to=10^10, xlab="Area", ylim=c(1,500),
 	 ylab="Species number", font.lab=2, lwd=2, col=2, main=paste("c = ",c,"; z = ",z))
 	curve(expr = c*x^z , from=1, to=10^10, xlab="Area", ylim=c(1,500),
@@ -210,7 +224,9 @@ sppArea=function(c , z){
 #par(mfrow=c(2,2))
 #sppArea(c = 1.5 , z = .25)
 #sppArea(c = 2.1 , z = .25)
+######################################################
 
+##############################################
 iRain=function(Nspp , chuva , abund , tempo){
 	spp=paste("sp.",1:Nspp)
 	ilha=numeric()
@@ -219,14 +235,16 @@ iRain=function(Nspp , chuva , abund , tempo){
 		ilha=union(unique(sample(spp,chuva,replace=TRUE,prob=abund/sum(abund))),ilha)
 		riq[i]=length(ilha)
 		}
-	plot(0:tempo,c(0,riq),type="l",lwd=2,bty='n',xlab="time",ylab="number of species",
+	x11()
+          plot(0:tempo,c(0,riq),type="l",lwd=2,bty='n',xlab="time",ylab="number of species",
 	 font.lab=2,col=2,ylim=c(0,Nspp),main=c("Island richness",paste("(Nspp=",Nspp," ; rain=",chuva,")")))
 	abline(h=Nspp,lty=3)
 	invisible(riq)
 	}
-
-# faca um teste:
+###########################################################################
 #iRain(Nspp=10, chuva=10, abund=c(10,10,10,10,10,10,10,10,10,10), tempo=10)
+###########################################################################
+
 
 ###### tamanho da ilha x spp
 iCol=function(areas, Nspp, chuva.total, abund, tempo){
@@ -250,8 +268,13 @@ iCol=function(areas, Nspp, chuva.total, abund, tempo){
 	invisible(riq)
 	}
 
-#arquip(areas=c(10,20,40,80),Nspp=1000,chuva.total=100,abund=rep(10,1000),tempo=10)
 
+#################################################################################
+#iCol(areas=c(10,20,40,80),Nspp=1000,chuva.total=100,abund=rep(10,1000),tempo=10)
+####################################################################################
+
+
+#############################################################################
 iColExt=function(Nspp, chuva, abund, tempo, tx.ext){
 	spp=paste("sp.",1:Nspp,sep="")
 	ilha=numeric()
@@ -266,15 +289,20 @@ iColExt=function(Nspp, chuva, abund, tempo, tx.ext){
 		ilha=union(sample(spp,chuva,replace=TRUE,prob=abund/sum(abund)),vivos)
 		riq[i]=length(unique(ilha))
 		}
+          x11()
 	plot(0:tempo,c(0,riq),type="l",lwd=2,bty='n',xlab="time",ylab="number of species",
 	 font.lab=2,col=2,ylim=c(0,Nspp),
 	 main=c("Island Richness",paste("Nspp =",Nspp," ; rain =",chuva,"; tx.ext = ",tx.ext)))
 	abline(h=Nspp,lty=3)
 	invisible(riq)
 	}
-#iColExt(Nspp=100, chuva=5, abund=rep(100,100), tempo=100, tx.ext=.1)
 
-#### biogeografia de ilhas
+#####################################################################
+#iColExt(Nspp=100, chuva=5, abund=rep(100,100), tempo=100, tx.ext=.1)
+#####################################################################
+
+
+#### biogeografia de ilha
 MW=function(areas , dist , P , a=1, b=-.01, c=1, d=-.01){
   par(mfrow=c(1,2))
   E=a+b*areas
@@ -321,6 +349,8 @@ MW=function(areas , dist , P , a=1, b=-.01, c=1, d=-.01){
   par(mfrow=c(1,2))
 }
 
+
+
 #################################################
 ### Island Biog. Plus Rescue Effect and Internal Colonization  
 MW.2.0=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=.01, g=0, h=.01){
@@ -362,9 +392,13 @@ MW.2.0=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=
 	abline(lm(log10(spp)~log10(areas),data=ex),lty=3)
 	invisible(ex)
 	}
+
+
 ########################################
 ########### MODELOS NULO ###############
 ########################################
+
+################################################
 randWalk <- function(n=1,step=1,ciclo=1e5,x1max=200, alleq=FALSE){
   cont=round(ciclo/100)
   sleep=0.01
@@ -392,12 +426,16 @@ randWalk <- function(n=1,step=1,ciclo=1e5,x1max=200, alleq=FALSE){
 #  matplot(time,results,type="l", col=rainbow(n),lwd=2, xlab="Steps",  main="Randon Walk",ylab="Distance from the edge")
 #  abline(h=0,lwd=4)
 }
-#rd1<-randWalk(n=10,step=10,ciclo=1e4)
+
+
+########################################
+#randWalk(n=10,step=10,ciclo=1e4)
 #randWalk(n=10,step=1,ciclo=1e4)
 #randWalk(n=10,step=1,ciclo=1e4, x1max=300, alleq=TRUE)
 #rand.walk(n=100,step=2,ciclo=2e5)
 ###################
-## animaRandWalk
+
+
 ################### 
 animaRandWalk = function(rwData, time=2, sleep=0.1)
 {
@@ -420,6 +458,7 @@ ncolors= rainbow(n)
  	 Sys.sleep(sleep)
 	}
 }
+
 ###################
 ## Zero Sum Game ##
 ###################
@@ -442,12 +481,18 @@ extGame <- function(aposta=1,total=100, tmax=2){
   animaGame(results, total)
   invisible(results)
 }
+
+##############################
 #old<-par(mfrow=c(2,2))
 #extGame(aposta=1,total=20)
 #extGame(aposta=1,total=50)
 #extGame(aposta=1,total=100)
 #extGame(aposta=1,total=200)
 #par(old)
+#############################
+
+
+#####################################################
 animaGame = function(xGame, total, sleep=0.01)
 {
 xmax=length(xGame)
@@ -475,16 +520,18 @@ cores= c("blue","black")
 	text(xmax/2, total + 0.05* total, labels="Winner", col="green", cex=1.5)
 }
 
+
 ################################################################
 ############## Neutral Model without Immigration ################
 ################################################################
+
+#######################################
 simHub1=function(S= 100, j=10, D=1, ciclo=1e4, anima=TRUE)
 {
 if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
   stepseq=round(seq(101, ciclo+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
-  rich <- function(x)length(unique(x))
   J <- S*j
   ##Matrizes para guardar os resultados
   #simHub1(S=10,j=10, D=1, ciclo=2e4, anima=TRUE)# matriz da especie de cada individuo por ciclo
@@ -539,7 +586,8 @@ if(anima==TRUE)
 }
 #par(mfrow=c(2,2))
 
-#simHub1(S=10,j=10, D=1, ciclo=2e4, anima=TRUE)
+
+teste <- simHub1(S=10,j=10, D=1, ciclo=5e3, anima=FALSE)
 #simHub1(j=5,ciclo=2e4)
 #simHub1(j=10,ciclo=2e4)
 #simHub1(j=20,ciclo=2e4)
@@ -553,7 +601,6 @@ if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
   stepseq=round(seq(101, ciclo+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
-  rich <- function(x)length(unique(x))
   J <- S*j
   ##Matrizes para guardar os resultados
   ## matriz da especie de cada individuo por ciclo
@@ -627,8 +674,12 @@ if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
        main="Neutral Dynamics - Original Community Colonization",sub=paste( "S=",S," J=",J," m=",m,"Mean Extintion rate =",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/cicle"),ylim=c(0,S), cex.sub=0.7)
   invisible(ind.mat)
 }
-#teste2 <- simHub2(j=2,ciclo=2e4,step=1e2,m=0.1)
+
+#################################################
+#simHub2(j=2,ciclo=2e4,step=1e2,m=0.1)
 ###########################################################
+
+
 ########## Null Model Simulation 3 ########################
 ## Immigracao and speciation from a metacommunity ##########
 ###########################################################
@@ -769,9 +820,13 @@ if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
   text(tempo[length(tempo)*.9] ,mrich[length(tempo)*.9]*1.1, "Metacommunity", col="blue")
   invisible(resultados)
 }
-# hub3<-simHub3(Sm=200, jm=20, S= 10, j=100, D=1, ciclo=1e4, m=0.01, nu=0.001, anima=TRUE)
-#dadoHub <- simHub3(j=10, ciclo=2e4,m=0.1, anima=FALSE)
-#teste3 <- simHub3(j=2, ciclo=2e3,nu=0.00001,m=0.1)
+
+##############################################
+#simHub3(Sm=200, jm=20, S= 10, j=100, D=1, ciclo=1e4, m=0.01, nu=0.001, anima=TRUE)
+#simHub3(j=10, ciclo=2e4,m=0.1, anima=FALSE)
+#simHub3(j=2, ciclo=2e3,nu=0.00001,m=0.1)
+######################################################
+
 #############################################################
 ############### animation for neutral models ################
 #############################################################
@@ -809,7 +864,7 @@ image(hmat, col=cor[sort(unique(as.numeric(hmat)))], xaxt="n", yaxt="n")
 #mtext(text="simulation ", side=1, adj=0)
 grid(nx=lado2, ny=lado)
 #mtext(text="                   1", side=1, col="white",adj=0)
-	for (i in 2:nsim)
+	for (i in 2:nsim) 
 	{
 	#if(riq[i]==1){cor=cor[unique(dadoHub[,i])[1]]}
 #	mtext(text=paste("                    ", ciclo[i-1]), side=1, col="white", adj=0)

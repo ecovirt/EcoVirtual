@@ -2,6 +2,7 @@
 ### EcoVirtual - multispecies internal functions
 ###############
 ############################
+
 ### graficos metacomunidade
 #####################
 animaMetaComp=function(dados)
@@ -27,6 +28,8 @@ grid(ln,cl)
 	Sys.sleep(.1)
 	}
 }
+
+
 #######################
 anima <-function(dados)
 {
@@ -38,6 +41,8 @@ x11()
 	Sys.sleep(.2)
 	}
 }
+
+
 ##########################
 animaMeta2=function(dados)
 {
@@ -56,6 +61,8 @@ image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , brea
 	Sys.sleep(.1)
 	}
 }
+
+
 ###############################################
 grFim=function(dados)
 {
@@ -74,6 +81,8 @@ grid(ln,cl)
 	}
 par(op)
 }
+
+
 ###############################
 #Trade-off Multispecies Graphic
 ### 
@@ -101,8 +110,11 @@ grToff=function(rq, fsp1,pe,add=FALSE,...)
 	mtext("Trade-off Species Rank ", 3, 0, cex=1.2)
 	par(old)
 }
-#ex:
+
+
 #grToff(rq =  10 , fsp1 =  0.2 , pe =  0.1 ,add=FALSE)
+
+
 ############################
 ### Sucessional Niche Graphic
 ############################
@@ -128,11 +140,14 @@ image(dados[,,nt], main= paste("Patches occupancy\n \t time=", nt ),  bty="n",xa
 grid(dim(dados)[2],dim(dados)[1])
 par(op)
 }
+
+
 ##################################
 grCom=function(medias, desvios, minimo, maximo)
 {
   nsp=length(medias)
   cor=rainbow(nsp)
+  x11()
   curve(dnormTrunc(x, medias[1], desvios[1], maximo=maximo, minimo=minimo),from=minimo, to=maximo, ylim=c(0,1), ylab="Population Density", xlab="Gradient Value", main="Species Distribution", col=cor[1])
 	for (i in 2:nsp)
  	{
@@ -140,6 +155,13 @@ grCom=function(medias, desvios, minimo, maximo)
  	} 
 text(medias+1, dnormTrunc(medias, medias, desvios,maximo=maximo,minimo=minimo)+0.5, labels=(paste("sp",(1:(nsp)),sep="_")), col=cor, cex=0.8)
 }  
+
+#grCom(medias=c(2,3,4,5,6,7,8), desvios=c(1,1,1,1,1,1,1), minimo=0, maximo=10)
+
+#grCom(media=sample(seq(from=1.5, to=19.5,by=0.25), size=10), runif(10,0.5,2.5), minimo=0, maximo=20)
+
+#grCom(medias=sample(2:19, size=10),desvios=sample(seq(from=0.5, to=2.5, by=0.1),10), minimo=1, maximo=20)
+
 ###################################
 dnormTrunc=function(x, minimo=-Inf, maximo=Inf, media=0, desvio=1)
 {
@@ -148,6 +170,8 @@ x.prov=dnorm(x,mean=media, sd=desvio)
 ampl.norm=pnorm(maximo,mean=media, sd=desvio)-pnorm(minimo,mean=media, sd=desvio)
 x.prov/ampl.norm
 }
+
+
 ###################################
 ####################################
 ### f para truncar a amostra ###
@@ -158,6 +182,8 @@ denom <- pnorm(maximo, mean=media, sd=desvio) - pnorm(minimo, mean=media, sd=des
 qtmp <- pnorm(x, mean=media, sd=desvio) - pnorm(minimo, mean=media, sd=desvio)
 qtmp/denom
 }
+
+
 ##### Proportion of species at each sample
 probS=function(medias, desvios, amostra, minimo, maximo)
 {
@@ -175,6 +201,8 @@ colnames(resulta)=paste("plot", 1:namostra, sep="_")
   }
 invisible(resulta)
 }
+
+
 ####################################
 ######### Func Distancia Bray-Curtis
 ####################################
@@ -195,6 +223,8 @@ distBC<-function(dados)
 		}
 	invisible(round(similar,3))
 	}
+
+
 ###########################
 ####Polar-Ordination Func
 ########################
@@ -223,6 +253,8 @@ plot(op.xy, pch=19, col=rainbow(length(xi)), xlim=c(-0.1, 1), ylim=c(-0.1,1), ma
 text(op.xy-0.05, labels=rownames(op.xy))
 invisible(op.xy)
 }
+
+
 ############################
 ### Matrix Similarity
 ############################
@@ -255,6 +287,8 @@ sim<-function(dados, indice="bc")
 		}
 	invisible(round(similar,3))
 	}
+
+
 #################################
 ############################
 ### hcluster
@@ -265,6 +299,8 @@ sim<-function(dados, indice="bc")
 
 #############################
 rich <- function(x)length(unique(x))
+
+
 #####################
 ###### Grafico biog ilha
 grFreq=function(E , I , P){

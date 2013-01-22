@@ -48,8 +48,8 @@ matplot( 1:tmax,resulta[,2:5], type="l", main="Niche Regeneration Model" , xlab=
 legend("topright", c("Early", "Susceptible", "Mixed", "Resistant"), bty="n", lty=2:5, col=2:5, cex=0.7)
 invisible(cena)
 }
-#test1=regNicho(tmax=50, ln=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  Er=0.08, Sc=0.02, Mx=0, Rs=0)
-#animaCena(test1)
+
+#regNicho(tmax=50, ln=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  Er=0.08, Sc=0.02, Mx=0, Rs=0)
 
 ##########################
 # Trade-off
@@ -122,8 +122,11 @@ par(old)
 ##resultado
 invisible(resulta)
 }
-#teste1=comCompete(tmax=1000,ln=100,cl=100, rq=10, fi=1, fsp1=0.20, pe=0.01,fr=0,int=0)
-#teste1[,2]
+
+
+#comCompete(tmax=1000,ln=100,cl=100, rq=10, fi=1, fsp1=0.20, pe=0.01,fr=0,int=0)
+
+
 #########################
 ##### Sucession
 ####################

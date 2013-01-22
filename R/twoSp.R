@@ -1,3 +1,7 @@
+
+#### two species ##
+
+
 compLV=function(n01,n02,tmax,r1,r2,k1,k2,alfa,beta)
 {
 resulta=matrix(0, ncol=3, nrow=tmax)
@@ -18,19 +22,24 @@ resulta[1,c(2,3)]=c(n01,n02)
      resulta[t,3]=0
      }
   }
-old=par(mfrow=c(1,2))
+x11()
+old=par(mfrow=c(1,2), mar=c(4,4,2,1))
 plot(resulta[,1],resulta[,2],ylim=c(0,max(na.omit(resulta[,2:3]))),type="l",lty=4,xlab="time (t)",ylab="Population size", main="Population Growth", col="blue", lwd=1.5 )
+legend("topleft", legend=c("Sp. 1", "Sp. 2"), lty=4, col=c("blue", "green"), bty="n", cex=0.8)
 lines(resulta[,1],resulta[,3], col="green", lty=4, lwd=1.5)
 plot(resulta[,2],resulta[,3],type="l",col="red",xlab="N1",ylab="N2",ylim=c(0,max(c(na.omit(resulta[,3]),k1/alfa,k2))),xlim=c(0,max(c(na.omit(resulta[,2]),k2/beta,k1))), main="Isoclines")
 segments(0,k1/alfa,k1,0,lty=4, lwd=1.5, col="blue")
 segments(0,k2,k2/beta,0,lty=4,lwd=1.5, col="green" )
-legend("topright", legend=c("Sp. 1", "Sp. 2"), lty=4, col=c("blue", "green"), bty="n", cex=0.8)
-legend("topleft", title="Equilibrium without habitat destruction",legend=c("Sp.1 ", "Sp. 2"), lty=4, col=c("blue", "green"), bty="n", cex=0.8)
-return(resulta)
+
+legend("topleft", title="Equilibrium without habitat destruction",legend=c("isocline sp.1 ", "Isocline sp. 2", "Populations trajectory"), lty=c(4,4,1), col=c("blue", "green", "red"), bty="n", cex=0.8)
+invisible(resulta)
 }
+
 #############################################################################
 #compLV(n01=10, n02=10,r1=0.05, r2=0.03, k1=80, k2=50, alfa=1.2, beta=0.5, tmax=200)
 ################################################################################
+
+#################################################################
 metaComp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 {
 	pais<-array(0, dim=c(ln,cl,tmax))

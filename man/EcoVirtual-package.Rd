@@ -3,11 +3,10 @@
 \alias{EcoVirtual}
 \docType{package}
 \title{
-Simulating Metapopulation Dynamics
-}
-\description{
 Simulating Ecological Models
 }
+\description{
+Simulating Ecological Models from populations, metapopulations, communities and biogeographical, classical models are presented as a learning proposal.
 \details{
 \tabular{ll}{
 Package: \tab EcoVirtual\cr
