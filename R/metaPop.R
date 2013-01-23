@@ -1,9 +1,9 @@
-##########################################################
-## Metapopulations models functions of EcoVirtual R Package
-## Alexandre Adalardo de Oliveira - 17 february 2011
-###########################################################
+###########################################
+### Ecovirtual - Metapopulations Models ###
+###########################################
 
-### chuva de propagulos seed rain 
+
+### Propagulus Seed Rain 
 metaPop <-function(tf,cl,ln,fi,pc,pe)
 {
 	paisag=array(0,dim=c(ln,cl,tf))
@@ -18,7 +18,6 @@ metaPop <-function(tf,cl,ln,fi,pc,pe)
 	   }
           x11()
 	animaMeta2(paisag)
-	#x11()
 	grFim(paisag)
 	x11()
 	F=pc/(pc+pe)
@@ -29,12 +28,10 @@ metaPop <-function(tf,cl,ln,fi,pc,pe)
    invisible(paisag)
 }
 
-
 #metaPop(tf=100,cl=20,ln=20,fi=0.2,pe=0.2,pc=0.5)
 
-##########################
-### colonização interna ##
-##########################
+
+## Propagulus seed rain with Internal Colonization
 metaCi <-function(tf,cl,ln,fi,i,pe)
 {
 paisag=array(0,dim=c(ln,cl,tf))
@@ -50,7 +47,6 @@ resultado=numeric()
    }
 x11()
 animaMeta2(paisag)
-	#x11()
 grFim(paisag)
 x11()
 F=1-(pe/i)
@@ -58,15 +54,13 @@ plot(1:tf,c(fi,resultado),type="l",xlab="Time",ylab="Proportion of ocupation",
 ylim=c(0,1),main=paste("Propagulus Rain and Internal Colonization","\n cols=",cl," rows=",ln," fi=",fi," pi=",i," pe=",pe),font.lab=2,lwd=2)
 abline(h=F,col=2,lwd=2,lty=2)
 legend("topright", legend=("expected equilibrium"), lty=2, col="red", bty="n")
-return(paisag)
+invisible(paisag)
 }
-
 
 #metaCi(tf=100,cl=10,ln=10,fi=.1,i=1,pe=0.5)
 
 
-##########################################
-## efeito resgate
+## Propagulus Seed Rain with Rescue EFfect
 metaEr <-function(tf,cl,ln,fi,pc,e)
 {
 nmanchas=cl*ln
@@ -84,7 +78,6 @@ res=numeric()
 	}
 x11()
 animaMeta2(paisag)
-	#x11()
 grFim(paisag)
 x11()
 F=pc/e
@@ -103,9 +96,7 @@ invisible(paisag)
 
 #metaEr(100,20,20,0.25,0.1,0.1)
 
-
-########################################################
-#efeito resgate com colonização interna
+## Propagulus Seed Rain with Internal Colonization and Rescue Effect
 metaCiEr <-function(tf,cl,ln,fi,i,e)
 {
 nmanchas=cl*ln
@@ -126,7 +117,6 @@ resi=numeric()
 	}
 x11()
 animaMeta2(paisag)
-	#x11()
 grFim(paisag)
 x11()
 plot(1:tf,c(fi,resultado),type="l",xlab="Time",ylab="Occupancy proportion", ylim=c(0,1),main=paste("Propagulus Rain and Internal colonization and Rescue Effect","\n cols=",cl," rows=",ln," fi=",fi," i=",i, "e=",e),font.lab=2,lwd=2)
@@ -134,11 +124,7 @@ abline(h=0,lty=2)
 points(1:tf,c(e*(1-fi),rese),type='l',lwd=2,col=4,lty=3)
 points(1:tf,c(i*fi,resi),type='l',lwd=2,col=6,lty=3)
 legend("topright", legend=c("patchs occupance", "colonization", "extintion"), lty=c(1,3,3), col=c(1,6,4), bty="n")
-return(paisag)
+invisible(paisag)
 }
 
 #metaCiEr(100,10,10,0.5,0.5,0.5)
-
-
-#######################################################
-

@@ -1,10 +1,204 @@
 #######################################
-### EcoVirtual - multispecies internal functions
-###############
-############################
+### EcoVirtual -Internal Functions ####
+#######################################
 
-### graficos metacomunidade
-#####################
+
+##############################################
+### Island Biogeography and Neutral Theory ###
+##############################################
+
+## fuction rich used in 'simHub1' 'simHub2' simHub3'
+rich <- function(x)length(unique(x))
+
+## function animaIls used in 'arquip' function
+animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq)
+{
+          Nspp=max(riq.tempo)
+          maxt=dim(riq.tempo)[1]
+          nIsl<-length(ar.isl)
+          comp.max<-max(ar.isl)
+          tempo=length(riq.tempo)
+          col_spp=rainbow(max(riq.tempo))
+          col_func=colorRamp(c("white", "green3"))
+          col_riq=rgb(col_func(seq(0,1, length.out=Nspp)), max=255)
+          ## aqui inicia o grafico
+          layout(matrix(data=c(2,1), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
+          old<-par(mar=c(2,2,1,3))
+          image(x=1:Nspp, y=1, matrix(data=1:Nspp, nrow=Nspp,ncol=1),col=col_riq, ylab="",xlab=paste("cicle", 1:length(maxt)), xaxt="n", yaxt="n", main="Richness")
+          axis(3, at=c(1.5,Nspp),tick=FALSE, labels=c("0", Nspp), mgp=c(0,0,0))
+          polygon(x=c(1.5,1.5,Nspp,Nspp), y=c(0.6,1.4,1.4,0.6), lwd=2)
+          plot(0:comp.max, 0:comp.max, usr=c(0,comp.max,0,comp.max), type="n", yaxt="n", xaxt="n", xlab="", ylab="", bty="n", main="Passive Sampling and Area ",mar=c(0,2,3,2), oma=c(0,0,0,0))
+          segments(x0=c(0,0,comp.max,0), y0=c(0,0,0,comp.max), x1=c(0,rep(comp.max,3)), y1=c(comp.max,0,comp.max,comp.max))
+          segments(x0=c(rep(0,nIsl), ar.isl), y0=c(ar.isl,rep(0,nIsl)), x1=c(ar.isl,ar.isl), y1=c(ar.isl,ar.isl))
+          for (i in 2:maxt)
+          {
+                    lxy=locxy[[i]]
+                    nspp=riq.tempo[i,]
+                    for(f in nIsl:1)
+                    {
+                              vert=ar.isl[f]
+                              polygon(x=c(0,vert, vert,0),y=c(0,0,vert,vert), col=col_riq[nspp[f]] )
+                    }
+                    points(lxy[,1],lxy[,2], col=col_spp[sprain[[i]]], pch=16)
+                    Sys.sleep(.1)
+          }
+          par(old)
+}
+
+
+## grColExt used in 'animaColExt' and 'bioGeoIsl'
+grColExt=function(E , I , P, areas)
+{
+          S = I*P/(I+E) ; T = I*E/(I+E)
+          nIsl=length(E)
+          corIsl=rainbow(nIsl)
+          curve(I[1]-I[1]*x/P[1],0,P[1],bty="n",xlab="Number of Species", ylab="Rate",xaxt="n",yaxt="n", font.lab=2,lwd=2,ylim=c(0,1),  main="Island Biogeography", col=corIsl[1])
+          curve((E[1]/P[1])*x,0,P,lwd=2,add=TRUE, col=corIsl[1], lty=2) #xlim=c(0,1),
+          legend("top", legend=c("Colonization", "Extinction"),  bty="n",lty=c(1,2))
+          abline(v=0)
+          abline(h=0)
+          mtext("St",side=1,at=P,font=2, line=1)
+          linhas=seq(0,1.5, length.out=nIsl)
+          for(i in 1:nIsl)	
+          {
+                    curve(I[i]-I[i]*x/P,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=1)
+                    curve((E[i]/P)*x,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=2)
+                    mtext(paste("S", i, sep=""),side=1,at=S[i], cex=0.8,font=2,col=corIsl[i], line=linhas[i])
+                    mtext(paste("T", i, sep=""),side=2,at=T[i],cex=0.8,font=2,las=1,col=corIsl[i], line=linhas[i])
+                    points(S[i],T[i],col=corIsl[i],pch=16,cex=1)
+                    if(length(unique(areas))>1)
+                    {
+                              siz_ar=2 +(areas/max(areas))
+                              points(S[i],T[i],col=corIsl[i],cex=siz_ar[i])
+                    }
+                    segments(S[i],T[i],S[i],0,lty=3,col=corIsl[i])
+                    segments(S[i],T[i],0,T[i],lty=3,col=corIsl[i])
+                    Sys.sleep(0.1)
+          }	
+          #	mtext("I",side=2,at=I,font=2,las=1, line=2)
+          #	mtext("E",side=4,at=E,font=2,las=1)
+}
+
+#grColExt(E = .5 , I = .5 , P = 100, areas=1:10)
+
+
+## animaRandWalk used in 'randWalk'
+animaRandWalk = function(rwData, time=2, sleep=0.1)
+{
+          #par( )
+          xplus=max(time)*0.1
+          ymax=max(apply(rwData, 2, max))[1]
+          plot(time, rwData[,which.max(apply(rwData, 2, max))[1]], xlab="Steps", ylab="Distance from the edge",cex.axis=1.2, cex.lab=1.2,ylim=c(-.1* ymax,ymax), main="Randon Walk", cex.main=1.5, type="n", xlim=c(0,max(time)))
+          
+          polygon(x=c(-xplus, -xplus, max(time)+xplus, max(time)+xplus), y=c(ymax*-0.15,0,0,ymax*-0.15), col="gray")
+          text(max(time)/2, -0.05* ymax, labels="Absortion Surface", col="red", cex=1.5)
+          n=dim(rwData)[2]
+          #ncolors= terrain.colors(n)
+          ncolors= rainbow(n)
+          for(i in 2:length(time))
+          {
+                    for(j in 1:n)
+                    {
+                              lines(time[1:i], rwData[1:i,j], col=ncolors[j], lty=j )
+                    }
+                    Sys.sleep(sleep)
+          }
+}
+
+
+## animaGame used in 'extGame'
+animaGame = function(xGame, total, sleep=0.01)
+{
+          xmax=length(xGame)
+          xseq=1:xmax
+          if(xmax>1e3){sleep=0}
+          if(xmax>1e4)
+          {
+                    indx=ceiling(seq(1,xmax, len=1000)) 
+                    xGame=xGame[indx]
+                    xseq=xseq[indx]
+          }
+          plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Number of Individuals",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", sub=paste("Maximum number of individuals = ", total), cex.sub=0.9)
+          abline(h=total/2, lty=2, col="red")
+          cores= c("blue","black")
+          #n=dim(rwData)[2]
+          for(i in 2:xmax)
+          {
+                    lines(xseq[1:i], xGame[1:i], col=cores[1], lty=2)
+                    lines(xseq[1:i], total - xGame[1:i], col=cores[2], lty=3)
+                    Sys.sleep(sleep)
+          }
+          polygon(x=c(-.2* xmax, -.2* xmax, xmax+ 0.1*xmax, xmax+ 0.1*xmax), y=c(-.2*total,0,0,-.2* total), col="gray")
+          polygon(x=c(-.2*xmax, -.2*xmax, xmax+ 0.1*xmax, xmax+ 0.1*xmax), y=c(total,total+total*.5,total +total*.5,total), col="gray")
+          text(xmax/2, - 0.05* total, labels="Loser", col="red", cex=1.5)
+          text(xmax/2, total + 0.05* total, labels="Winner", col="green", cex=1.5)
+}
+
+
+## animaHub used in 'simHub1', 'simHub2', 'simHub3'
+animaHub=function(dadoHub, sleep=0.1)
+{
+          library(tcltk)
+          #nsp=length(unique(dadoHub[,1]))
+          maxsp=max(dadoHub)[1]
+          uniqsp=unique(as.numeric(dadoHub))
+          nind=dim(dadoHub)[1]
+          #nindsp=table(dadoHub[,1])[[1]]
+          nsim=dim(dadoHub)[2]
+          ciclo=as.numeric(colnames(dadoHub))
+          pb = tkProgressBar(title = "Simulation Progress", max = nsim)
+          riq=apply(dadoHub, 2, rich)
+          ## definindo o tamanho do retangulo
+          lado<-round(sqrt(nind))
+          lado2<-ceiling(nind/lado)
+          lastLine=lado*lado2 - nind
+          cormix=sample(rainbow(maxsp+10))
+          #if(lastLine !=0){cor=c("#000000", cor)}
+          #ffffff
+          cor=c("#FFFFFF", cormix)
+          mcor<-c("#FFFFFF00","#000000")
+          spcol<-c(rep(0, lastLine),dadoHub[,1])
+          ############ escala das especies da metapopulacao ########
+          layout(matrix(data=c(2,1), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
+          old<-par(mar=c(2,2,1,2))
+          image(x=1:maxsp, y=1, matrix(data=1:maxsp, nrow=maxsp,ncol=1),col=rainbow(maxsp), ylab="",xlab="", xaxt="n", yaxt="n", main="Metacommunity Species colors", cex.main=0.8)
+          axis(3, at = c(1,maxsp), labels = c(1, maxsp), tick = FALSE, mgp=c(1,0,0), cex.axis=0.8)
+          hmat=matrix(spcol,ncol=lado, nrow=lado2)
+          #cormat=matrix(cor[factor(spcol, levels=0:maxsp)], ncol=lado, nrow=lado2)
+          par(mar=c(2,2,2,2))
+          image(hmat, col=cor[sort(unique(as.numeric(hmat)))], xaxt="n", yaxt="n")
+          #mtext(text="simulation ", side=1, adj=0)
+          grid(nx=lado2, ny=lado)
+          #mtext(text="                   1", side=1, col="white",adj=0)
+          for (i in 2:nsim) 
+          {
+                    #if(riq[i]==1){cor=cor[unique(dadoHub[,i])[1]]}
+                    #	mtext(text=paste("                    ", ciclo[i-1]), side=1, col="white", adj=0)
+                    mvf=dadoHub[,i-1]!=dadoHub[,i]
+                    matm<-matrix(c(rep(FALSE, lastLine),mvf ),ncol=lado, nrow=lado2)
+                    image(matm,col=mcor, add=TRUE)
+                    Sys.sleep(sleep)
+                    spcol<-c(rep(0, lastLine),dadoHub[,i] )
+                    cores=cor[sort(unique(spcol)+1)]
+                    scol<-sort(unique(spcol))
+                    lcol<-length(scol)
+                    mcol<-match(spcol, scol)
+                    hmat=(matrix(mcol,ncol=lado, nrow=lado2))
+                    image(hmat, col=cores, add=TRUE)
+                    grid(nx=lado2, ny=lado)
+                    #	mtext(text=paste("                    ", ciclo[i]), side=1, adj=0)
+                    setTkProgressBar(pb, value = i, label = paste("Simulation #", ciclo[i], sep="")) 
+          }
+          close(pb)
+}
+
+
+
+###############################
+### Two Species Competition ###
+###############################
+
+### Meta competition 'animaMetaComp' used in 'metaComp'
 animaMetaComp=function(dados)
 {
 nsim=dim(dados)[3]
@@ -30,20 +224,12 @@ grid(ln,cl)
 }
 
 
+
 #######################
-anima <-function(dados)
-{
-x11()
-	for(i in 1:dim(dados)[3])
-        {
-	image(dados[,,i], main=("Metapopulation"),sub=paste("simulation no.= ", i), col=c("white","red"), bty="n",xaxt='n',yaxt='n')
-	grid(dim(dados)[1],dim(dados)[2])
-	Sys.sleep(.2)
-	}
-}
+### Metapopulations ###
+#######################
 
-
-##########################
+## animaMeta2 used in 'metaPop', 'metaEr', 'metaCi', 'metaCier'
 animaMeta2=function(dados)
 {
 nsim=dim(dados)[3]
@@ -63,7 +249,7 @@ image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , brea
 }
 
 
-###############################################
+## grFim used in 'metaPop', 'metaEr', 'metaCi', 'metaCier'
 grFim=function(dados)
 {
 op=par(mfrow=c(2,2))
@@ -83,41 +269,11 @@ par(op)
 }
 
 
-###############################
-#Trade-off Multispecies Graphic
-### 
-grToff=function(rq, fsp1,pe,add=FALSE,...)
-{
-#	rq <- as.numeric(tclvalue(rqVar))
-#	fsp1 <- as.numeric(tclvalue(fsp1Var))
-#	pe <- as.numeric(tclvalue(peVar))
-	rank=1:rq
-	ci= pe/(1-fsp1)^(2*rank-1)
-	px= fsp1*(1-fsp1)^(rank-1)
-		if(add==FALSE)
-		{
-		toff<-x11( width=5, height=5)
-		}
-	old<-par(mar=c(3,3,3,3))
-	plot(ci~rank, col="red",ylim=c(0,max(ci)*1.2), type="b", ann=FALSE, axes=FALSE,)
-	axis(4, cex.axis=0.8, col.axis='red', col='red')#, yaxp=c(0,3,3))
-	par(new=TRUE)
-	plot(px~rank, ylim=c(0,fsp1),type="b", bty="n",  ann=FALSE, cex.axis=0.8)#yaxt="n", xaxp=c(0,10,5))
-	#axis(2, cex.axis=0.8)#, yaxp=c(0,0.2,4))
-	mtext("Specie competitive rank", 1, 2, cex=0.9)
-	mtext("Abundance", 2, 2, cex=0.9)
-	mtext("Colonization rate", 4, 2, cex=0.9, col='red')
-	mtext("Trade-off Species Rank ", 3, 0, cex=1.2)
-	par(old)
-}
+##############################
+### Multispecies Functions ###
+##############################
 
-
-#grToff(rq =  10 , fsp1 =  0.2 , pe =  0.1 ,add=FALSE)
-
-
-############################
-### Sucessional Niche Graphic
-############################
+## animaCena used in 'regNicho'
 animaCena=function(dados)
 {
 nt=dim(dados)[3]
@@ -140,183 +296,3 @@ image(dados[,,nt], main= paste("Patches occupancy\n \t time=", nt ),  bty="n",xa
 grid(dim(dados)[2],dim(dados)[1])
 par(op)
 }
-
-
-##################################
-grCom=function(medias, desvios, minimo, maximo)
-{
-  nsp=length(medias)
-  cor=rainbow(nsp)
-  x11()
-  curve(dnormTrunc(x, medias[1], desvios[1], maximo=maximo, minimo=minimo),from=minimo, to=maximo, ylim=c(0,1), ylab="Population Density", xlab="Gradient Value", main="Species Distribution", col=cor[1])
-	for (i in 2:nsp)
- 	{
- 	curve(dnormTrunc(x, medias[i], desvios[i], maximo=maximo, minimo=minimo),from=minimo, to=maximo,add=TRUE, col=cor[i], lty=2)
- 	} 
-text(medias+1, dnormTrunc(medias, medias, desvios,maximo=maximo,minimo=minimo)+0.5, labels=(paste("sp",(1:(nsp)),sep="_")), col=cor, cex=0.8)
-}  
-
-#grCom(medias=c(2,3,4,5,6,7,8), desvios=c(1,1,1,1,1,1,1), minimo=0, maximo=10)
-
-#grCom(media=sample(seq(from=1.5, to=19.5,by=0.25), size=10), runif(10,0.5,2.5), minimo=0, maximo=20)
-
-#grCom(medias=sample(2:19, size=10),desvios=sample(seq(from=0.5, to=2.5, by=0.1),10), minimo=1, maximo=20)
-
-###################################
-dnormTrunc=function(x, minimo=-Inf, maximo=Inf, media=0, desvio=1)
-{
-res=numeric(length(x))
-x.prov=dnorm(x,mean=media, sd=desvio)
-ampl.norm=pnorm(maximo,mean=media, sd=desvio)-pnorm(minimo,mean=media, sd=desvio)
-x.prov/ampl.norm
-}
-
-
-###################################
-####################################
-### f para truncar a amostra ###
-###################################
-pnormTrunc=function(x,minimo=-Inf, maximo=Inf, media=0, desvio=1)
-{
-denom <- pnorm(maximo, mean=media, sd=desvio) - pnorm(minimo, mean=media, sd=desvio)
-qtmp <- pnorm(x, mean=media, sd=desvio) - pnorm(minimo, mean=media, sd=desvio)
-qtmp/denom
-}
-
-
-##### Proportion of species at each sample
-probS=function(medias, desvios, amostra, minimo, maximo)
-{
-nsp=length(medias)
-namostra=length(amostra)
-resulta=matrix(NA, nrow=nsp, ncol=namostra)
-rownames(resulta)=paste("sp", 1:nsp, sep="_")
-colnames(resulta)=paste("plot", 1:namostra, sep="_")
-  for(k in 1:namostra)
-  {
-	for(i in 1:nsp)
-	{
-	resulta[i,k]= pnormTrunc(amostra[k]+1,minimo=minimo, maximo=maximo, media=medias[i], desvio=desvios[i])- pnormTrunc(amostra[k],minimo=minimo, maximo=maximo, media=medias[i], desvio=desvios[i] )
-	}
-  }
-invisible(resulta)
-}
-
-
-####################################
-######### Func Distancia Bray-Curtis
-####################################
-distBC<-function(dados)
-	{
-	nplot=dim(dados)[2]
-	similar=matrix(NA,ncol=nplot,nrow=nplot)
-	rownames(similar)<-paste("plot", c(1:nplot))
-	colnames(similar)<-paste("plot", c(1:nplot))
-		for(i in 1:(nplot-1))
-		{
-		m=i+1
-			for(m in m:nplot)
-			{
-			bc.dist=sum(abs(dados[,i]-dados[,m]))/(sum (dados[,c(i,m)]))
-			similar[m,i]=bc.dist
-			}
-		}
-	invisible(round(similar,3))
-	}
-
-
-###########################
-####Polar-Ordination Func
-########################
-ordenaPolar=function(dist)
-{
-somadist1.cont=apply(dist, 1, sum, na.rm=TRUE) + apply(dist,2,sum, na.rm=TRUE)
-nomes.parc=names(somadist1.cont)
-parc.ax=nomes.parc[somadist1.cont==max(somadist1.cont)][1]
-dist.ax=rbind(dist[,parc.ax], dist[parc.ax,])
-dist.ax=apply(dist.ax,2,sum, na.rm=TRUE)
-max.ax=max(dist.ax)
-parc.bx=nomes.parc[dist.ax==max.ax]
-	if(length(parc.bx)>1)
-	{
-	  somamax.bx=max(somadist1.cont[parc.bx])
-	  parc.bx=nomes.parc[somadist1.cont==somamax.bx][1]
-	  parc.bx
-	}
-dist.bx=rbind(dist[,parc.bx], dist[parc.bx,])
-dist.bx=apply(dist.bx,2,sum, na.rm=TRUE)
-xi= (max.ax^2 + dist.ax^2 - dist.bx^2)/(2*max.ax)
-yi=sqrt((dist.ax)^2-xi^2)
-yi[parc.bx]=max(dist.ax)
-op.xy=data.frame(xi,yi)
-plot(op.xy, pch=19, col=rainbow(length(xi)), xlim=c(-0.1, 1), ylim=c(-0.1,1), main="Polar Ordination", sub="Bray-Curtis distance")
-text(op.xy-0.05, labels=rownames(op.xy))
-invisible(op.xy)
-}
-
-
-############################
-### Matrix Similarity
-############################
-sim<-function(dados, indice="bc")
-	{
-	nplot=dim(dados)[2]
-	similar=matrix(1,ncol=nplot,nrow=nplot)
-	rownames(similar)<-paste("plot", c(1:nplot))
-	colnames(similar)<-paste("plot", c(1:nplot))
-		for(i in 1:(nplot-1))
-		{
-		m=i+1
-		for(m in m:nplot)
-		{
-		if(indice=="jacc")
-			{
-			dados[dados>0]=1
-			co.oc=sum(dados[,i]>0 & dados[,m]>0)
-			total.sp=sum(dados[,i])+sum(dados[,m])-co.oc
-			similar[i,m]=co.oc/total.sp 
-			similar[m,i]=co.oc/total.sp
-			}
-		if(indice=="bc") 
-			{
-			bc.sim=sum(apply(dados[,c(i,m)], 1, min))/(sum (dados[,c(i,m)]))
-			similar[i,m]=bc.sim
-			similar[m,i]=bc.sim
-			}
-		}
-		}
-	invisible(round(similar,3))
-	}
-
-
-#################################
-############################
-### hcluster
-############################
-#  clas.cont1=hclust(as.dist(1-sim.cont1), method="average")
-#  dend.cont1=as.dendrogram(clas.cont1, hang=-1)
-#  plot(dend.cont1)
-
-#############################
-rich <- function(x)length(unique(x))
-
-
-#####################
-###### Grafico biog ilha
-grFreq=function(E , I , P){
-	S = I*P/(I+E) ; T = I*E/(I+E)
-	curve(I-I*x/P,0,P,bty="n",xaxt="n",yaxt="n",xlab="Species number",
-	 ylab="Taxas",font.lab=2,lwd=2,ylim=c(0,1))
-	curve((E/P)*x,0,P,lwd=2,add=T)
-	abline(v=0)
-	abline(h=0)
-	mtext("P",side=1,at=P,font=2)
-	mtext("I",side=2,at=I,font=2,las=1)
-	mtext("E",side=4,at=E,font=2,las=1)
-	mtext("S",side=1,at=S,font=2,col=2)
-	mtext("T",side=2,at=T,font=2,las=1,col=2)
-	points(S,T,col=2,pch=16,cex=1.3)
-	segments(S,T,S,0,lty=3,col=2)
-	segments(S,T,0,T,lty=3,col=2)
-	}
-############################################

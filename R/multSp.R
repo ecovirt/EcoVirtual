@@ -1,8 +1,9 @@
-### EcoVirtual - multispecies functions
-###############
-############################
+###########################################
+### EcoVirtual - Multispecies Functions ###
+###########################################
+
+
 ### Sucessional Niche
-############################
 regNicho=function(tmax, ln, cl, c1,c2, ec, dst,  Er, Sc, Mx, Rs) 
 {
 N=cl*ln
@@ -51,9 +52,9 @@ invisible(cena)
 
 #regNicho(tmax=50, ln=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  Er=0.08, Sc=0.02, Mx=0, Rs=0)
 
-##########################
-# Trade-off
-#########################
+
+
+### Trade-off
 comCompete = function(tmax,ln,cl, rq, fi, fsp1, pe,fr=0,int=0)
 {
 rank=1:rq
@@ -123,74 +124,4 @@ par(old)
 invisible(resulta)
 }
 
-
 #comCompete(tmax=1000,ln=100,cl=100, rq=10, fi=1, fsp1=0.20, pe=0.01,fr=0,int=0)
-
-
-#########################
-##### Sucession
-####################
-sucMatrix=function(mat_trans, init_prop, ln, cl, tmax)
-{
-mat_trans=as.matrix(mat_trans)
-porc1=apply(mat_trans,2,sum)
-if(sum(porc1!=1)>0)
-{
-stop("the transition for each fase should sum 1: there is no extintion of area under the model")
-}
-if(sum(init_prop)!=1 | length(init_prop) != dim(mat_trans)[2])
-{
-stop("the initial proportion of ocupance should sum 1 and the number of stages should be iqual to transition matrix")
-}
-nfase=dim(mat_trans)[1]
-ncel=ln*cl
-fase_n=round(init_prop*ncel)
-cl_fase=colorRampPalette(c("gray","yellow", "orange","green"))
-#cores=c("#ffffff",colors(nfase-1))
-#cores=terrain.colors(nfase)
-arena=matrix(NA,nrow=ln,ncol=cl)
-#resulta=matrix(0,ncol=nfase, nrow=tmax)
-pais=array(0,dim=c(ln, cl, tmax))
-#image(0:ln,0:cl, matrix(0,nrow=ln,ncol=cl), col="white", xlab="", ylab="")
-#grid(ln,cl)
-n0=sample(rep(0:(nfase-1), fase_n))
-arena[1:ncel]<-n0
-#t.n0=table(n0)
-#resulta[1,as.numeric(names(t.n0))+1]<-t.n0
-pais[,,1]<-arena
-image(0:ln, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Sucessional Model")
-grid(ln,cl)
-	for (tc in 2:tmax)
-	{
-		for(nf in 0:(nfase-1))
-		{
-		nf_vf=pais[,,(tc-1)]==nf
-		contn=sum(nf_vf)
-		pais[,,tc][nf_vf]<-sample(0:(nfase-1),contn,replace=TRUE, prob=as.numeric(mat_trans[,(nf+1)]))
-		}
-#	resulta[tc,as.numeric(names(t_n0))+1]<-t_n0
-	image(0:ln, 0:cl, pais[,,tc], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), add=TRUE)
-	Sys.sleep(.1)
-	}
-x11()
-op=par(mfrow=c(2,2))
-image(0:ln, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Ernitial Conditions")
-for(ts in c(4,2,1))
-	{
-	image(0:ln, 0:cl, pais[,,round(tc/ts)], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), main=paste("Cicle", round(tc/ts)))
-	}
-par(op)
-x11()
-resulta=t(apply(pais,3, table))
-matplot(resulta, type="l", ylim=c(min(resulta)*0.8, max(resulta)*1.1), main="Stage Distribution",xlab="Number of patchs", col=cl_fase(nfase), lty=2, lwd=2)
-legend("topright", legend=paste("Stage", 1:nfase), lty=2, lwd=2, col=cl_fase(nfase), bty="n", cex=0.8)
-#resulta=as.data.frame(resulta)
-eigs_st=eigen(mat_trans)
-dom_pos=which.max(Re(eigs_st$values))
-stage_v<- Re(eigs_st[["vectors"]][, dom_pos])
-stage_stable=(stage_v/sum(stage_v))*ncel
-abline(h=stage_stable, col=cl_fase(nfase), lwd=0.8)
-legend("topleft", legend=paste("Stage Stable", 1:nfase), lty=1, lwd=0.9, col=cl_fase(nfase), bty="n", cex=0.8)
-invisible(pais)
-}
-
