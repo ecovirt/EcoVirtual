@@ -1,28 +1,27 @@
 \name{anima}
-\alias{anima}
-\alias{animaMeta2}
 \alias{animaCena}
-\alias{animaColExt}
 \alias{animaGame}
-\alias{animaHub1}
+\alias{animaHub}
 \alias{animaIsl}
 \alias{animaMeta2}
 \alias{animaMetaComp}
 \alias{animaRandWalk}
-\alias{grCom}
-\alias{grFim}
-\alias{grFreq}
+\alias{grColExt}
 \alias{grToff}
-\alias{graColExt}
+\alias{grFim}
+
 \title{
 EcoVirtual Graphics and Amimations
 }
+
 \description{
 Graphics and animations of the simulations results
 }
+
 \usage{
 grToff(rq, fsp1,pe,add=FALSE, ...)
 }
+
 \arguments{
   \item{rq}{
 number of species
@@ -39,12 +38,15 @@ extinction probability
 another argments passed to grToff
 }
 }
+
 \value{
 Represent the simulation result in a graphic device
 }
+
 \author{
 Alexandre Adalardo
 }
+
 \examples{
 grToff(rq =  10 , fsp1 =  0.2 , pe =  0.1 ,add=FALSE)
 }

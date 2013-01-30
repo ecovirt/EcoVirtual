@@ -99,7 +99,7 @@ metaComp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 		animaMetaComp(pais)
 		}
 x11()  
-plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupance", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; ln=",ln,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
+plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupancy", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; ln=",ln,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
   lines(1:tmax,resultado[,3],col="green", lwd=2)
   abline(h=F1,col="blue",lwd=1.5,lty=2)
   if(F2>0)abline(h=F2,col="green",lwd=1.5,lty=2)

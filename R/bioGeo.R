@@ -7,22 +7,22 @@
 ###########################
 
 ## Species colonization and species-area relationship in arquipelagoes
-arquip=function(nIsl,ar.min, ar.max, Nspp, seed.rain, abund, tmax, anima=TRUE)
+arquip=function(n.isl,ar.min, ar.max, S, seed.rain, abund, tmax, anima=TRUE)
 {
 	ar.ampl=ar.max -ar.min
-	ar.isl= seq(ar.min, ar.max, length.out=nIsl)
+	ar.isl= seq(ar.min, ar.max, length.out=n.isl)
 	#lado.isl=sqrt(ar.isl)
-	spp=1:Nspp
-	cena=array(0, dim=c(Nspp,nIsl, tmax)) 
-	local=seq(0, ar.max , len=nIsl*10)
-	local[c(1,nIsl*10)]=local[c(2, nIsl*10-1)] 
+	spp=1:S
+	cena=array(0, dim=c(S,n.isl, tmax)) 
+	local=seq(0, ar.max , len=n.isl*10)
+	local[c(1,n.isl*10)]=local[c(2, n.isl*10-1)] 
 	locxy<-list()
 	sprain<-list()
-		if(length(abund)==Nspp) {abund=abund/sum(abund)}else{
-			cat("\n valores de abundância não correspondem ao número de espécie, apenas o primeiro valor foi considerado\n")
+		if(length(abund)==S) {abund=abund/sum(abund)}else{
+			cat("\n abundance vector length is different from the number of species, only the first value considered\n")
 			abund=abund[1]
-			if(abund==0 | abund>=1){abund=rep(1/Nspp, Nspp);cat("\n distribuição equitativa de abundância\n")}else{
-				if(abund<=1 & abund>0){abund = abund*(1-abund)^((1:Nspp)-1); cat("\n modelo de distribuição geometrica de abundância\n")}
+			if(abund==0 | abund>=1){abund=rep(1/S, S);cat("\n maximum eveness\n")}else{
+				if(abund<=1 & abund>0){abund = abund*(1-abund)^((1:S)-1); cat("\n geometric species rank-abundance distribution\n")}
 				}
 		}## modelo tilman geometrico ## todas especies igualmente contribuem para a chuva
 	for(i in 2:tmax)
@@ -39,7 +39,7 @@ arquip=function(nIsl,ar.min, ar.max, Nspp, seed.rain, abund, tmax, anima=TRUE)
 		#cena[v.spp,l,1]<-1
 		locxy[[i]]<-cbind(loc.x, loc.y)
 		sprain[[i]]<-chuva
-		for(l in 1:nIsl)
+		for(l in 1:n.isl)
 			{
 			v_x=loc.x<=ar.isl[l]
 			v_y=loc.y<=ar.isl[l]
@@ -47,7 +47,7 @@ arquip=function(nIsl,ar.min, ar.max, Nspp, seed.rain, abund, tmax, anima=TRUE)
 			cena[v_spp,l,i]<-1
 			}
 #		if(i>1 & anima==TRUE)	
-#		animaIsl(cena[,,i],ar.isl, Nspp, loc.x, loc.y, chuva,i)
+#		animaIsl(cena[,,i],ar.isl, S, loc.x, loc.y, chuva,i)
 		}
 riq.tempo=t(apply(cena, c(2,3), sum))
           x11()
@@ -58,10 +58,10 @@ riq.tempo=t(apply(cena, c(2,3), sum))
 x11()
 layout(matrix(data=c(1,2), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
 old<-par(mar=c(5,4,3,3))#, oma=c(0,0,0,0))			
-matplot(riq.tempo, type="l", col=rainbow(nIsl), bty="l", cex.lab=1.2, xlab="Time", ylab="Number of Species", cex.axis=1.2, main="Passive Colonization", cex.main=1.2 )
+matplot(riq.tempo, type="l", col=rainbow(n.isl), bty="l", cex.lab=1.2, xlab="Time", ylab="Number of Species", cex.axis=1.2, main="Passive Colonization", cex.main=1.2 )
 par(mar=c(2,2,1,2))
-image(x=1:nIsl, y=1, matrix(data=1:nIsl, nrow=nIsl,ncol=1),col=rainbow(nIsl), ylab="",xlab="", xaxt="n", yaxt="n", main="Island Size (Area)", cex.main=0.8)
-pos.x=1:(nIsl)
+image(x=1:n.isl, y=1, matrix(data=1:n.isl, nrow=n.isl,ncol=1),col=rainbow(n.isl), ylab="",xlab="", xaxt="n", yaxt="n", main="Island Size (Area)", cex.main=0.8)
+pos.x=1:(n.isl)
 area.isl=round(ar.isl^2,0)
 axis(1,at=pos.x, area.isl, cex.axis=0.8)
 
@@ -69,23 +69,24 @@ x11()
 par(mfrow=c(2,1))
 riq.final<-riq.tempo[tmax,]
 mod1<-lm(log10(riq.final)~log10(area.isl))
-plot(area.isl,riq.final,log="xy",pch=16,col=rainbow(nIsl),bty="l",main=paste("Nº Islands=",nIsl,"; Nº spp=",Nspp,"; Time=",tmax), sub=paste("c=",round(10^coef(mod1)[1],2),"; z=",round(coef(mod1)[2],2)),xlab="Island Area",ylab="Number of species",ylim=c(1,max(riq.final)))
+plot(area.isl,riq.final,log="xy",pch=16,col=rainbow(n.isl),bty="l",main=paste("Nº Islands=",n.isl,"; Nº spp=",S,"; Time=",tmax), sub=paste("c=",round(10^coef(mod1)[1],2),"; z=",round(coef(mod1)[2],2)),xlab="Island Area",ylab="Number of species",ylim=c(1,max(riq.final)))
 abline(mod1, lty=2)
 rqz<-apply(cena, c(2,3), sum)
 clz<-diff(riq.tempo)
-matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(nIsl), bty="l", cex.lab=1.2, xlab="Species Number", ylab="Colonization (species/cicle)", cex.axis=1.2, main="Colonization Rate Curves", cex.main=1.2 )
+matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(n.isl), bty="l", cex.lab=1.2, xlab="Species Number", ylab="Colonization (species/cicle)", cex.axis=1.2, main="Colonization Rate Curves", cex.main=1.2 )
 
 invisible(cena)
 }
 
-#arquip(nIsl=10,ar.min=10, ar.max=100, Nspp=1000, seed.rain=100, abund=10, tmax=100, anima=TRUE)
+#arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=rep(10,1000), tmax=100, anima=TRUE) abund 'NORMAL'
+#arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE) abund igual RCMDR, em eveness
 
 
 ## Relationship between extinction and colonization rates for the species richness
-animaColExt=function(minimo=0.01, maximo=1, ciclos=100, Ext="crs", Col="dcr")
+animaColExt=function(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
 {
-a=seq(from=minimo,to=maximo,length.out=ciclos)
-b=seq(from=maximo, to=minimo, length.out=ciclos)
+a=seq(from=min,to=max,length.out=cicles)
+b=seq(from=max, to=min, length.out=cicles)
 nt=length(a)
 if(Ext=="fix"){ext=rep(0.5,nt)}
 if(Ext=="crs"){ext=a}
@@ -101,20 +102,20 @@ grColExt(E=ext,I=col,P=100, areas=1)
 
 
 ## Island Biogeography, rates of colonization and extinctions for islands of different sizes and distances to continent.
-bioGeoIsl=function(areas , dist , P , peso.A=.5 , a=1, b=-.01, c=1, d=-.01,e=0, f=.01,g=0, h=.01)
+bioGeoIsl=function(areas , dist , P , weight.A=.5 , a.e=1, b.e=-.01, c.i=1, d.i=-.01,e.i=0, f.i=.01,g.e=0, h.e=.01)
 {
 x11()
 nf <- layout(matrix(c(1,2), 2, 1),widths=c(1), heights=c(4,1))
 #layout.show(nf)
 def_par<-par(mar=c(4,7,3,7))
-  E=((a+b*areas)*peso.A+(g+h*dist)*(1-peso.A))
-  I=((c+d*dist)*peso.A+(e+f*areas)*(1-peso.A))
-#E=((b*areas)*peso.A + (h*dist)*(1-peso.A))
-#I=((d*dist)*peso.A+(f*areas)*(1-peso.A))
+  E=((a.e+b.e*areas)*weight.A+(g.e+h.e*dist)*(1-weight.A))
+  I=((c.i+d.i*dist)*weight.A+(e.i+f.i*areas)*(1-weight.A))
+#E=((b*areas)*weight.A + (h*dist)*(1-weight.A))
+#I=((d*dist)*weight.A+(f*areas)*(1-weight.A))
 I[I<=0]<-0.001
 E[E<=0]<-0.001
-#E=((b*r.areas) * peso.A) + ((h*r.dist)*(1-peso.A))
-#I= ((d*r.dist) * (1-peso.A)) + (f*r.areas*peso.A)
+#E=((b*r.areas) * weight.A) + ((h*r.dist)*(1-weight.A))
+#I= ((d*r.dist) * (1-weight.A)) + (f*r.areas*weight.A)
 S=I*P/(I+E)
 T=I*E/(I+E)
 nIsl=length(areas)
@@ -132,7 +133,7 @@ par(def_par)
 invisible(ex)
 }
 
-#bioGeoIsl(areas=c(5,10,50,80) , dist=c(10,100,100,10), P=100 , peso.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=.01, g=0, h=.01)
+#bioGeoIsl(areas=c(5,10,50,80) , dist=c(10,100,100,10), P=100 , weight.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=.01, g=0, h=.01)
 
 
 
@@ -141,47 +142,47 @@ invisible(ex)
 ######################
 
 ## Null models - random walk simuation
-randWalk <- function(n=1,step=1,ciclo=1e5,x1max=200, alleq=FALSE){
-  cont=round(ciclo/100)
+randWalk <- function(S=1,step=1,tmax=1e5,x1max=200, all.eq=FALSE){
+  cont=round(tmax/100)
   sleep=0.01
   if(cont>5e4){sleep=0}
-      if(alleq){
-                x1=rep(x1max,n)  
+      if(all.eq){
+                x1=rep(x1max,S)  
                }else{
-                    x1 <- sample(1:x1max,n,replace=TRUE)
+                    x1 <- sample(1:x1max,S,replace=TRUE)
                     }
-  results <- matrix(NA,nrow=1+ciclo/cont,ncol=n) 
+  results <- matrix(NA,nrow=1+tmax/cont,ncol=S) 
   results[1,] <- x1
   X <- x1
-  for(i in 2:(1+ciclo/cont)){
+  for(i in 2:(1+tmax/cont)){
     for(j in 1:cont){
       X[X<=0] <- NA
-      X <- X +sample(c(step,-1*step),n,replace=TRUE)
+      X <- X +sample(c(step,-1*step),S,replace=TRUE)
     }
     results[i,] <- X
   }
   results[is.na(results)] <- 0
-  time <- seq(0,ciclo,by=cont)
+  time <- seq(0,tmax,by=cont)
   x11()
   animaRandWalk(rwData=results, time= time, sleep=sleep)
   invisible(results)
-#  matplot(time,results,type="l", col=rainbow(n),lwd=2, xlab="Steps",  main="Randon Walk",ylab="Distance from the edge")
+#  matplot(time,results,type="l", col=rainbow(S),lwd=2, xlab="Steps",  main="Randon Walk",ylab="Distance from the edge")
 #  abline(h=0,lwd=4)
 }
 
-#randWalk(n=10,step=10,ciclo=1e4)
-#randWalk(n=10,step=1,ciclo=1e4)
-#randWalk(n=10,step=1,ciclo=1e4, x1max=300, alleq=TRUE)
-#rand.walk(n=100,step=2,ciclo=2e5)
+#randWalk(S=10,step=10,tmax=1e4)
+#randWalk(S=10,step=1,tmax=1e4)
+#randWalk(S=10,step=1,tmax=1e4, x1max=300, all.eq=TRUE)
+#randwalk(S=100,step=2,tmax=2e5)
 
 
 ## Zero Sum Game
-extGame <- function(aposta=1,total=100, tmax=2){
+extGame <- function(bet=1,total=100, tmax=2){
   X <- total/2
   results <- X
   t0=Sys.time()
   while(X>0&X<total){
-    X <- X+sample(c(aposta,-1*aposta),1)
+    X <- X+sample(c(bet,-1*bet),1)
     results <- c(results,X)
     ti=Sys.time()
     time.sim=round(difftime(ti, t0, units="min"), 1)
@@ -197,23 +198,23 @@ extGame <- function(aposta=1,total=100, tmax=2){
 }
 
 #old<-par(mfrow=c(2,2))
-#extGame(aposta=1,total=20)
-#extGame(aposta=1,total=50)
-#extGame(aposta=1,total=100)
-#extGame(aposta=1,total=200)
+#extGame(bet=1,total=20)
+#extGame(bet=1,total=50)
+#extGame(bet=1,total=100)
+#extGame(bet=1,total=200)
 #par(old)
 
 
 ## Hubbell Neutral Model without imigration
-simHub1=function(S= 100, j=10, D=1, ciclo=1e4, anima=TRUE)
+simHub1=function(S= 100, j=10, D=1, cicles=1e4, anima=TRUE)
 {
-if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
-  stepseq=round(seq(101, ciclo+1, len=100))
+if(cicles<200){cicles=200; cat("\n Minimum number of cicles: 200\n")}
+  stepseq=round(seq(101, cicles+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
   J <- S*j
   ##Matrizes para guardar os resultados
-  #simHub1(S=10,j=10, D=1, ciclo=2e4, anima=TRUE)# matriz da especie de cada individuo por ciclo
+  #simHub1(S=10,j=10, D=1, cicles=2e4, anima=TRUE)# matriz da especie de cada individuo por ciclo
   ind.mat=matrix(nrow=J,ncol=100+length(stepseq)) 
   ##CONDICOES INICIAIS##
   ##Deduzidas de acordo com o modelo de Hubbell:
@@ -261,23 +262,23 @@ if(anima==TRUE)
   animaHub(dadoHub=ind.mat)
   }
   x11()
-    plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/cicle"), cex.sub=0.8) 
+    plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/cicles,"sp/cicle"), cex.sub=0.8) 
   invisible(ind.mat)
 }
 
 #par(mfrow=c(2,2))
-#simHub1(S=10,j=10, D=1, ciclo=5e3, anima=FALSE)
-#simHub1(j=5,ciclo=2e4)
-#simHub1(j=10,ciclo=2e4)
-#simHub1(j=20,ciclo=2e4)
+#simHub1(S=10,j=10, D=1, cicles=5e3, anima=FALSE)
+#simHub1(j=5,cicles=2e4)
+#simHub1(j=10,cicles=2e4)
+#simHub1(j=20,cicles=2e4)
 #par(mfrow=c(1,1))
 
 
 ## Hubbell Neutral Model with immigration from a Metacommunity
-simHub2=function(S= 100, j=10, D=1, ciclo=1e4, step=1000, m=0.01, anima=TRUE)
+simHub2=function(S= 100, j=10, D=1, cicles=1e4, step=1000, m=0.01, anima=TRUE)
 { 
-if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
-  stepseq=round(seq(101, ciclo+1, len=100))
+if(cicles<200){cicles=200; cat("\n Minimum number of cicles: 200\n")}
+  stepseq=round(seq(101, cicles+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
   J <- S*j
@@ -351,18 +352,18 @@ x11()
   ########### grafico interno ###############
   x11()
   plot(tempo,apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species", type="l",
-       main="Neutral Dynamics - Original Community Colonization",sub=paste( "S=",S," J=",J," m=",m,"Mean Extintion rate =",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/cicle"),ylim=c(0,S), cex.sub=0.7)
+       main="Neutral Dynamics - Original Community Colonization",sub=paste( "S=",S," J=",J," m=",m,"Mean Extintion rate =",(S-rich(ind.mat[,ncol(ind.mat)]))/cicles,"sp/cicle"),ylim=c(0,S), cex.sub=0.7)
   invisible(ind.mat)
 }
 
-#simHub2(j=2,ciclo=2e4,step=1e2,m=0.1)
+#simHub2(j=2,cicles=2e4,step=1e2,m=0.1)
 
 
 ## Hubbel Neutral Model with Immigration and speciation from a metacommunity
-simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, ciclo=1e4, m=0.01, nu=0.001, anima=TRUE)
+simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, cicles=1e4, m=0.01, nu=0.001, anima=TRUE)
 {
-if(ciclo<200){ciclo=200; cat("\n Minimum number of ciclos: 200\n")}
-  stepseq=round(seq(101, ciclo+1, len=100))
+if(cicles<200){cicles=200; cat("\n Minimum number of cicles: 200\n")}
+  stepseq=round(seq(101, cicles+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da metacomunidade
   Jm <- Sm*jm
@@ -490,13 +491,13 @@ if(anima==TRUE)
   ymax<-max(c(mrich,crich))
   ymax=ymax*1.1
   plot(tempo,apply(meta.mat,2,rich), xlab="Time (cicles)", ylab="Number of species", type="l",
-       main="Neutra Dynamics - Metacomunity Colonization" ,sub=paste( "Jm=",Jm," nu=",nu," Theta=",2*Jm*nu, "S=",S," J=",J," m=",m, " Mean Extintion Rate=",(S-rich(ind.mat[,ncol(ind.mat)]))/ciclo,"sp/cicle"), col="blue",  ylim=c(0,ymax), cex.sub=0.7)
+       main="Neutra Dynamics - Metacomunity Colonization" ,sub=paste( "Jm=",Jm," nu=",nu," Theta=",2*Jm*nu, "S=",S," J=",J," m=",m, " Mean Extintion Rate=",(S-rich(ind.mat[,ncol(ind.mat)]))/cicles,"sp/cicle"), col="blue",  ylim=c(0,ymax), cex.sub=0.7)
   lines(tempo,apply(ind.mat,2,rich),col="red")
   text(tempo[length(tempo)*.6] ,crich[length(tempo)*.6]*1.1, "Community", col="red")
   text(tempo[length(tempo)*.9] ,mrich[length(tempo)*.9]*1.1, "Metacommunity", col="blue")
   invisible(resultados)
 }
 
-#simHub3(Sm=200, jm=20, S= 10, j=100, D=1, ciclo=1e4, m=0.01, nu=0.001, anima=TRUE)
-#simHub3(j=10, ciclo=2e4,m=0.1, anima=FALSE)
-#simHub3(j=2, ciclo=2e3,nu=0.00001,m=0.1)
+#simHub3(Sm=200, jm=20, S= 10, j=100, D=1, cicles=1e4, m=0.01, nu=0.001, anima=TRUE)
+#simHub3(j=10, cicles=2e4,m=0.1, anima=FALSE)
+#simHub3(j=2, cicles=2e3,nu=0.00001,m=0.1)

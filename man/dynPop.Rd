@@ -1,31 +1,24 @@
 \name{dynPop}
-\alias{crescExp}
 \alias{estExp}
 \alias{estDem}
 \alias{crescLog}
-\alias{discrLog}
-\alias{atrBif}
-\alias{crescAtr}
-\alias{compLV}
 \alias{popStr}
-\alias{sobrevive}
+
 \title{
 Populations Dynamics Model
 }
+
 \description{
 Functions to simulate population dynamics 
 }
+
 \usage{
-crescExp(N0,lambda,r, tmax)
 estExp(N0,r,varr,tmax) 
 estDem(N0, b, d, tmax)
 crescLog(N0, r, K, tmax)
-discrLog(N0, rd, K, tmax)
-atrBif(N0, K, tmax, nrd,maxrd=3)
-crescAtr( N0, lambda,varl,rd,K, tmax)
 popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, ln, cl, tmax)
-sobrevive(p.mort,N0)
 }
+
 \arguments{
   \item{N0}{number of individuos at start time
 }
@@ -37,23 +30,13 @@ sobrevive(p.mort,N0)
 }
   \item{r}{intrinsic growth rate)
 }
-  \item{lambda}{discrete growth rate 
-}
   \item{varr}{r variance
 }
   \item{b}{birth rate
 }
   \item{d}{dead rate
 }
-  \item{K}{Capacidade suporte
-}
-  \item{nrd}{numeber of discrete growth rate
-}
-  \item{maxrd}{maximum rd rate
-}
-  \item{varl}{lambda variance
-}
-  \item{rd}{discrete growth rate
+  \item{K}{carrying capacity
 }
   \item{p.sj}{probability of seed survivel
 }
@@ -71,8 +54,7 @@ sobrevive(p.mort,N0)
 }
   \item{fec}{mean number of propagulus per adult each cicle
 }
-  \item{p.mort}{dead probability
-}
+
 }
 \value{
 return a grafic with the simulation and an array with all simulation data
