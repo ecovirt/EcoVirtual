@@ -78,8 +78,8 @@ matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(n.isl), bty="l", cex.lab=1.
 invisible(cena)
 }
 
-#arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=rep(10,1000), tmax=100, anima=TRUE) abund 'NORMAL'
-#arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE) abund igual RCMDR, em eveness
+#arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=rep(10,1000), tmax=100, anima=TRUE) #abund 'NORMAL'
+#arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE) #abund igual RCMDR, em eveness
 
 
 ## Relationship between extinction and colonization rates for the species richness
