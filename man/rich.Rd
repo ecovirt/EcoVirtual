@@ -1,44 +1,34 @@
-\Name{rich }
-\Alias{rich }
+\Name{rich}
 
 \Title{
 Number of Species
 }
 
 \Description{
-Count the number of species from a vector with a species list.
+Count the number of species (species richness) from a vector with a species list.
 }
 
 \Usage{
-
+rich(x)
 }
 
 \Arguments{
-  \item{}{
-    
+  \item{x}{
+    a vector with names.
 }
 
 }
 
 \Details{
-
+This function is used internally in the functions 'simHub1', simHub2', and 'simHub3'.
 }
 
 \Value{
-
+returns the number of species (species richness).
 }
 
-\References{
-
-}
-
-}
 \Author{
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
-}
-
-\See Also{
-
 }
 
 \Examples{
@@ -48,4 +38,4 @@ rich(lsp)
 }
 
 \Keyword{simulation}
-\Keyword{ }
+\Keyword{Neutral Theory}

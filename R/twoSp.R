@@ -41,9 +41,9 @@ invisible(resulta)
 
 
 ## Metapopulation competition - patch occupancy between best and inferior competitors
-metaComp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
+metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 {
-	pais<-array(0, dim=c(ln,cl,tmax))
+	pais<-array(0, dim=c(rw,cl,tmax))
 #if(D=0)
 #{
   F1 <- 1-(pe/i1)
@@ -60,7 +60,7 @@ metaComp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 #F2<-pe/i1 - pe/i2- i1/i2*(1-D-pe/i1)
 
 #}
-  Nt <- ln*cl
+  Nt <- rw*cl
   N <- floor(Nt*(1-D))
   resultado=matrix(nrow=tmax,ncol=3)
   n1 <- floor(fi1*N)
@@ -99,7 +99,7 @@ metaComp<-function(tmax,ln,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 		animaMetaComp(pais)
 		}
 x11()  
-plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupancy", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; ln=",ln,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
+plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupancy", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; rw=",rw,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
   lines(1:tmax,resultado[,3],col="green", lwd=2)
   abline(h=F1,col="blue",lwd=1.5,lty=2)
   if(F2>0)abline(h=F2,col="green",lwd=1.5,lty=2)
@@ -109,6 +109,6 @@ plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupancy", ylim=c(0,m
   invisible(pais)
 }
 
-#metaComp(tmax=100,cl=20,ln=20,fi1=0.4,fi2=0.4,i1=0.1,i2=0.1,pe=0.05, D=0,anima=TRUE)
-#metaComp(tmax=100, cl=100, ln=100, fi1=0.1, fi2=0.4, i1=0.4, i2=0.5, pe=0.25, D=0)
+#metaComp(tmax=100,cl=20,rw=20,fi1=0.4,fi2=0.4,i1=0.1,i2=0.1,pe=0.05, D=0,anima=TRUE)
+#metaComp(tmax=100, cl=100, rw=100, fi1=0.1, fi2=0.4, i1=0.4, i2=0.5, pe=0.25, D=0)
 

@@ -275,7 +275,7 @@ if(anima==TRUE)
 
 
 ## Hubbell Neutral Model with immigration from a Metacommunity
-simHub2=function(S= 100, j=10, D=1, cicles=1e4, step=1000, m=0.01, anima=TRUE)
+simHub2=function(S= 100, j=10, D=1, cicles=1e4, m=0.01, anima=TRUE)
 { 
 if(cicles<200){cicles=200; cat("\n Minimum number of cicles: 200\n")}
   stepseq=round(seq(101, cicles+1, len=100))
@@ -356,7 +356,7 @@ x11()
   invisible(ind.mat)
 }
 
-#simHub2(j=2,cicles=2e4,step=1e2,m=0.1)
+#simHub2(j=2,cicles=2e4,m=0.1)
 
 
 ## Hubbel Neutral Model with Immigration and speciation from a metacommunity

@@ -1,5 +1,4 @@
 \Name{arquip}
-\Alias{arquip}
 
 \Title{
 Species Colonization and Species-Area Relationship in Arquipelagos
@@ -31,6 +30,7 @@ arquip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 }
   \item{abund}{
      abundance of each species in the seed rain.
+}
  \item{tmax}{
      maximum time for the simulations.
 }
@@ -39,13 +39,9 @@ arquip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 }
 }
 
-
 \Details{
-The 'abund' argument can be a vector with the same length of the species richness, a number representing equal abundance of each species (maximum eveness), or if the number varies between 0 and 1, the model of geometric species rank-abundance distribution is performed to calculate the abundances. The model is: abund*(1-abund)*((1:S)-1)
+The 'abund' argument can be a vector with the same length of the species richness, or a value representing equal abundance of each species (maximum eveness), or if the number varies between 0 and 1, the model of geometric species rank-abundance distribution is performed to calculate the abundances. The model is: abund*(1-abund)*((1:S)-1)
 }
-
-}
-
 
 \Value{
 arquip returns 3 graphs with the simulation results:
@@ -54,12 +50,11 @@ arquip returns 3 graphs with the simulation results:
 - Passive colonization: number of species x time for each island.
 }
 
-
 \Author{
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>}
 
 \References{
-Stevens??
+
 }
 
 \Examples{

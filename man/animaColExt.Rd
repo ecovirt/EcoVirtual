@@ -1,5 +1,5 @@
 \Name{animaColExt}
-\Alias{animaColExt}
+
 
 \Title{ 
 Colonization and Extinction balance in Island Biogeography
@@ -21,7 +21,7 @@ animaColExt(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
     the maximum value of the extinction and colonization rates.
 }
   \item{cicles}{
-    number of cicles in the simulation
+    number of cicles in the simulation.
 }
   \item{Ext}{
    extinction rate. It can be 'crs' for an increasing extinction rate, 'fix' for a fixed extinction rate in 0.5, or 'dcr' for a decreasing extinction rate.
@@ -37,7 +37,7 @@ animaColExt(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
 }
 
 \Value{
-animaColExt returns a graph of the extinction and colonization rates on each cicle in relation with te number of species of an island in Island Biogeography models.
+animaColExt returns a graph of the extinction and colonization rates per cicle in relation with te number of species of an island in Island Biogeography models.
 }
 
 \References{
@@ -54,7 +54,7 @@ Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
 \Examples{
-animaColExt(Ext='crs', Col="dcr")
+animaColExt(Ext='fix', Col="fix")
 }
 
 \Keyword{simulation}

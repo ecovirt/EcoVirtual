@@ -1,5 +1,4 @@
 \Name{bioGeoIsl}
-\Alias{bioGeoIsl}
 
 \Title{
 Island Biogeographical Model			
@@ -10,7 +9,7 @@ Simulate the island biogeographical model, with rates of colonization and extinc
 }
 
 \Usage{
-bioGeoIsl(areas , dist , P , weight.A=0.5 , a.e=1, b.e=-.01, c.i=1, d.i=-.01,e.i=0, f.i=.01,g.e=0, h.e=.01)
+bioGeoIsl(areas, dist, P, weight.A=0.5, a.e=1, b.e=-0.01, c.i=1, d.i=-0.01, e.i=0, f.i=.01, g.e=0, h.e=.01)
 }
 
 \Arguments{
@@ -74,7 +73,7 @@ Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
 \Examples{
-bioGeoIsl(areas=c(5,10,50,80) , dist=c(10,100,100,10), P=100 , weight.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=.01, g=0, h=.01)
+bioGeoIsl(areas=c(5,10,50,80), dist=c(10,100,100,10), P=100, weight.A=.5, a=1, b=-0.01, c=1, d=-0.01, e=0, f=.01, g=0, h=.01)
 }
 
 \Keyword{simulation}

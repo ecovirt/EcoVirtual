@@ -4,12 +4,12 @@
 
 
 ### Sucessional Niche
-regNicho=function(tmax, ln, cl, c1,c2, ec, dst,  Er, Sc, Mx, Rs) 
+regNicho=function(tmax, rw, cl, c1,c2, ec, dst,  er, sc, mx, rs) 
 {
-N=cl*ln
-V=1-Er-Sc-Mx-Rs
-cena=array(NA,dim=c(ln,cl,tmax))
-cena[,,1]<-sample(c(0:4), N, prob=c(V,Er,Sc,Mx, Rs), replace=TRUE)
+N=cl*rw
+V=1-er-sc-mx-rs
+cena=array(NA,dim=c(rw,cl,tmax))
+cena[,,1]<-sample(c(0:4), N, prob=c(V,er,sc,mx, rs), replace=TRUE)
 resulta=matrix(0, ncol=5, nrow = tmax)
 conta=table(cena[,,1])/N
 resulta[1,(as.numeric(names(conta))+1)]<-conta
@@ -17,29 +17,29 @@ resulta[1,(as.numeric(names(conta))+1)]<-conta
 	{
 	Vvf<-cena[,,t-1]==0
 	nV=sum(Vvf)
-	Ervf<-cena[,,t-1]==1
-	nEr=sum(Ervf)
-	Scvf<-cena[,,t-1]==2
-	nSc=sum(Scvf)
-	Mxvf<-cena[,,t-1]==3
-	nMx=sum(Mxvf)
-	Rsvf<-cena[,,t-1]==4
-	nRs=sum(Rsvf)
-	p_col1=c1*(nSc+nMx+nRs)/N
-	p_col2=c2*(nEr+nMx)/N
+	ervf<-cena[,,t-1]==1
+	ner=sum(ervf)
+	scvf<-cena[,,t-1]==2
+	nsc=sum(scvf)
+	mxvf<-cena[,,t-1]==3
+	nmx=sum(mxvf)
+	rsvf<-cena[,,t-1]==4
+	nrs=sum(rsvf)
+	p_col1=c1*(nsc+nmx+nrs)/N
+	p_col2=c2*(ner+nmx)/N
 	p_ncol=1-p_col1- p_col2
-	p_permEr = 1- (dst + p_col1)
-	p_permSc = 1- (dst + p_col2 + ec)
-	p_permMx = 1 - (dst + ec)
+	p_permer = 1- (dst + p_col1)
+	p_permsc = 1- (dst + p_col2 + ec)
+	p_permmx = 1 - (dst + ec)
 	if(p_ncol<0){p_ncol=0}
-	if(p_permEr<0){p_permEr=0}
-	if(p_permSc<0){p_permSc=0}
-	if(p_permMx<0){p_permMx=0}
+	if(p_permer<0){p_permer=0}
+	if(p_permsc<0){p_permsc=0}
+	if(p_permmx<0){p_permmx=0}
 	cena[,,t][Vvf]<-sample(c(0,1,2),nV, replace=TRUE, prob=c(p_ncol,p_col2,p_col1)) 
-	cena[,,t][Ervf]<-sample(c(0,1,3), nEr, replace=TRUE, prob=c(dst,p_permEr , p_col1))
-	cena[,,t][Scvf]<-sample(c(0,2,3,4), nSc, replace=TRUE, prob=c(dst,p_permSc, p_col2, ec))
-	cena[,,t][Mxvf]<-sample(c(0,3,4), nMx, replace=TRUE, prob=c(dst,p_permMx, ec))
-	cena[,,t][Rsvf]<-sample(c(0,4), nRs, replace=TRUE, prob=c(dst,1 - dst))
+	cena[,,t][ervf]<-sample(c(0,1,3), ner, replace=TRUE, prob=c(dst,p_permer , p_col1))
+	cena[,,t][scvf]<-sample(c(0,2,3,4), nsc, replace=TRUE, prob=c(dst,p_permsc, p_col2, ec))
+	cena[,,t][mxvf]<-sample(c(0,3,4), nmx, replace=TRUE, prob=c(dst,p_permmx, ec))
+	cena[,,t][rsvf]<-sample(c(0,4), nrs, replace=TRUE, prob=c(dst,1 - dst))
 	conta=table(cena[,,t])/N
 	resulta[t,(as.numeric(names(conta))+1)]<-conta
 	}
@@ -50,12 +50,12 @@ legend("topright", c("Early", "Susceptible", "Mixed", "Resistant"), bty="n", lty
 invisible(cena)
 }
 
-#regNicho(tmax=50, ln=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  Er=0.08, Sc=0.02, Mx=0, Rs=0)
+#regNicho(tmax=50, rw=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  er=0.08, sc=0.02, mx=0, rs=0)
 
 
 
 ### Trade-off between competition and colonization 
-comCompete = function(tmax,ln,cl, S, fi, fsp1, pe,fr=0,int=0)
+comCompete = function(tmax,rw,cl, S, fi, fsp1, pe,fr=0,int=0)
 {
 rank=1:S
 vetor_dist=rep("n", tmax)
@@ -67,7 +67,7 @@ vetor_dist=rep("n", tmax)
   }
 vetor_dist=vetor_dist[-1]
 ci= pe/(1-fsp1)^(2*rank-1)
-N <- ln*cl
+N <- rw*cl
 resulta=matrix(nrow=S,ncol=tmax)
 attributes(resulta)=c(attributes(resulta),list(tempo=tmax, riqueza=S, n_manchas=N, inicial= fi, comp=fsp1, coloniza=ci, freq_dist=fr, int=int))
 n_ocup= sum(fi)*N
@@ -124,58 +124,58 @@ par(old)
 invisible(resulta)
 }
 
-#comCompete(tmax=1000,ln=100,cl=100, S=10, fi=1, fsp1=0.20, pe=0.01,fr=0,int=0)
+#comCompete(tmax=1000,rw=100,cl=100, S=10, fi=1, fsp1=0.20, pe=0.01,fr=0,int=0)
 
 
 ## Sucessional stages matrix
-sucMatrix=function(mat_trans, init_prop, ln, cl, tmax)
+sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
 {
-          mat_trans=as.matrix(mat_trans)
-          porc1=apply(mat_trans,2,sum)
+          mat.trans=as.matrix(mat.trans)
+          porc1=apply(mat.trans,2,sum)
           if(sum(porc1!=1)>0)
           {
                     stop("the transition for each fase should sum 1: there is no extintion of area under the model")
           }
-          if(sum(init_prop)!=1 | lenmatgth(init_prop) != dim(mat_trans)[2])
+          if(sum(init.prop)!=1 | lenmatgth(init.prop) != dim(mat.trans)[2])
           {
                     stop("the initial proportion of ocupance should sum 1 and the number of stages should be iqual to transition matrix")
           }
-          nfase=dim(mat_trans)[1]
-          ncel=ln*cl
-          fase_n=round(init_prop*ncel)
+          nfase=dim(mat.trans)[1]
+          ncel=rw*cl
+          fase_n=round(init.prop*ncel)
           cl_fase=colorRampPalette(c("gray","yellow", "orange","green"))
           #cores=c("#ffffff",colors(nfase-1))
           #cores=terrain.colors(nfase)
-          arena=matrix(NA,nrow=ln,ncol=cl)
+          arena=matrix(NA,nrow=rw,ncol=cl)
           #resulta=matrix(0,ncol=nfase, nrow=tmax)
-          pais=array(0,dim=c(ln, cl, tmax))
-          #image(0:ln,0:cl, matrix(0,nrow=ln,ncol=cl), col="white", xlab="", ylab="")
-          #grid(ln,cl)
+          pais=array(0,dim=c(rw, cl, tmax))
+          #image(0:rw,0:cl, matrix(0,nrow=rw,ncol=cl), col="white", xlab="", ylab="")
+          #grid(rw,cl)
           n0=sample(rep(0:(nfase-1), fase_n))
           arena[1:ncel]<-n0
           #t.n0=table(n0)
           #resulta[1,as.numeric(names(t.n0))+1]<-t.n0
           pais[,,1]<-arena
-          image(0:ln, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Sucessional Model")
-          grid(ln,cl)
+          image(0:rw, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Sucessional Model")
+          grid(rw,cl)
           for (tc in 2:tmax)
           {
                     for(nf in 0:(nfase-1))
                     {
                               nf_vf=pais[,,(tc-1)]==nf
                               contn=sum(nf_vf)
-                              pais[,,tc][nf_vf]<-sample(0:(nfase-1),contn,replace=TRUE, prob=as.numeric(mat_trans[,(nf+1)]))
+                              pais[,,tc][nf_vf]<-sample(0:(nfase-1),contn,replace=TRUE, prob=as.numeric(mat.trans[,(nf+1)]))
                     }
                     #          resulta[tc,as.numeric(names(t_n0))+1]<-t_n0
-                    image(0:ln, 0:cl, pais[,,tc], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), add=TRUE)
+                    image(0:rw, 0:cl, pais[,,tc], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), add=TRUE)
                     Sys.sleep(.1)
           }
           x11()
           op=par(mfrow=c(2,2))
-          image(0:ln, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Ernitial Conditions")
+          image(0:rw, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Ernitial Conditions")
           for(ts in c(4,2,1))
           {
-                    image(0:ln, 0:cl, pais[,,round(tc/ts)], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), main=paste("Cicle", round(tc/ts)))
+                    image(0:rw, 0:cl, pais[,,round(tc/ts)], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), main=paste("Cicle", round(tc/ts)))
           }
           par(op)
           x11()
@@ -183,7 +183,7 @@ sucMatrix=function(mat_trans, init_prop, ln, cl, tmax)
           matplot(resulta, type="l", ylim=c(min(resulta)*0.8, max(resulta)*1.1), main="Stage Distribution",xlab="Number of patchs", col=cl_fase(nfase), lty=2, lwd=2)
           legend("topright", legend=paste("Stage", 1:nfase), lty=2, lwd=2, col=cl_fase(nfase), bty="n", cex=0.8)
           #resulta=as.data.frame(resulta)
-          eigs_st=eigen(mat_trans)
+          eigs_st=eigen(mat.trans)
           dom_pos=which.max(Re(eigs_st$values))
           stage_v<- Re(eigs_st[["vectors"]][, dom_pos])
           stage_stable=(stage_v/sum(stage_v))*ncel

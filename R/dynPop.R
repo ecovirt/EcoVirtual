@@ -116,11 +116,11 @@ resulta[1,2:3]=N0
 	resulta[t,3]=lastN+r*lastN*(1-lastN/K)
 	}
 x11()
-plot(resulta[,1],resulta[,2],type="l", lty=2,ylim=c(min(resulta[,c(2,3)])*0.8, K*1.2), xlab="Time (t)", main="Logistic Population Growth", ylab="Population size (N)", sub=paste("Intrinsic rate (r) =", r, sep=""))	
+plot(resulta[,1],resulta[,2],type="l", lty=2,ylim=c(min(resulta[,c(2,3)])*0.8, K*1.2), xlab="Time (t)", main="Logistic Population Growth", ylab="Population size (N)")	
 lines(resulta[,1],resulta[,3], col="red")	
 legend("bottomright", colnames(resulta)[2:3],lty=2,col=c(1,2),bty="n")
 abline(h=K, lty=3, col="blue")
-text(x=2, y=K, "Carying capacity", col="blue",adj=c(0,0))
+text(x=2, y=K, "Carrying capacity", col="blue",adj=c(0,0))
 text(x=tmax*0.5, y= resulta[(tmax/2),2], paste("r=", r),pos=3)
 invisible(resulta)
 }

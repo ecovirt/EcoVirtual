@@ -11,7 +11,7 @@
 \alias{grFim}
 
 \title{
-EcoVirtual Graphics and Amimations
+EcoVirtual Graphics and Animations
 }
 
 \description{

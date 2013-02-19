@@ -1,5 +1,4 @@
 \Name{extGame}
-\Alias{extGame}
 
 \Title{
 Zero-sum Game			
