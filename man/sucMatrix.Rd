@@ -14,19 +14,19 @@ sucMatrix(mat.trans, init.prop, rw, cl, tmax)
 
 \Arguments{
   \item{mat.trans}{
-    matrix of transitions probabilites
+    matrix of transitions probabilites.
 }
   \item{init.prop}{
-    initial stages proportions
+    initial stages proportions.
 }
   \item{rw}{
-    number of rows
+    number of rows.
 }
   \item{cl}{
-    number of columns
+    number of columns.
 }
   \item{tmax}{
-    maximum simulation time
+    maximum simulation time.
 }
 }
 
@@ -51,6 +51,7 @@ Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
 \Examples{
+sucMatrix(mat.trans=matrix(data=c(0.5,0.5,0.5,0.5), nrow=2), init.prop=c(0.5,0.5),rw=20,cl=20, tmax=100)
 
 }
 

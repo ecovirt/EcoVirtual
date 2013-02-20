@@ -26,7 +26,7 @@ comCompete(rw, cl, S, fi, fsp1, pe, fr=0, int=0, tmax)
     initial fraction of patchs occupaded.
 }
   \item{fsp1}{
-    best competitor abundance.
+    superior competitor abundance.
 }
   \item{pe}{
     mortality rate.
@@ -47,7 +47,7 @@ comCompete(rw, cl, S, fi, fsp1, pe, fr=0, int=0, tmax)
 }
 
 \Value{
-
+return the graph of simulation results, with the frequency of patch occupied in time by each species, and the trade-off scale, with the superior competitor in one side and the superior colonizator in the other.
 }
 
 \References{

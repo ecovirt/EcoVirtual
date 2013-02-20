@@ -25,7 +25,7 @@ simHub3(Sm, jm, S, j, D, cicles, m, nu, anima=TRUE)
     number of species in the metacommunity.
 }
   \item{j}{
-    individuals per species in the community.
+    individuals per species in the metacommunity.
 }
   \item{jm}{
     individuals per species in the metacommunity.
@@ -48,11 +48,13 @@ simHub3(Sm, jm, S, j, D, cicles, m, nu, anima=TRUE)
 }
 
 \Details{
-
+'simHub1' is the model without immigration in the metacommunity
+'simHub2' incorporates the immigration rate in the metacommunity
+'simHub3' incorporates the immigration and speciation rates in the metacommunity.
 }
 
 \Value{
-
+These functions returns a graph with the number of species in time (cicles) in the metacommunity.
 }
 
 \References{

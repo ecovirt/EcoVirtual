@@ -41,7 +41,7 @@ probability of extinction.
 habitat destruction, proportion.
 }
   \item{anima}{
-show animation,  logical.
+logical; if TRUE, show simulation frames.
 }
 }
 
@@ -50,7 +50,7 @@ show animation,  logical.
 }
 
 \value{
-return a grafic with the simulation
+return a grafic with the simulation results.
 }
 
 \references{

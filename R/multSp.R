@@ -45,7 +45,7 @@ resulta[1,(as.numeric(names(conta))+1)]<-conta
 	}
 animaCena(cena)
 x11()
-matplot( 1:tmax,resulta[,2:5], type="l", main="Niche Regeneration Model" , xlab="time", ylab="State proportion", lty=2:5, col=2:5)
+matplot( 1:tmax,resulta[,2:5], type="l", main="Niche Regeneration Model" , xlab="time", ylab="Patch occupancy", lty=2:5, col=2:5)
 legend("topright", c("Early", "Susceptible", "Mixed", "Resistant"), bty="n", lty=2:5, col=2:5, cex=0.7)
 invisible(cena)
 }
@@ -118,7 +118,7 @@ layout(matrix(data=c(1,2), nrow=2, ncol=1), widths=c(1,1), heights=c(4,1))
 matplot(1:tmax,t(resulta),type="l", lty=3, col=rainbow(S),bty="n", lwd=2,xlab="Time", ylab="Patch occupancy", main="Competition/Colonization Trade-off", sub=paste("\n best competitor abundance=",fsp1,"; mortality rate=",pe, "; disturbance frequency=",fr, "; disturbance intensity=", int), cex.sub=0.7) 
 old<-par(mar=c(3,5,2,4))
 image(x=1:S, y=1, matrix(data=1:S, nrow=S,ncol=1),col=rainbow(S), xlab="competition/colonizatio scale", ylab="",xaxt="n", yaxt="n")
-axis(1, at=c(1.5,9.5),tick=FALSE, labels=c("better competitor", "better colonizator"))
+axis(1, at=c(1.5,9.5),tick=FALSE, labels=c("best competitor", "best colonizator"))
 par(old)
 ##resultado
 invisible(resulta)
@@ -136,7 +136,7 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
           {
                     stop("the transition for each fase should sum 1: there is no extintion of area under the model")
           }
-          if(sum(init.prop)!=1 | lenmatgth(init.prop) != dim(mat.trans)[2])
+          if(sum(init.prop)!=1 | length(init.prop) != dim(mat.trans)[2])
           {
                     stop("the initial proportion of ocupance should sum 1 and the number of stages should be iqual to transition matrix")
           }
@@ -146,6 +146,7 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
           cl_fase=colorRampPalette(c("gray","yellow", "orange","green"))
           #cores=c("#ffffff",colors(nfase-1))
           #cores=terrain.colors(nfase)
+          x11()
           arena=matrix(NA,nrow=rw,ncol=cl)
           #resulta=matrix(0,ncol=nfase, nrow=tmax)
           pais=array(0,dim=c(rw, cl, tmax))
@@ -172,13 +173,12 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
           }
           x11()
           op=par(mfrow=c(2,2))
-          image(0:rw, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Ernitial Conditions")
+          image(0:rw, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Initial Conditions")
           for(ts in c(4,2,1))
           {
-                    image(0:rw, 0:cl, pais[,,round(tc/ts)], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), main=paste("Cicle", round(tc/ts)))
+          image(0:rw, 0:cl, pais[,,round(tc/ts)], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), main=paste("Cicle", round(tc/ts)))
           }
           par(op)
-          x11()
           resulta=t(apply(pais,3, table))
           matplot(resulta, type="l", ylim=c(min(resulta)*0.8, max(resulta)*1.1), main="Stage Distribution",xlab="Number of patchs", col=cl_fase(nfase), lty=2, lwd=2)
           legend("topright", legend=paste("Stage", 1:nfase), lty=2, lwd=2, col=cl_fase(nfase), bty="n", cex=0.8)
@@ -191,3 +191,5 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
           legend("topleft", legend=paste("Stage Stable", 1:nfase), lty=1, lwd=0.9, col=cl_fase(nfase), bty="n", cex=0.8)
           invisible(pais)
 }
+
+#sucMatrix(mat.trans=matrix(data=c(0.5,0.5,0.5,0.5), nrow=2), init.prop=c(0.5,0.5),rw=20,cl=20, tmax=100)

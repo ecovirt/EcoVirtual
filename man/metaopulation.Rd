@@ -47,7 +47,10 @@ metaCiEr(cl, rw, fi, ci, ce, tmax)
 }
 
 \details{
-
+'metaPop is the most basic metapopulation model, including only propagulus seed rain.
+'metaCi' includes propagulus seed rain and Internal Colonization.
+'metaEr' includes propagulus seed rain and Rescue Effect.
+'metaCiEr' includes propagulus seed rain, Internal Colonization and Rescue Effect.
 }
 
 \value{

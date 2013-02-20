@@ -5,7 +5,7 @@ Island Biogeographical Model
 }
 
 \Description{
-Simulate the island biogeographical model, with rates of colonization and extinction for islands of different sizes and distances to the mainland.
+Simulates island biogeographical model, with rates of colonization and extinction for islands of different sizes and distances to the mainland.
 }
 
 \Usage{
@@ -26,28 +26,28 @@ bioGeoIsl(areas, dist, P, weight.A=0.5, a.e=1, b.e=-0.01, c.i=1, d.i=-0.01, e.i=
     ratio between the area and the distance effects.
 }
   \item{a.e}{
-    basal extiction coefficient for area
+    basal extiction coefficient for area.
 }
   \item{b.e}{
-    extinction/area coefficient
+    extinction/area coefficient.
 }
   \item{c.i}{
-    basal colonization coefficient for distance
+    basal colonization coefficient for distance.
 }
   \item{d.i}{
-    colonization/distance coefficient
+    colonization/distance coefficient.
 }
   \item{e.i}{
-    basal colonization coefficient for area
+    basal colonization coefficient for area.
 }
   \item{f.i}{
-    colonization/area coefficient	
+    colonization/area coefficient.
 }
   \item{g.e}{
-    basal extinction coefficient for distance
+    basal extinction coefficient for distance.
 }
   \item{h.e}{
-    extinction/distance coefficient
+    extinction/distance coefficient.
 }
 }
 

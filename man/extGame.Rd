@@ -1,15 +1,15 @@
 \Name{extGame}
 
 \Title{
-Zero-sum Game			
+Tow species zero-sum Game		
 }
 
 \Description{
-Simulate a zero-sum game between two 'competitor species' in a community with a finite number of individuals.
+Simulates a zero-sum game between two 'competitor species' in a community with a finite number of individuals.
 }
 
 \Usage{
-extGame(bet,total, tmax)
+extGame(bet, total, tmax)
 }
 
 \Arguments{
@@ -29,7 +29,7 @@ extGame(bet,total, tmax)
 }
 
 \Value{
-extGame returns a graph with the number of individuals of each competitor on each cicle
+'extGame' returns a graph with the number of individuals of each competitor on each cicle
 }
 
 \References{

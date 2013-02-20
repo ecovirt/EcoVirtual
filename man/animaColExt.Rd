@@ -6,7 +6,7 @@ Colonization and Extinction balance in Island Biogeography
 }
 
 \Description{
-Simulate the relationship between extinction and colonization rates for the species richness in Island Biogeography models.
+Simulate the relationship between extinction and colonization rates for the number of species in Island Biogeography models.
 }
 
 \Usage{
@@ -50,7 +50,7 @@ Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
 \See Also{
-
+ale
 }
 
 \Examples{

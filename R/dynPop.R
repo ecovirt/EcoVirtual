@@ -129,23 +129,23 @@ invisible(resulta)
 
 
 ## Populational Model for structured populations
-popStr=function(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, ln, cl, tmax)
+popStr=function(p.sj, p.jj, p.ja, p.aa, fec, ns, nj, na, rw, cl, tmax)
 {
 x11()
-ncel=ln*cl
-arena=matrix(0,nrow=ln,ncol=cl)
+ncel=rw*cl
+arena=matrix(0,nrow=rw,ncol=cl)
 xy.sem=list()
 #sem[1]=ns
-pais=array(0,dim=c(ln, cl, tmax))
+pais=array(0,dim=c(rw, cl, tmax))
 tab.fr=matrix(NA,ncol=4, nrow=tmax)
-#image(0:ln,0:cl, matrix(0,nrow=ln,ncol=cl), col="white", xlab="", ylab="")
-#grid(ln,cl)
+#image(0:rw,0:cl, matrix(0,nrow=rw,ncol=cl), col="white", xlab="", ylab="")
+#grid(rw,cl)
 n0=rep(c(0,2,3), c((ncel-nj-na),nj, na))
 arena[1:ncel]<-sample(n0)
-image(0:ln, 0:cl, arena, main="Structured Population Dynamics", col=c("white", "green", "darkgreen") , breaks=c(-0.1,1.9,2.9,3.9), xlab="", ylab="")
-grid(ln,cl)
+image(0:rw, 0:cl, arena, main="Structured Population Dynamics", col=c("white", "green", "darkgreen") , breaks=c(-0.1,1.9,2.9,3.9), xlab="", ylab="")
+grid(rw,cl)
 xsem=sample(seq(0,cl,0.1), ns, replace=TRUE)
-ysem=sample(seq(0,ln,0.1), ns, replace=TRUE)
+ysem=sample(seq(0,rw,0.1), ns, replace=TRUE)
 ind.sem=floor(ysem)*cl + ceiling(xsem)
 points(xsem,ysem, col="red", pch=16)
 xy.sem[[1]]=cbind(x=xsem,y=ysem)
@@ -178,23 +178,23 @@ pais[,,1]<-arena
 		}
 	if(sum(pais[,,tc])==0 & n.fec==0)
 	{
-	image(0:ln,0:cl, matrix(0,nrow=ln,ncol=cl), col="white", xlab="", ylab="", add=TRUE)
-	grid(ln,cl)
-	text(ln/2, cl/2, "EXTINCTION", col="red", cex=4)
+	image(0:rw,0:cl, matrix(0,nrow=rw,ncol=cl), col="white", xlab="", ylab="", add=TRUE)
+	grid(rw,cl)
+	text(rw/2, cl/2, "EXTINCTION", col="red", cex=4)
 	break
 	}
 #	if(sum[pais[,,tc]==0 & n.fec>0)
 #	{
-#	image(0:ln,0:cl, matrix(0,nrow=ln,ncol=cl), col="white", xlab="", ylab="", add=TRUE)
-#	#text(ln/2, cl/2, "EXTINTION", col="red", cex=4)
-#	grid(ln,cl)
+#	image(0:rw,0:cl, matrix(0,nrow=rw,ncol=cl), col="white", xlab="", ylab="", add=TRUE)
+#	#text(rw/2, cl/2, "EXTINTION", col="red", cex=4)
+#	grid(rw,cl)
 #	stop()
 #	}
-	image(0:ln,0:cl, matrix(0,nrow=ln,ncol=cl), col="white", xlab="", ylab="", add=TRUE)
-	image(0:ln, 0:cl, pais[,,tc], col=c("white", "green", "darkgreen") ,breaks=c(0,1,2,3), xlab="", ylab="",  add=TRUE, sub=paste("simulation no. =",tc ))
-	grid(ln,cl)
+	image(0:rw,0:cl, matrix(0,nrow=rw,ncol=cl), col="white", xlab="", ylab="", add=TRUE)
+	image(0:rw, 0:cl, pais[,,tc], col=c("white", "green", "darkgreen") ,breaks=c(0,1,2,3), xlab="", ylab="",  add=TRUE, sub=paste("simulation no. =",tc ))
+	grid(rw,cl)
 	xsem=sample(seq(0,cl,0.1), n.fec, replace=TRUE)
-	ysem=sample(seq(0,ln,0.1), n.fec, replace=TRUE)
+	ysem=sample(seq(0,rw,0.1), n.fec, replace=TRUE)
 	xy.sem[[2]]=cbind(x=xsem,y=ysem)
 	ind.sem=floor(ysem)*cl + ceiling(xsem)
 	points(xsem,ysem, col="red", pch=16)
@@ -212,5 +212,5 @@ legend("topright",legend=c("Empty", "Seed", "Juvenil", "Adult") ,lty=1:4, col=c(
 invisible(list(simula=pais, xy=xy.sem))
 }
 
-#popStr(p.sj=0.05, p.jj=0.99, p.ja=0, p.aa=1, fec=1.2, ns=100,nj=150,na=50, ln=20, cl=20, tmax=100)
+#popStr(p.sj=0.05, p.jj=0.99, p.ja=0, p.aa=1, fec=1.2, ns=100,nj=150,na=50, rw=20, cl=20, tmax=100)
 #popStr(0.1,0.4,0.3,0.9,1.2,100,80,20, 20,20,100)

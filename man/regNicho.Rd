@@ -1,11 +1,11 @@
 \Name{regNicho}
 
 \Title{
-Succesional niche simulations
+Niche Regeneration Model				
 }
 
 \Description{
-Simulates the succession of niches in a regeneration process.
+Simulates the process of niche succession in a landscape, with the proportion of each succecional stage in time.
 }
 
 \Usage{
@@ -17,34 +17,34 @@ regNicho(tmax, rw, cl, c1, c2, ec, dst, er, sc, mx, rs)
     maximum simulation time.
 }
   \item{rw}{
-    number of rows
+    number of rows.
 }
   \item{cl}{
-    number of columns
+    number of columns.
 }
   \item{c1}{
-    colonization rate for the superior competitor
+    colonization rate for the superior competitor.
 }
   \item{c2}{
-    colonization rate for the inferior competitor
+    colonization rate for the inferior competitor.
 }
   \item{ec}{
-    competitive exclusion
+    competitive exclusion.
 }
   \item{dst}{
-    disturbance
+    disturbance.
 }
   \item{er}{
-    early stage (only sp2)
+    early stage (only sp2).
 }
   \item{sc}{
-    susceptive stage (only sp1)
+    susceptive stage (only sp1).
 }
   \item{mx}{
-    mixed (sp1 and sp2)
+    mixed (sp1 and sp2).
 }
   \item{rs}{
-    resistant
+    resistant stage.
 }
 }
 
@@ -53,7 +53,7 @@ regNicho(tmax, rw, cl, c1, c2, ec, dst, er, sc, mx, rs)
 }
 
 \Value{
-
+returns the simulation results of patch occupancy in time for each succecional stage.
 }
 
 \References{
@@ -70,8 +70,8 @@ Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
 \Examples{
-
+regNicho(tmax=50, rw=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  er=0.08, sc=0.02, mx=0, rs=0)
 }
 
 \Keyword{simulation}
-\Keyword{ }
+\Keyword{Niche succecion}
