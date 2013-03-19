@@ -47,7 +47,7 @@ animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq)
 
 
 ## grColExt used in 'animaColExt' and 'bioGeoIsl'
-grColExt=function(E , I , P, areas)
+grColExt=function(E , I , P, area)
 {
           S = I*P/(I+E) ; T = I*E/(I+E)
           nIsl=length(E)
@@ -66,9 +66,9 @@ grColExt=function(E , I , P, areas)
                     mtext(paste("S", i, sep=""),side=1,at=S[i], cex=0.8,font=2,col=corIsl[i], line=linhas[i])
                     mtext(paste("T", i, sep=""),side=2,at=T[i],cex=0.8,font=2,las=1,col=corIsl[i], line=linhas[i])
                     points(S[i],T[i],col=corIsl[i],pch=16,cex=1)
-                    if(length(unique(areas))>1)
+                    if(length(unique(area))>1)
                     {
-                              siz_ar=2 +(areas/max(areas))
+                              siz_ar=2 +(area/max(area))
                               points(S[i],T[i],col=corIsl[i],cex=siz_ar[i])
                     }
                     segments(S[i],T[i],S[i],0,lty=3,col=corIsl[i])
@@ -79,7 +79,7 @@ grColExt=function(E , I , P, areas)
           #	mtext("E",side=4,at=E,font=2,las=1)
 }
 
-#grColExt(E = .5 , I = .5 , P = 100, areas=1:10)
+#grColExt(E = .5 , I = .5 , P = 100, area=1:10)
 
 
 ## animaRandWalk used in 'randWalk'
@@ -118,7 +118,7 @@ animaGame = function(xGame, total, sleep=0.01)
                     xGame=xGame[indx]
                     xseq=xseq[indx]
           }
-          plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Number of Individuals",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", sub=paste("Maximum number of individuals = ", total), cex.sub=0.9)
+          plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Bet size",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", sub=paste("Maximum number of bets = ", total), cex.sub=0.9)
           abline(h=total/2, lty=2, col="red")
           cores= c("blue","black")
           #n=dim(rwData)[2]

@@ -35,6 +35,7 @@ segments(0,k2,k2/beta,0,lty=4,lwd=1.5, col="green" )
 
 legend("topleft", title="Equilibrium without habitat destruction",legend=c("isocline sp.1 ", "Isocline sp. 2", "Populations trajectory"), lty=c(4,4,1), col=c("blue", "green", "red"), bty="n", cex=0.8)
 invisible(resulta)
+#return(resulta)
 }
 
 #compLV(n01=10, n02=10,r1=0.05, r2=0.03, k1=80, k2=50, alfa=1.2, beta=0.5, tmax=200)

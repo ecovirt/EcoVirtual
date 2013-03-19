@@ -39,3 +39,4 @@ rich(lsp)
 
 \Keyword{simulation}
 \Keyword{Neutral Theory}
+\Keyword{Internal Functions}

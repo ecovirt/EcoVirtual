@@ -1,11 +1,11 @@
 \Name{extGame}
 
 \Title{
-Tow species zero-sum Game		
+Zero-sum game
 }
 
 \Description{
-Simulates a zero-sum game between two 'competitor species' in a community with a finite number of individuals.
+Simulates a zero-sum game between two competitors in a finite number of individuals.
 }
 
 \Usage{
@@ -14,10 +14,10 @@ extGame(bet, total, tmax)
 
 \Arguments{
   \item{bet}{
-    bet size. number of individuals 'converted' on the winner species per time (cicle).
+    bet size of each competitor on each time.
 }
   \item{total}{
-    total amount. maximum number of individuals in the community.
+    total amount of 'utility' in the game.
 }
 } \item{tmax}{
     maximum game time (number of cicles).
@@ -25,11 +25,13 @@ extGame(bet, total, tmax)
 }
 
 \Details{
-
+In game theory and economic theory, a zero–sum game is a mathematical representation of a situation in which a participant's gain (or loss) of utility is exactly balanced by the losses (or gains) of the utility of the other participant(s). If the total gains of the participants are added up, and the total losses are subtracted, they will sum to zero. A zero–sum game is also called a strictly competitive game while non-zero–sum games can be either competitive or non-competitive.
 }
 
 \Value{
-'extGame' returns a graph with the number of individuals of each competitor on each cicle
+'extGame' returns a graph with the number of individuals of each competitor on each cicle.
+
+'extGame' also returns an invisible vector with the results of the loser on each bet.
 }
 
 \References{
@@ -42,7 +44,7 @@ Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
 \See Also{
-
+simHub, randWalk
 }
 
 \Examples{

@@ -25,7 +25,8 @@ metaPop <-function(tmax,cl,rw,fi,pc,pe)
 	ylim=c(0,1),main=paste("Propagulus rain","\n cols=",cl," rows=",rw," fi=",fi," pi=",pc," pe=",pe),font.lab=2,lwd=2)
 	abline(h=F,col=2,lwd=2,lty=2)
 	legend("topright", legend=("expected equilibrium"), lty=2, col="red", bty="n")
-   invisible(paisag)
+  invisible(paisag)
+          #return(paisag)
 }
 
 #metaPop(tmax=100,cl=20,rw=20,fi=0.2,pe=0.2,pc=0.5)

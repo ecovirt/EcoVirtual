@@ -43,22 +43,31 @@ compLV(n01,n02,tmax,r1,r2,k1,k2,alfa,beta)
 }
 
 \Details{
+The Lotka-Volterra competition model follows the equations:
+	\item[-] SP1:
+	$$\frac{dN_1}{dt}=r_1N_1\left(\frac{K_1-N_1-\alpha N_2}{K_1}\right) $$
+	\item[-] SP2:
+	$$\frac{dN_2}{dt}=r_2N_2\left(\frac{K_2-N_2-\beta N_1}{K_2}\right) $$
 
 }
 
 \Value{
 'compLV' returns a graph of the population size in time, and a graph with the isoclines of the equilibrium for both species.
+'compLV' also returns an invisible matrix with the population size of each species in time.
 }
 
 \References{
 Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
+Hastings, A. 1980. Disturbance, coexistence, history and competition for space. Theoretical Population Biology, 18:363–373.
+Stevens, M.H.H. 2009. A primer in ecology with R. New York, Springer.
+
 }
 
 \Author{
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
-\See Also{
+\Seealso{
 
 }
 

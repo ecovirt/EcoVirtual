@@ -1,11 +1,11 @@
 \Name{randWalk}
 
 \Title{
-Random Walk Simulation for extinction of populations
+Random Walk Simulations
 }
 
 \Description{
-Simulate the extinction of populations by a randow walk model.
+Simulates random walk models.
 }
 
 \Usage{
@@ -14,28 +14,30 @@ randWalk(S,step=1,tmax=1e5,x1max=200, all.eq=FALSE)
 
 \Arguments{
   \item{S}{
-    number of populations.
+    number of individuals.
 }
   \item{step}{
-    step size. number of death or birth on each population in each time.
+    step size. number of steps on each time.
 }
   \item{tmax}{
     maximum time.
 }
   \item{x1max}{
-    maximum initial distance to extinction for each population (population size)
+    maximum initial distance to each individual.
 }
   \item{all.eq}{
-    logical; if TRUE, the all initial population size are equal. if FALSE, the initial population size of the species are a sample between 1 and the maximum initial distance(x1max).
+    logical; if TRUE, the all initial distance are equal. if FALSE, the initial distances for each individual is a sample between 1 and the maximum initial distance(x1max).
 }
 }
 
 \Details {
-
+Random walk is a mathematical formalization of a path that consists of a succession of random steps. 
 }
 
 \Value{
-randWalk returns a graph with the trajectories of the populations in time. Extincted populations are those who reached the absortion surface, when population size is zero.
+'randWalk' returns a graph with the trajectories of the populations in time. Extincted populations are those who reached the absortion surface, when population size is zero.
+
+'randWalk' also returns an invisible matrix with the distance from de edge for each individual on each time.
 }
 
 \References{
@@ -48,7 +50,7 @@ Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
 \See Also{
-
+extGame, simHub
 }
 
 \Examples{

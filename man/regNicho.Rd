@@ -57,7 +57,8 @@ returns the simulation results of patch occupancy in time for each succecional s
 }
 
 \References{
-
+Pacala, S & Rees, M. 1998. Models suggesting field experiments to test two hypotheses explaining successional diversity. The American Naturalist 152(2): 729:737.
+Stevens, MHH. 2009. A primer in ecology with R. New York, Springer.
 }
 
 }
@@ -65,8 +66,8 @@ returns the simulation results of patch occupancy in time for each succecional s
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
-\See Also{
-
+\Seealso{
+	\code{\link{comCompete}}
 }
 
 \Examples{
@@ -74,4 +75,4 @@ regNicho(tmax=50, rw=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  er=0.08, sc
 }
 
 \Keyword{simulation}
-\Keyword{Niche succecion}
+\Keyword{Niche sucession}

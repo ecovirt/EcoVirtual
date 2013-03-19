@@ -13,8 +13,8 @@ Functions to simulate population dynamic models.
 }
 
 \usage{
-estExp(N0,r,varr,tmax) 
 estDem(N0, b, d, tmax)
+estExp(N0,r,varr,tmax) 
 crescLog(N0, r, K, tmax)
 popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 }
@@ -44,7 +44,7 @@ popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 }
   \item{p.ja}{juvenil probability of transition to adult fase.
 }
-  \item{p.aa}{adult probability of survival.
+  \item{p.aa}{probability of adult survival.
 }
   \item{ns}{number of seeds at initial time.
 }
@@ -56,14 +56,23 @@ popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 }
 
 \details{
-'estLog' give results for continuous and discrete models.
-'estExp' and 'estDem' give results for deterministic and stochastic models.
+'estExp' gives the results for exponential population growth with environmental stochasticity in time 
 
+'estDem' gives the results for the birth and death rates for deterministic and stochastic (enviromental) models in time.
+
+Stochastic models uses 'r' and 'lambda' values taken of a normal distribution with mean 'r' and variance 'varr'.
+
+'crescLog' gives the results for a logistic growth for continuous and discrete models in time.
+
+'popStr' gives the result for a structured population dynamics, with Leslie's matrices for the stages of the population.
+
+
+ 
 }
 
-}
+
 \value{
-return a grafic with the simulation results.
+The functions return graphics with the simulation results, and an invisible matrix with the population size for deterministc and stochastic models on each time.
 }
 
 \references{

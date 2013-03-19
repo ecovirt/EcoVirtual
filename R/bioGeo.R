@@ -6,6 +6,26 @@
 ### Island Biogeography ###
 ###########################
 
+## Relationship between extinction and colonization rates for the species richness
+animaColExt=function(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
+{
+          a=seq(from=min,to=max,length.out=cicles)
+          b=seq(from=max, to=min, length.out=cicles)
+          nt=length(a)
+          if(Ext=="fix"){ext=rep(0.5,nt)}
+          if(Ext=="crs"){ext=a}
+          if(Ext=="dcr"){ext=b}
+          if(Col=="fix"){col=rep(0.5,nt)}
+          if(Col=="crs"){col=a}
+          if(Col=="dcr"){col=b}
+          x11()
+          grColExt(E=ext,I=col,P=100, area=1)
+}
+
+#animaColExt(Ext='crs', Col="dcr")
+
+
+
 ## Species colonization and species-area relationship in arquipelagoes
 arquip=function(n.isl,ar.min, ar.max, S, seed.rain, abund, tmax, anima=TRUE)
 {
@@ -75,65 +95,49 @@ rqz<-apply(cena, c(2,3), sum)
 clz<-diff(riq.tempo)
 matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(n.isl), bty="l", cex.lab=1.2, xlab="Species Number", ylab="Colonization (species/cicle)", cex.axis=1.2, main="Colonization Rate Curves", cex.main=1.2 )
 
-invisible(cena)
+          invisible(cena)
 }
 
 #arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=rep(10,1000), tmax=100, anima=TRUE) #abund 'NORMAL'
 #arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE) #abund igual RCMDR, em eveness
 
 
-## Relationship between extinction and colonization rates for the species richness
-animaColExt=function(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
-{
-a=seq(from=min,to=max,length.out=cicles)
-b=seq(from=max, to=min, length.out=cicles)
-nt=length(a)
-if(Ext=="fix"){ext=rep(0.5,nt)}
-if(Ext=="crs"){ext=a}
-if(Ext=="dcr"){ext=b}
-if(Col=="fix"){col=rep(0.5,nt)}
-if(Col=="crs"){col=a}
-if(Col=="dcr"){col=b}
-x11()
-grColExt(E=ext,I=col,P=100, areas=1)
-}
-
-#animaColExt(Ext='crs', Col="dcr")
-
 
 ## Island Biogeography, rates of colonization and extinctions for islands of different sizes and distances to continent.
-bioGeoIsl=function(areas , dist , P , weight.A=.5 , a.e=1, b.e=-.01, c.i=1, d.i=-.01,e.i=0, f.i=.01,g.e=0, h.e=.01)
+bioGeoIsl=function(area, dist , P , weight.A=.5 , a.e=1, b.e=-.01, c.i=1, d.i=-.01,e.i=0, f.i=.01,g.e=0, h.e=.01)
 {
 x11()
 nf <- layout(matrix(c(1,2), 2, 1),widths=c(1), heights=c(4,1))
 #layout.show(nf)
 def_par<-par(mar=c(4,7,3,7))
-  E=((a.e+b.e*areas)*weight.A+(g.e+h.e*dist)*(1-weight.A))
-  I=((c.i+d.i*dist)*weight.A+(e.i+f.i*areas)*(1-weight.A))
-#E=((b*areas)*weight.A + (h*dist)*(1-weight.A))
-#I=((d*dist)*weight.A+(f*areas)*(1-weight.A))
+  E=((a.e+b.e*area)*weight.A+(g.e+h.e*dist)*(1-weight.A))
+  I=((c.i+d.i*dist)*weight.A+(e.i+f.i*area)*(1-weight.A))
+#E=((b*area)*weight.A + (h*dist)*(1-weight.A))
+#I=((d*dist)*weight.A+(f*area)*(1-weight.A))
 I[I<=0]<-0.001
 E[E<=0]<-0.001
-#E=((b*r.areas) * weight.A) + ((h*r.dist)*(1-weight.A))
-#I= ((d*r.dist) * (1-weight.A)) + (f*r.areas*weight.A)
+#E=((b*r.area) * weight.A) + ((h*r.dist)*(1-weight.A))
+#I= ((d*r.dist) * (1-weight.A)) + (f*r.area*weight.A)
 S=I*P/(I+E)
 T=I*E/(I+E)
-nIsl=length(areas)
-grColExt(E=E , I=I , P=P, areas=areas)
-ex=data.frame(areas=areas,spp=S,dist=dist)
+nIsl=length(area)
+grColExt(E=E , I=I , P=P, area=area)
+ex=data.frame(area=area,dist=dist, S=S)
 par(mar=c(0,0,0,0))
 plot(1:10, 1:10, type="n", xlab="", ylab="", bty="n", xaxt="n", yaxt="n")
 points(rep(4,nIsl), 2:(nIsl+1), col=rainbow(nIsl))
 text(c (5, 6),c(nIsl+3,nIsl+3), c("Size","Distance"))
-text(rep(5,nIsl),2:(nIsl+1), areas)
+text(rep(5,nIsl),2:(nIsl+1), area)
 text(rep(6,nIsl),2:(nIsl+1), dist)
 segments(4.5,nIsl+2, 6.5, nIsl+2)
 segments(4.5, nIsl+3, 4.5, 1)
 par(def_par)
+
 invisible(ex)
+
 }
 
-#bioGeoIsl(areas=c(5,10,50,80) , dist=c(10,100,100,10), P=100 , weight.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=.01, g=0, h=.01)
+#bioGeoIsl(area=c(5,10,50,80) , dist=c(10,100,100,10), P=100 , weight.A=.5 , a=1, b=-.01, c=1, d=-.01, e=0, f=.01, g=0, h=.01)
 
 
 
@@ -168,6 +172,8 @@ randWalk <- function(S=1,step=1,tmax=1e5,x1max=200, all.eq=FALSE){
   invisible(results)
 #  matplot(time,results,type="l", col=rainbow(S),lwd=2, xlab="Steps",  main="Randon Walk",ylab="Distance from the edge")
 #  abline(h=0,lwd=4)
+  #return(results)
+  
 }
 
 #randWalk(S=10,step=10,tmax=1e4)
@@ -195,6 +201,7 @@ extGame <- function(bet=1,total=100, tmax=2){
   x11()
   animaGame(results, total)
   invisible(results)
+  #return(results)
 }
 
 #old<-par(mfrow=c(2,2))
@@ -263,7 +270,8 @@ if(anima==TRUE)
   }
   x11()
     plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/cicles,"sp/cicle"), cex.sub=0.8) 
-  invisible(ind.mat)
+  #invisible(ind.mat)
+#return(ind.mat)
 }
 
 #par(mfrow=c(2,2))

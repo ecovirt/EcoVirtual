@@ -10,64 +10,33 @@
 \alias{grFim}
 
 \title{
-EcoVirtual Graphics and Animations
+Internal EcoVirtual Graphics and Animations
 }
 
 \description{
-Graphics and animations of the simulations results.
+Internal functions for gaphics and animations of the simulations results. 
 }
 
 \usage{
-animaCena(dados)
-animagGame(xGame, total, sleep=0.01)
-animaHub(dadoHub, sleep=0.1)
-animaIsl(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq)
-animaMeta2(dados)
-animaMetaComp(dados)
-animaRandWalk(rwData, time=2, sleep=0.1)
 grColExt(E , I , P, areas)
-grFim(dados)
-
 }
 
 \arguments{
-  \item{dados}{
+  \item{E}{
+	extinction rate
+}
+  \item{I}{
+	colonization rate
+}
+  \item{P}{
 
 }
-  \item{xGame}{
+  \item{area}{
 
 }
-  \item{total}{
 
 }
-  \item{sleep}{
 
-}
- \item{dadoHub}{
-
-}
- \item{riq.tempo}{
-
-}
- \item{ar.isl}{
-
-}
- \item{locxy}{
-
-}
- \item{sprain}{
-
-}
- \item{col_riq}{
-
-}
- \item{rwdata}{
-
-}
- \item{time}{
-
-}
-}
 
 \details{
 Below each function and its primary function (where the graphical and animation function are used):

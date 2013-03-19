@@ -52,15 +52,17 @@ bioGeoIsl(areas, dist, P, weight.A=0.5, a.e=1, b.e=-0.01, c.i=1, d.i=-0.01, e.i=
 }
 
 \Details{
-
+?
 }
 
 \Value{
 'bioGeoIsl' returns a graph with the rates of colonization and extinction in relation with the species richness for each island.
+
+'bioGeoIsl' also returns a invisible data frame with the values for area, distance and species richness (S) for each island.
 }
 
 \References{
-
+Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
 }
@@ -68,9 +70,11 @@ bioGeoIsl(areas, dist, P, weight.A=0.5, a.e=1, b.e=-0.01, c.i=1, d.i=-0.01, e.i=
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
-\See Also{
-
+\Seealso{
+	\code{\link{animaColExt}}
+	\code{\link{arquip}}
 }
+
 
 \Examples{
 bioGeoIsl(areas=c(5,10,50,80), dist=c(10,100,100,10), P=100, weight.A=.5, a=1, b=-0.01, c=1, d=-0.01, e=0, f=.01, g=0, h=.01)

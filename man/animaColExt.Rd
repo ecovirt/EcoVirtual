@@ -1,12 +1,11 @@
 \Name{animaColExt}
 
-
 \Title{ 
 Colonization and Extinction balance in Island Biogeography
 }
 
 \Description{
-Simulate the relationship between extinction and colonization rates for the number of species in Island Biogeography models.
+Simulate the relationship between extinction and colonization rates for the number of species in time for Island Biogeography models.
 }
 
 \Usage{
@@ -37,11 +36,11 @@ animaColExt(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
 }
 
 \Value{
-animaColExt returns a graph of the extinction and colonization rates per cicle in relation with te number of species of an island in Island Biogeography models.
+'animaColExt' returns a graph of the extinction and colonization rates per cicle in relation with te number of species of an island in Island Biogeography models.
 }
 
 \References{
-
+Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
 }
@@ -49,8 +48,10 @@ animaColExt returns a graph of the extinction and colonization rates per cicle i
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
-\See Also{
-ale
+\seealso{
+	\code{\link{arquip}}
+	\code{\link{bioGeoIsl}} 
+
 }
 
 \Examples{

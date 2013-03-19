@@ -54,11 +54,13 @@ metaCiEr(cl, rw, fi, ci, ce, tmax)
 }
 
 \value{
-return a graphic with the simulation results. 
+Metapopulation functions return graphics with the simulation results, and an invisible array with the simulation results.
 } 
 
 \references{
 Gotelli, N.J. 1991. Metapopulation models: the rescue effect, the propagule rain, and the core-satellite hypothesis. The American Naturalist 138:768-776.
+
+Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
 \author{

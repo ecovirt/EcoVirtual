@@ -41,20 +41,31 @@ arquip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 
 \Details{
 The 'abund' argument can be a vector with the same length of the species richness, or a value representing equal abundance of each species (maximum eveness), or if the number varies between 0 and 1, the model of geometric species rank-abundance distribution is performed to calculate the abundances. The model is: abund*(1-abund)*((1:S)-1), where S is the number of species.
+
 }
 
 \Value{
-arquip returns 3 graphs with the simulation results:
+'arquip' returns 3 graphs with the simulation results:
+
 - The species-area relationship: number of species x island area at the end of the simulation. It also returns the coefficients c and z.
+
 - Colonization rate curves: colonization (species/cicle) x species number for each island.
+
 - Passive colonization: number of species x time for each island.
+
+'arquip' also returns an invisible array with the simulation results of each richness per island in time.
 }
 
 \Author{
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>}
 
 \References{
+Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
+}
 
+\Seealso{
+	\code{\link{animaColExt}}
+	\code{\link{bioGeoIsl}}
 }
 
 \Examples{

@@ -51,15 +51,15 @@ return the graph of simulation results, with the frequency of patch occupied in 
 }
 
 \References{
-
-}
+Tilman. R. 1994. Competition and biodiversity in spatially structured habitats. Ecology,75:2-16. 
+}-
 
 \Author{
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
-\See Also{
-
+\Seealso{
+	\code{\link{comCompete}}
 }
 
 \Examples{

@@ -55,19 +55,21 @@ simHub3(Sm, jm, S, j, D, cicles, m, nu, anima=TRUE)
 
 \Value{
 These functions returns a graph with the number of species in time (cicles) in the metacommunity.
+
+They also return an invisible matrix with the results of species richness on each community per time.
 }
 
 \References{
-
+Hubbell, S.P. 2001. The Unified Neutral Theory of Biodiversity and Biogeography. Princeton University Pres, 448p.
 }
 
-}
 \Author{
 Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 
-\See Also{
-
+\Seealso{
+ 	\code{\link{extGame}}
+  	\code{\link{randWalk{}}
 }
 
 \Examples{
