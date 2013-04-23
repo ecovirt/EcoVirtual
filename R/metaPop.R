@@ -4,7 +4,7 @@
 
 
 ### Propagulus Seed Rain 
-metaPop <-function(tmax,cl,rw,fi,pc,pe)
+metaPop <-function(cl,rw,fi,pc,pe, tmax)
 {
 	paisag=array(0,dim=c(rw,cl,tmax))
    nmanchas=cl*rw
@@ -26,14 +26,13 @@ metaPop <-function(tmax,cl,rw,fi,pc,pe)
 	abline(h=F,col=2,lwd=2,lty=2)
 	legend("topright", legend=("expected equilibrium"), lty=2, col="red", bty="n")
   invisible(paisag)
-          #return(paisag)
 }
 
 #metaPop(tmax=100,cl=20,rw=20,fi=0.2,pe=0.2,pc=0.5)
 
 
 ## Propagulus seed rain with Internal Colonization
-metaCi <-function(tmax,cl,rw,fi,ci,pe)
+metaCi <-function(cl,rw,fi,ci,pe, tmax)
 {
 paisag=array(0,dim=c(rw,cl,tmax))
 nmanchas=cl*rw
@@ -62,7 +61,7 @@ invisible(paisag)
 
 
 ## Propagulus Seed Rain with Rescue EFfect
-metaEr <-function(tmax,cl,rw,fi,pc,ce)
+metaEr <-function(cl,rw,fi,pc,ce, tmax)
 {
 nmanchas=cl*rw
 paisag=array(0,dim=c(rw,cl,tmax))
@@ -98,7 +97,7 @@ invisible(paisag)
 #metaEr(100,20,20,0.25,0.1,0.1)
 
 ## Propagulus Seed Rain with Internal Colonization and Rescue Effect
-metaCiEr <-function(tmax,cl,rw,fi,ci,ce)
+metaCiEr <-function(cl,rw,fi,ci,ce, tmax)
 {
 nmanchas=cl*rw
 paisag=array(0,dim=c(rw,cl,tmax))

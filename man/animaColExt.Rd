@@ -1,63 +1,60 @@
-\Name{animaColExt}
+\name{animaColExt}
+\alias{animaColExt}
 
-\Title{ 
-Colonization and Extinction balance in Island Biogeography
+\title{ 
+Colonization and Extinction balance in the Island Biogeography Equilibrium model
 }
 
-\Description{
-Simulate the relationship between extinction and colonization rates for the number of species in time for Island Biogeography models.
+\description{
+Simulate the balance between extinction and colonization rates given the equilibrium number of species in a island, based on the Island Biogeography Equilibrium model.
 }
 
-\Usage{
+\usage{
 animaColExt(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
 }
 
-\Arguments{
+\arguments{
   \item{min}{ 
-    the minimum value of the extinction and colonization rates.
+    between 0-1. The minimum value of the extinction and colonization rates.
 }
   \item{max}{
-    the maximum value of the extinction and colonization rates.
+    between 0-1. The maximum value of the extinction and colonization rates.
 }
   \item{cicles}{
     number of cicles in the simulation.
 }
   \item{Ext}{
-   extinction rate. It can be 'crs' for an increasing extinction rate, 'fix' for a fixed extinction rate in 0.5, or 'dcr' for a decreasing extinction rate.
-    
+   extinction rate. This can be 'crs' for an increasing extinction rate, 'fix' for a fixed extinction rate in 0.5, or 'dcr' for a decreasing extinction rate.   
 }
   \item{Col}{
-   colonization rate. It can be 'crs' for an increasing colonization rate, 'fix' for a fixed colonization rate in 0.5, or 'dcr' for a decreasing colonization rate.
+   colonization rate. This can be 'crs' for an increasing colonization rate, 'fix' for a fixed colonization rate in 0.5, or 'dcr' for a decreasing colonization rate.
 }
 }
 
-\Details{
-
+\details{
+ The number of species is the balance between extinction and colonization rates at the equilibrium.		
 }
 
-\Value{
-'animaColExt' returns a graph of the extinction and colonization rates per cicle in relation with te number of species of an island in Island Biogeography models.
+\value{
+'animaColExt' returns a graph of the extinction and colonization rates varying one or both rates in relation with te number of species of an island.
 }
 
-\References{
+\references{
 Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
-}
-\Author{
-Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
-}
+\author{
+Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}}
 
 \seealso{
 	\code{\link{arquip}}
 	\code{\link{bioGeoIsl}} 
-
 }
 
-\Examples{
+\examples{
 animaColExt(Ext='fix', Col="fix")
 }
 
-\Keyword{simulation}
-\Keyword{Island Biogeography}
+\keyword{simulation}
+\keyword{Island Biogeography}
 

@@ -13,8 +13,6 @@ for (t in 2:tmax)
 	{
 	resulta[t,2] <- N0*(exp(r*(t-1)))
 	re <- rnorm(1,r,sqrt(varr)) 
-	#cat("t =",t-1,"\n")
-	#cat("r stocastic = ", re,"\n")
 	resulta[t,3] <- resulta[t-1,3]*exp(re) 
 		if (resulta[t,3]<1) 
 		{
@@ -110,7 +108,6 @@ resulta[,1]=seq(0,(tmax-1))
 resulta[1,2:3]=N0
 	for(t in 2:tmax)
 	{
-	#cat("t= ", t-1,"\n")
 	resulta[t,2]=K/(1+((K-N0)/N0)*exp(-r*(t-1)))
 	lastN=resulta[t-1,3]
 	resulta[t,3]=lastN+r*lastN*(1-lastN/K)
@@ -135,11 +132,8 @@ x11()
 ncel=rw*cl
 arena=matrix(0,nrow=rw,ncol=cl)
 xy.sem=list()
-#sem[1]=ns
 pais=array(0,dim=c(rw, cl, tmax))
 tab.fr=matrix(NA,ncol=4, nrow=tmax)
-#image(0:rw,0:cl, matrix(0,nrow=rw,ncol=cl), col="white", xlab="", ylab="")
-#grid(rw,cl)
 n0=rep(c(0,2,3), c((ncel-nj-na),nj, na))
 arena[1:ncel]<-sample(n0)
 image(0:rw, 0:cl, arena, main="Structured Population Dynamics", col=c("white", "green", "darkgreen") , breaks=c(-0.1,1.9,2.9,3.9), xlab="", ylab="")
@@ -169,7 +163,6 @@ pais[,,1]<-arena
 		}
 	n.fec=round(fec*sum(a.vf))
 	vazio=which(pais[,,tc]==0)
-		#match(vazio,ind.sem)
 	sv=vazio%in% ind.sem
 		if(sum(sv)>0)
 		{
@@ -183,13 +176,6 @@ pais[,,1]<-arena
 	text(rw/2, cl/2, "EXTINCTION", col="red", cex=4)
 	break
 	}
-#	if(sum[pais[,,tc]==0 & n.fec>0)
-#	{
-#	image(0:rw,0:cl, matrix(0,nrow=rw,ncol=cl), col="white", xlab="", ylab="", add=TRUE)
-#	#text(rw/2, cl/2, "EXTINTION", col="red", cex=4)
-#	grid(rw,cl)
-#	stop()
-#	}
 	image(0:rw,0:cl, matrix(0,nrow=rw,ncol=cl), col="white", xlab="", ylab="", add=TRUE)
 	image(0:rw, 0:cl, pais[,,tc], col=c("white", "green", "darkgreen") ,breaks=c(0,1,2,3), xlab="", ylab="",  add=TRUE, sub=paste("simulation no. =",tc ))
 	grid(rw,cl)
@@ -208,7 +194,6 @@ names(tab.rel)<-c("Empty", "Seed", "Juvenil", "Adult")
 x11()
 matplot(tab.rel, type="l",col=c("gray", "red", "green", "darkgreen"),lwd=2,main= "Stage Frequency", ylab="Frequency", xlab="Time (t)")
 legend("topright",legend=c("Empty", "Seed", "Juvenil", "Adult") ,lty=1:4, col=c("gray", "red", "green", "darkgreen"), bty="n", cex=0.8 )
-#t.sim=apply(pais,3, table)
 invisible(list(simula=pais, xy=xy.sem))
 }
 

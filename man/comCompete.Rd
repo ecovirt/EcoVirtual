@@ -1,23 +1,24 @@
-\Name{comCompete}
+\name{comCompete}
+\alias{comCompete}
 
-\Title{
-Trade-off between colonization and competition species features
+\title{
+Multispecies competition-colonization tradeoff
 }
 
-\Description{
-Simulates the trade-off between colonization and competition features of species in the proportion of patch occupancy.
+\description{
+Simulates the trade-off betweem colonization and competition abilities in a multispecies system.
 }
 
-\Usage{
+\usage{
 comCompete(rw, cl, S, fi, fsp1, pe, fr=0, int=0, tmax)
 }
 
-\Arguments{
+\arguments{
   \item{rw}{
-    number of rows.
+    number of rows to build the simulated landscape.
 }
   \item{cl}{
-    number of columns.
+   number of columns to build the simulated landscape.
 } 
   \item{S}{
     number of species.
@@ -42,29 +43,35 @@ comCompete(rw, cl, S, fi, fsp1, pe, fr=0, int=0, tmax)
 }
 }
 
-\Details{
+\details{
+In the system, the competitive abilities are inversely proportional to the colonization abilities.
 
+
+
+The number of patches in the simulated landscape is defined by rw*cl. 
 }
 
-\Value{
-return the graph of simulation results, with the frequency of patch occupied in time by each species, and the trade-off scale, with the superior competitor in one side and the superior colonizator in the other.
+\value{
+'comCompete' returns a graph with the proportion of patches occupied in time by each species and the trade-off scale, the superior competitor in one side and the superior colonizator in the other.
 }
 
-\References{
+\references{
 Tilman. R. 1994. Competition and biodiversity in spatially structured habitats. Ecology,75:2-16. 
-}-
 
-\Author{
-Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
+Stevens, M.H.H. 2009. A primer in ecology with R. New York, Springer.
 }
 
-\Seealso{
-	\code{\link{comCompete}}
+\author{
+Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
-\Examples{
+\seealso{
+	\code{\link{metaComp}}
+}
+
+\examples{
 comCompete(tmax=1000, rw=100, cl=100, S=10, fi=1, fsp1=0.20, pe=0.01, fr=0, int=0)
 }
 
-\Keyword{simulation}
-\Keyword{metacompetition}
+\keyword{simulation}
+\keyword{metacompetition}

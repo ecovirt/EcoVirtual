@@ -1,4 +1,5 @@
 \name{metapopulation}
+\alias{metapopulation}
 \alias{metaPop}
 \alias{metaCi}
 \alias{metaEr}
@@ -21,13 +22,13 @@ metaCiEr(cl, rw, fi, ci, ce, tmax)
 
 \arguments{
   \item{cl}{
-  number of columns.
+  number of columns to build the simulated landscape.
 }
   \item{rw}{
-  number of rowns.
+  number of rowns to build the simulated landscape.
 }
   \item{fi}{
-  initial fraction of patchs occupaded.
+  initial proportion of occupied patches.
 }
   \item{pc}{
   probability of colonization.
@@ -39,7 +40,7 @@ metaCiEr(cl, rw, fi, ci, ce, tmax)
   colonization coefficient.
 }
   \item{ce}{
-     extiction coeficient.
+   extiction coefficient.
 }
   \item{tmax}{
     maximum simulation time.
@@ -47,14 +48,21 @@ metaCiEr(cl, rw, fi, ci, ce, tmax)
 }
 
 \details{
-'metaPop is the most basic metapopulation model, including only propagulus seed rain.
-'metaCi' includes propagulus seed rain and Internal Colonization.
-'metaEr' includes propagulus seed rain and Rescue Effect.
-'metaCiEr' includes propagulus seed rain, Internal Colonization and Rescue Effect.
+'metaPop' is the seed rain metapopulation model, including only propagulus seed rain from a external pool (no extinction).
+
+'metaCi' is the Internal Colonization model, where number of propagulus depends on number of occupied patches, there is no external pool.
+
+'metaEr' is the Rescue Effect model, where extinction probability is negatively associated with number of occupied patches. 
+
+'metaCiEr' includes both effects: Rescue Effect and Internal Colonization.
+
+The number of patches in the simulated landscape is defined by rw*cl. 
 }
 
 \value{
-Metapopulation functions return graphics with the simulation results, and an invisible array with the simulation results.
+Metapopulation functions return graphics with the simulation results.
+These functions also return an invisible array with the simulation data.
+
 } 
 
 \references{
@@ -64,14 +72,14 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
 \author{
-Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
+Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
 \examples{
-metapop(tmax=100,cl=10,rw=10,fi=0.5,pc=0.3,pe=0.15)
+metaPop(tmax=100,cl=10,rw=10,fi=0.5,pc=0.3,pe=0.15)
 metaCi(tmax=100,cl=10,rw=10,fi=0.1,ci=1,pe=0.5)
 metaEr(tmax=100, cl=10, rw=10, fi=0.2, pc=0.2, ce=0.15)
-metaCiEr(tf=100, cl=10, ln=10, fi=0.2, i=0.2, e=0.15)
+metaCiEr(tmax=100, cl=10, rw=10, fi=0.2, ci=0.2, ce=0.15)
 }
 
 \keyword{metapopulation}

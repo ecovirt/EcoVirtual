@@ -8,6 +8,7 @@
 \alias{animaRandWalk}
 \alias{grColExt}
 \alias{grFim}
+\alias{anima}
 
 \title{
 Internal EcoVirtual Graphics and Animations
@@ -18,7 +19,7 @@ Internal functions for gaphics and animations of the simulations results.
 }
 
 \usage{
-grColExt(E , I , P, areas)
+grColExt(E , I , P, area)
 }
 
 \arguments{
@@ -39,15 +40,24 @@ grColExt(E , I , P, areas)
 
 
 \details{
-Below each function and its primary function (where the graphical and animation function are used):
+Below there is each function and its primary function (where the graphical and animation function are used):
+
 animaCena - regNicho
+
 animaGame - extGame
+
 animaHub - simHub1, simHub2, simHub3
+
 animaIsl - arquip
+
 animaMeta2 - metaPop, metaCi, metaEr, metaCiEr
+
 animaMetaComp - metaComp
+
 animaRandWalk - randWalk
+
 grColExt - animaColExt, bioGeoIsl
+
 grFim - metaPop, metaCi, metaEr, metaCiEr
 }
 
@@ -60,6 +70,6 @@ Alexandre Adalardo
 }
 
 \examples{
-grColExt(E = 0.5 , I = 0.5 , P = 100, areas=1:10)
+grColExt(E = 0.5 , I = 0.5 , P = 100, area=1:10)
 }
 \keyword{ simulation }

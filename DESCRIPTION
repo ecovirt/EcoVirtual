@@ -6,5 +6,6 @@ Date: 2012-11-21
 Author: Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 Maintainer: Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 Description: A package for simulations of Ecological Models. From populations, metapopulations, communities and biogeographical, classical models are presented as a learning proposal. 
+Depends: tcltk
 License: GPL (>= 2)
 LazyLoad: yes

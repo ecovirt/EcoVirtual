@@ -1,59 +1,64 @@
-\Name{sucMatrix}
+\name{sucMatrix}
+\alias{sucMatrix}
 
-\Title{
+\title{
 Successional Stages Matrix
 }
 
-\Description{
-
+\description{
+Simulates a successional model based on a transitional matrix of stages and its initial proportion of occurence in the landscape.
 }
 
-\Usage{
+\usage{
 sucMatrix(mat.trans, init.prop, rw, cl, tmax)
 }
 
-\Arguments{
+\arguments{
   \item{mat.trans}{
-    matrix of transitions probabilites.
+   a matrix of stage transition probabilites.
 }
   \item{init.prop}{
-    initial stages proportions.
+    a vector with the initial proportions of each stage.
 }
   \item{rw}{
-    number of rows.
+    number of rows to build the simulated landscape.
 }
   \item{cl}{
-    number of columns.
+    number of columns to build the simulated landscape.
 }
   \item{tmax}{
     maximum simulation time.
 }
 }
 
-\Details{
+\details{
+
+
+The number of patches in the simulated landscape is defined by rw*cl.  
+}
+
+\value{
+'sucMatrix' return a simulation graphic with the proportions of stages in the landscape in time, and a stage distribution graphic with the results of the simulation with the number o patches in time for each stage.
+
+'sucMatrix' also return an invisible array with the simulation results.
+}
+
+\references{
+Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
+}
+
+\author{
+Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+}
+
+\seealso{
 
 }
 
-\Value{
-
-}
-
-\References{
-
-}
-
-\Author{
-Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
-}
-
-\See Also{
-
-}
-
-\Examples{
+\examples{
 sucMatrix(mat.trans=matrix(data=c(0.5,0.5,0.5,0.5), nrow=2), init.prop=c(0.5,0.5),rw=20,cl=20, tmax=100)
 
 }
 
-\Keyword{simulation}
-\Keyword{ }
+\keyword{simulation}
+\keyword{ecological succession} 

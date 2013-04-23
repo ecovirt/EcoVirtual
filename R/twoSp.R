@@ -35,18 +35,15 @@ segments(0,k2,k2/beta,0,lty=4,lwd=1.5, col="green" )
 
 legend("topleft", title="Equilibrium without habitat destruction",legend=c("isocline sp.1 ", "Isocline sp. 2", "Populations trajectory"), lty=c(4,4,1), col=c("blue", "green", "red"), bty="n", cex=0.8)
 invisible(resulta)
-#return(resulta)
 }
 
 #compLV(n01=10, n02=10,r1=0.05, r2=0.03, k1=80, k2=50, alfa=1.2, beta=0.5, tmax=200)
 
 
-## Metapopulation competition - patch occupancy between best and inferior competitors
+## Metapopulation competition - patch occupancy between superior and inferior competitors
 metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 {
 	pais<-array(0, dim=c(rw,cl,tmax))
-#if(D=0)
-#{
   F1 <- 1-(pe/i1)
   F2 <- pe/i1-i1/i2
   		if(F1<=0) 
@@ -54,13 +51,6 @@ metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
   		F1=0
   		F2 <- 1-(pe/i2)
   		}
-#}
-#if(D>0)
-#{
-#F1<-1-D-pe/i1
-#F2<-pe/i1 - pe/i2- i1/i2*(1-D-pe/i1)
-
-#}
   Nt <- rw*cl
   N <- floor(Nt*(1-D))
   resultado=matrix(nrow=tmax,ncol=3)
@@ -100,13 +90,13 @@ metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 		animaMetaComp(pais)
 		}
 x11()  
-plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Path occupancy", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; rw=",rw,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
+plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Patch occupancy", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; rw=",rw,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
   lines(1:tmax,resultado[,3],col="green", lwd=2)
   abline(h=F1,col="blue",lwd=1.5,lty=2)
   if(F2>0)abline(h=F2,col="green",lwd=1.5,lty=2)
   if(F2<0)abline(h=0, col="green",lwd=1.5,lty=2)
   if(D>0)abline(h=1-D,lty=2)
-  legend("topright",legend= c("Best competitor", "Inferior competitor"),col=c("blue","green"),lty=2, bty="n", title="Equilibrium without Habitat destruction")
+  legend("topright",legend= c("Superior competitor", "Inferior competitor"),col=c("blue","green"),lty=2, bty="n", title="Equilibrium without Habitat destruction")
   invisible(pais)
 }
 

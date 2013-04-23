@@ -1,74 +1,80 @@
-\Name{arquip}
+\name{arquip}
+\alias{arquip}
 
-\Title{
+\title{
 Species Colonization and Species-Area Relationship in Arquipelagos
 }
 
-\Description{
-Simulate species colonization in islands with different sizes, from the mainland with a certain species pool abundance and seed rain.
+\description{ 
+Simulate species colonization from mainland to islands with different sizes. 
 }
 
-\Usage{
+\usage{
 arquip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 }
 
-\Arguments{
+\arguments{
   \item{n.isl}{
-    number of islands.
+    numeric, number of islands.
 }
   \item{ar.min}{
-     area of the smallest island.
+     numeric, area of the smallest island.
 }
   \item{ar.max}{
-      area of the biggest island.
+     numeric, area of the biggest island.
 }
   \item{S}{
-     number of species (species richness from mainland).
+     numeric, number of species (species richness from mainland).
 }
   \item{seed.rain}{
-     seed rain. Number of seeds colonizing islands on each time.
+    numeric, seed rain. Number of seeds colonizing islands on each time.
 }
   \item{abund}{
-     abundance of each species in the seed rain.
+    numeric, abundance of each species in the seed rain.
 }
  \item{tmax}{
-     maximum time for the simulations.
+    numeric, maximum time for the simulations.
 }
  \item{anima}{
      logical; if TRUE, show simulation frames.
 }
 }
 
-\Details{
-The 'abund' argument can be a vector with the same length of the species richness, or a value representing equal abundance of each species (maximum eveness), or if the number varies between 0 and 1, the model of geometric species rank-abundance distribution is performed to calculate the abundances. The model is: abund*(1-abund)*((1:S)-1), where S is the number of species.
-
+\details{
+The mainland has richness (S) and the eveness can be controled argument abund. The 'abund' argument can be one of these 3 options:
+\enumerate{
+	\item a vector with the same length of the species richness, meaning the proportion of each species population; 
+	\item a single value more than 1 representing equal abundance of each species (maximum eveness); 
+	\item a single value between 0 and 1, meaning the model of geometric species rank-abundance distribution. The model is: abund*(1-abund)*((1:S)-1), where S is the number of species.
+}
 }
 
-\Value{
-'arquip' returns 3 graphs with the simulation results:
+\value{
+'arquip' returns 3 graphics:
+\itemize{
+	\item The species-area relationship: number of species x island area at the end of the simulation. It also returns the coefficients c and z from species-area relationship ($S=cA^z$).
 
-- The species-area relationship: number of species x island area at the end of the simulation. It also returns the coefficients c and z.
+	\item Colonization rate curves: colonization (number of species per cicle) x number of species for each island.
 
-- Colonization rate curves: colonization (species/cicle) x species number for each island.
+	\item Passive colonization: number of species x time for each island.
 
-- Passive colonization: number of species x time for each island.
-
-'arquip' also returns an invisible array with the simulation results of each richness per island in time.
+'arquip' also returns an invisible array with the simulation results.
+}
 }
 
-\Author{
-Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>}
+\author{
+Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}}
 
-\References{
+\references{
 Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
-\Seealso{
-	\code{\link{animaColExt}}
+\seealso{
+	\code{\link{animaColExt}},
 	\code{\link{bioGeoIsl}}
 }
 
-\Examples{
+\examples{
 
 arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=10, tmax=100, anima=TRUE)
 
@@ -76,5 +82,6 @@ arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=10
 
 }
 
-\Keyword{simulation}
-\Keyword{island biogeography}
+\keyword{simulation}
+\keyword{island biogeography}
+\keyword{Species-area relationship}

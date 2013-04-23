@@ -1,18 +1,19 @@
-\Name{compLV}
+\name{compLV}
+\alias{compLV}
 
-\Title{
+\title{
 Lotka-Volterra Competition Model	
 }
 
-\Description{
+\description{
 Simulate the Lotka-Volterra competition model for two populations.
 }
 
-\Usage{
+\usage{
 compLV(n01,n02,tmax,r1,r2,k1,k2,alfa,beta)
 }
 
-\Arguments{
+\arguments{
   \item{n01}{
     initial population for the superior competitor species.
 }
@@ -42,38 +43,37 @@ compLV(n01,n02,tmax,r1,r2,k1,k2,alfa,beta)
 }
 }
 
-\Details{
+\details{
 The Lotka-Volterra competition model follows the equations:
-	\item[-] SP1:
+\deqn{	\item[-] SP1:
 	$$\frac{dN_1}{dt}=r_1N_1\left(\frac{K_1-N_1-\alpha N_2}{K_1}\right) $$
 	\item[-] SP2:
 	$$\frac{dN_2}{dt}=r_2N_2\left(\frac{K_2-N_2-\beta N_1}{K_2}\right) $$
+}}
 
-}
-
-\Value{
+\value{
 'compLV' returns a graph of the population size in time, and a graph with the isoclines of the equilibrium for both species.
 'compLV' also returns an invisible matrix with the population size of each species in time.
 }
 
-\References{
+\references{
 Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
-Hastings, A. 1980. Disturbance, coexistence, history and competition for space. Theoretical Population Biology, 18:363–373.
+Hastings, A. 1980. Disturbance, coexistence, history and competition for space. Theoretical Population Biology, 18:363-373.
 Stevens, M.H.H. 2009. A primer in ecology with R. New York, Springer.
 
 }
 
-\Author{
-Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
+\author{
+Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
-\Seealso{
+\seealso{
 
 }
 
-\Examples{
+\examples{
 compLV(n01=10, n02=10,r1=0.05, r2=0.03, k1=80, k2=50, alfa=1.2, beta=0.5, tmax=200)
 }
 
-\Keyword{simulation}
-\Keyword{competition}
+\keyword{simulation}
+\keyword{competition}

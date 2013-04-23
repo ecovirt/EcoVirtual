@@ -11,16 +11,20 @@
 rich <- function(x)length(unique(x))
 
 ## function animaIls used in 'arquip' function
-animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq)
+animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
 {
-          Nspp=max(riq.tempo)
+          Nspp=S
+          nsppobs=max(riq.tempo)
           maxt=dim(riq.tempo)[1]
           nIsl<-length(ar.isl)
           comp.max<-max(ar.isl)
           tempo=length(riq.tempo)
           col_spp=rainbow(max(riq.tempo))
-          col_func=colorRamp(c("white", "green3"))
-          col_riq=rgb(col_func(seq(0,1, length.out=Nspp)), max=255)
+          col_func1=colorRamp(c("white", "green4"))
+          col_func2=colorRamp(c("green4", "royalblue"))
+          col_riq1=rgb(col_func1(seq(0,1, length.out=nsppobs)), maxColorValue=255) 
+          col_riq2=rgb(col_func2(seq(0,1, length.out=Nspp-nsppobs)), maxColorValue=255) 
+          col_riq=c(col_riq1,col_riq2)
           ## aqui inicia o grafico
           layout(matrix(data=c(2,1), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
           old<-par(mar=c(2,2,1,3))
@@ -53,7 +57,7 @@ grColExt=function(E , I , P, area)
           nIsl=length(E)
           corIsl=rainbow(nIsl)
           curve(I[1]-I[1]*x/P[1],0,P[1],bty="n",xlab="Number of Species", ylab="Rate",xaxt="n",yaxt="n", font.lab=2,lwd=2,ylim=c(0,1),  main="Island Biogeography", col=corIsl[1])
-          curve((E[1]/P[1])*x,0,P,lwd=2,add=TRUE, col=corIsl[1], lty=2) #xlim=c(0,1),
+          curve((E[1]/P[1])*x,0,P,lwd=2,add=TRUE, col=corIsl[1], lty=2)
           legend("top", legend=c("Colonization", "Extinction"),  bty="n",lty=c(1,2))
           abline(v=0)
           abline(h=0)
@@ -75,9 +79,7 @@ grColExt=function(E , I , P, area)
                     segments(S[i],T[i],0,T[i],lty=3,col=corIsl[i])
                     Sys.sleep(0.1)
           }	
-          #	mtext("I",side=2,at=I,font=2,las=1, line=2)
-          #	mtext("E",side=4,at=E,font=2,las=1)
-}
+        }
 
 #grColExt(E = .5 , I = .5 , P = 100, area=1:10)
 
@@ -85,15 +87,12 @@ grColExt=function(E , I , P, area)
 ## animaRandWalk used in 'randWalk'
 animaRandWalk = function(rwData, time=2, sleep=0.1)
 {
-          #par( )
           xplus=max(time)*0.1
           ymax=max(apply(rwData, 2, max))[1]
           plot(time, rwData[,which.max(apply(rwData, 2, max))[1]], xlab="Steps", ylab="Distance from the edge",cex.axis=1.2, cex.lab=1.2,ylim=c(-.1* ymax,ymax), main="Randon Walk", cex.main=1.5, type="n", xlim=c(0,max(time)))
-          
           polygon(x=c(-xplus, -xplus, max(time)+xplus, max(time)+xplus), y=c(ymax*-0.15,0,0,ymax*-0.15), col="gray")
           text(max(time)/2, -0.05* ymax, labels="Absortion Surface", col="red", cex=1.5)
           n=dim(rwData)[2]
-          #ncolors= terrain.colors(n)
           ncolors= rainbow(n)
           for(i in 2:length(time))
           {
@@ -121,7 +120,6 @@ animaGame = function(xGame, total, sleep=0.01)
           plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Bet size",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", sub=paste("Maximum number of bets = ", total), cex.sub=0.9)
           abline(h=total/2, lty=2, col="red")
           cores= c("blue","black")
-          #n=dim(rwData)[2]
           for(i in 2:xmax)
           {
                     lines(xseq[1:i], xGame[1:i], col=cores[1], lty=2)
@@ -139,11 +137,9 @@ animaGame = function(xGame, total, sleep=0.01)
 animaHub=function(dadoHub, sleep=0.1)
 {
           library(tcltk)
-          #nsp=length(unique(dadoHub[,1]))
           maxsp=max(dadoHub)[1]
           uniqsp=unique(as.numeric(dadoHub))
           nind=dim(dadoHub)[1]
-          #nindsp=table(dadoHub[,1])[[1]]
           nsim=dim(dadoHub)[2]
           ciclo=as.numeric(colnames(dadoHub))
           pb = tkProgressBar(title = "Simulation Progress", max = nsim)
@@ -153,8 +149,6 @@ animaHub=function(dadoHub, sleep=0.1)
           lado2<-ceiling(nind/lado)
           lastLine=lado*lado2 - nind
           cormix=sample(rainbow(maxsp+10))
-          #if(lastLine !=0){cor=c("#000000", cor)}
-          #ffffff
           cor=c("#FFFFFF", cormix)
           mcor<-c("#FFFFFF00","#000000")
           spcol<-c(rep(0, lastLine),dadoHub[,1])
@@ -164,16 +158,11 @@ animaHub=function(dadoHub, sleep=0.1)
           image(x=1:maxsp, y=1, matrix(data=1:maxsp, nrow=maxsp,ncol=1),col=rainbow(maxsp), ylab="",xlab="", xaxt="n", yaxt="n", main="Metacommunity Species colors", cex.main=0.8)
           axis(3, at = c(1,maxsp), labels = c(1, maxsp), tick = FALSE, mgp=c(1,0,0), cex.axis=0.8)
           hmat=matrix(spcol,ncol=lado, nrow=lado2)
-          #cormat=matrix(cor[factor(spcol, levels=0:maxsp)], ncol=lado, nrow=lado2)
           par(mar=c(2,2,2,2))
           image(hmat, col=cor[sort(unique(as.numeric(hmat)))], xaxt="n", yaxt="n")
-          #mtext(text="simulation ", side=1, adj=0)
           grid(nx=lado2, ny=lado)
-          #mtext(text="                   1", side=1, col="white",adj=0)
           for (i in 2:nsim) 
           {
-                    #if(riq[i]==1){cor=cor[unique(dadoHub[,i])[1]]}
-                    #	mtext(text=paste("                    ", ciclo[i-1]), side=1, col="white", adj=0)
                     mvf=dadoHub[,i-1]!=dadoHub[,i]
                     matm<-matrix(c(rep(FALSE, lastLine),mvf ),ncol=lado, nrow=lado2)
                     image(matm,col=mcor, add=TRUE)
@@ -186,7 +175,6 @@ animaHub=function(dadoHub, sleep=0.1)
                     hmat=(matrix(mcol,ncol=lado, nrow=lado2))
                     image(hmat, col=cores, add=TRUE)
                     grid(nx=lado2, ny=lado)
-                    #	mtext(text=paste("                    ", ciclo[i]), side=1, adj=0)
                     setTkProgressBar(pb, value = i, label = paste("Simulation #", ciclo[i], sep="")) 
           }
           close(pb)
@@ -207,9 +195,7 @@ cl=dim(dados)[2]
 op=par(mar=c(1,2,2,2))
 layout(matrix(c(2,1), ncol=1, nrow=2), heights=c(5,1),widths=c(1,1))
 plot(1:10,1:10,xaxt="n", yaxt="n", xlab="", ylab="", cex=0.8,type="n", , bty="n")
-legend(2,10,ncol=4, legend=c("not available", "empty", "species 1", "species 2"), pch=c(15,22,15,15), title="Patches legend", col=c("red","black", "blue", "green"),bty="n")
-#layout.show()
-#par(op)
+legend(0.5,11.8,ncol=4, legend=c("not available", "empty", "sup. competitor", "inf. competitor"), pch=c(15,22,15,15), title="Patches legend", col=c("red","black", "blue", "green"),bty="n")
 image(0:ln, 0:cl, dados[,,1], col=c("red", "white","blue" ,"green") , breaks=c(-0.9,-0.001,0.1,1.5,2.9),main="Metapopulations Competition",  xlab="", ylab="")
 grid(ln,cl)
 Sys.sleep(.5)
@@ -217,7 +203,6 @@ Sys.sleep(.5)
 	{
 	par(new=TRUE)
 image(0:ln, 0:cl, dados[,,i], col=c("red", "white","blue" ,"green") , breaks=c(-0.1,-0.001,0.1,1.9,2.9), xlab="", ylab="")
-#	,main="Metapopulations Competition", main=paste("Simulation no.", i,"; total", nsim,   sep="")
 grid(ln,cl)
 	Sys.sleep(.1)
 	}
@@ -263,7 +248,6 @@ grid(ln,cl)
 	sim=round(nsim/ts)
 	conta12=dados[,,(sim-1)]+ (2*dados[,,sim])
 	image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9),main="Metapopulation Dynamics", sub=paste("red= extintion; light green= colonization;\n dark green = permanence \t time = ", sim, "/", nsim, sep=""), xlab="", ylab="")
-#	Sys.sleep(.5)
 	}
 par(op)
 }
