@@ -1,11 +1,29 @@
 ################################################
 ### Ecovirtual -  Population Dynamics Models ###
 ################################################
-
-
 ### Exponencial growth with Environmental Stochasticity
 estExp <- function(N0,r,varr,tmax) 
 {
+## logical tests for initial conditions
+#   N0 <- round(as.numeric(tclvalue(noVar)))
+        if (is.na(N0) || N0 <= 0) 
+        {
+            stop("Number of individuos at the simulation start must be a positive integer")
+#            return()
+        }
+#       tmax <- round(as.numeric(tclvalue(tmaxVar)))
+        if (is.na(tmax) || tmax <= 0) 
+        {
+            stop("Number of simulations must be a positive integer")
+#            return()
+        }
+#        varr <- as.numeric(tclvalue(varrVar))
+        if (varr < 0)
+        {
+            stop(message = "r Variance must be zero (no stocatiscit) or positive value")
+#            return()
+        }
+###############################################################################
 resulta <- matrix(rep(NA,3*tmax),nrow=tmax)
 resulta[,1] <- seq(0,tmax-1)
 resulta[1,2:3] <- N0
@@ -19,7 +37,7 @@ for (t in 2:tmax)
 		resulta[t,3] <- 0
 		}
 	}
-x11()
+#x11()
 plot(resulta[,1],resulta[,2],type="l",main="Exponential Population Growth", lty=2,xlab="Time(t)", ylab="Population size (N)",ylim=c(0,max(resulta[,2:3])))
 lines(resulta[,1],resulta[,3], col="red", lty=2)
 legend("topleft",c("deterministic","environment stocastic"),lty=2, col=c(1,2), bty="n")
@@ -27,78 +45,90 @@ text(x=tmax*0.4, y= resulta[(tmax/2),2], paste("r=", r), col="blue")
 text(x=tmax*0.6, y= resulta[(tmax/2),2], paste("var=", varr), col="blue")
 invisible(resulta)
 }
-
 #estExp(N0=1000,r=0.0488,varr=0.005,tmax=100) 
-
-
-### Populational growth with birth and death rates
-estDem=function(N0, b, d, tmax)
+##################################################
+### Simple Estocastic birth and death dynamics
+estDem = function(tmax=10, n=0.2, m=0.2, N0=10, nsim=20, ciclo=5000)
 {
-resulta=matrix(0,ncol=11, nrow=(tmax+1))
-colnames(resulta)=c("time", "Nt.dt", "birth.dt", "death.dt", "b.dt", "d.dt", "Nt.st", "nasc.st",
-"mort.st", "b.st", "d.st")
-resulta[,1]=0:tmax
-resulta[1,c(2,7)]=N0
-pnasc=b/(b+d)
-pmort=d/(b+d)
-  for(t in 2:(tmax+1))
-  {
-  nt.dt=resulta[(t-1),2]
-  nt.st=resulta[(t-1),7]
-    if(nt.dt>0)
-      {
-      n.mort.dt=nt.dt*d
-      n.nasc.dt=nt.dt*b
-      nt1.dt=nt.dt+ n.nasc.dt -n.mort.dt
-      resulta[(t-1),3 ]= n.nasc.dt
-      resulta[(t-1),4 ]= n.mort.dt
-      resulta[(t-1),5 ]=n.nasc.dt/nt.dt
-      resulta[(t-1),6 ]=n.mort.dt/nt.dt
-        if(nt1.dt>0)
-        { 
-        resulta[t,2]=nt1.dt
-        }
-      }
-    if(nt.st>0)
-    {
-    n.nasc.st=rbinom(1,nt.st,pnasc)
-    n.mort.st=rbinom(1,nt.st,pmort)
-    nt1.st=nt.st + n.nasc.st - n.mort.st
-    resulta[(t-1),8]=n.nasc.st
-    resulta[(t-1),9]=n.mort.st
-    resulta[(t-1),10]=n.nasc.st/nt.st
-    resulta[(t-1),11]=n.mort.st/nt.st
-        if(nt1.st>0)
-        {
-        resulta[t,7]=nt1.st
-        }
-        else
-        {
-        resulta[t,7]=0
-        }
-    }
-  }
-y.max=max(resulta[,c(5,6,10,11)])* 1.2
-y.min=min(resulta[,c(5,6,10,11)])* 0.8
-nt=dim(resulta)[1]-1
-
-x11()
-old=par(mfrow=c(2,1), mar=c(5,4,2,2), cex.lab=0.7, cex.axis=0.7,cex.main=0.8)
-plot(resulta[1:nt,"time"] ,resulta[1:nt,"b.dt"],type="l", main="Birth and Death Rates",cex.main=0.7,ylim=c(y.min,y.max),xlab="Time", ylab="Rate", lty=2)
-lines(resulta[1:nt,"time"], resulta[1:nt,"d.dt"], col="red",lty=2) 
-lines(resulta[1:nt,"time"], resulta[1:nt,"d.st"], col="red")
-lines(resulta[1:nt,"time"], resulta[1:nt,"b.st"])
-legend("bottomright", legend=c("basal birth", "basal death","stochastic bird", "stochastic dead"),lty=c(2,2,1,1),col=c(1,2,1,2), bty="n", cex=0.7)
-
-plot(resulta[1:nt,"time"] , resulta[1:nt,"Nt.dt"],main="Population Growth", type="l",xlab="Time", ylab="Population size (N)",lty=2)
-lines(resulta[1:nt,"time"], resulta[1:nt,"Nt.st"], col="red") 
-legend("bottomright", legend=c("Deterministic Model", "Stochastic Model"),lty=c(1,2),col=c(1,2), bty="n", cex=0.7)
-par(old)
-invisible(resulta)
+ybord=matrix(runif(ciclo*nsim,0,1), ncol=ciclo, nrow=nsim,byrow=TRUE)
+bdmat<-matrix(-1,ncol=ciclo, nrow=nsim)
+bdmat[ybord <= n/(n+m)]<-1
+bdmat<-cbind(N0, bdmat)
+nindmat<-t(apply(bdmat, 1, cumsum))
+##########
+negat<-which(nindmat==0,arr.ind=TRUE)
+uniq.row<-unique(negat[,1])
+mat.uniq<-match(uniq.row,negat)
+ext=0
+if(length(negat)>0)
+{
+	for(i in 1:length(uniq.row))
+	{
+	nindmat[uniq.row[i],(negat[mat.uniq[i],2]):dim(nindmat)[2]]<-0	
+	ext=ext+1
+	}
 }
-
-#estDem(N0=100, b=0.55, d=0.5, tmax=50)
-
+ymat<-matrix(runif((ciclo)*nsim,0,1), ncol=ciclo, nrow=nsim,byrow=TRUE)
+ymat<-cbind(NA,ymat)
+smat<--(log(ymat))/(nindmat*(n+m))
+smat[,1]<-0
+smat[smat==Inf]<-NA
+#ymat<-cbind(0,ymat)
+cum.t<-t(apply(smat, 1, cumsum))
+nciclo=1
+	while(sum(cum.t[,dim(cum.t)[2]]<tmax, na.rm=TRUE)>=1)
+	{
+	ybord1=matrix(runif(ciclo*nsim,0,1), ncol=ciclo, nrow=nsim,byrow=TRUE)
+	bdmat1<-matrix(-1,ncol=ciclo, nrow=nsim)
+   bdmat1[ybord1 <= n/(n+m)]<-1
+   bdmat1<-cbind(nindmat[,dim(nindmat)[2]], bdmat1)
+	nindmat1<-t(apply(bdmat1, 1, cumsum))
+	negat1<-which(nindmat1==0,arr.ind=TRUE)
+	uniq.row1<-unique(negat1[,1])
+	mat.uniq1<-match(uniq.row1,negat1)
+		if(length(negat1)>0)
+		{
+			for(i in 1:length(uniq.row1))
+			{
+			nindmat1[uniq.row1[i],(negat1[mat.uniq1[i],2]):dim(nindmat1)[2]]<-0	
+			ext=ext+1
+			}
+		}
+	ymat1<-matrix(runif((ciclo)*nsim,0,1), ncol=ciclo, nrow=nsim,byrow=TRUE)
+	ymat1<-cbind(NA,ymat1)
+	smat1<--(log(ymat1))/(nindmat1*(n+m))
+	smat1[,1]<-cum.t[,dim(cum.t)[2]]
+	smat1[smat1==Inf]<-NA
+#ymat<-cbind(0,ymat)
+	cum.t1<-t(apply(smat1, 1, cumsum))
+	cum.t<-cbind(cum.t, cum.t1[,-1])
+	nindmat<-cbind(nindmat,nindmat1[,-1])
+	nciclo=nciclo+1
+	#cat(paste("iteration #", nciclo*ciclo, "\n"))
+	}
+#cum.t<-cbind(0,cum.t)
+ind.tmax<-cum.t>(tmax)
+nindmat[ind.tmax]<-NA
+cum.t[ind.tmax]<-NA
+p.maxt<-apply(cum.t, 1, which.max)
+col.max<-max(p.maxt)
+nindmat<-nindmat[,1:(col.max)]
+cum.t<-cum.t[,1:col.max]
+cores <- rainbow(nsim)
+matplot(t(cum.t), t(nindmat),type="l", lty=2, main="Stocastich Simple Birth Death", xlab= "Time",col=cores, ylab="Population Size", cex.lab=1.2, cex.main=1.2, cex.axis=1.2, sub= paste("bird=",n, "dead =",m) )
+curve(N0*exp((n-m)*x), add=TRUE, lwd=3)
+######## numero de extinções
+#p.maxt<-apply(cum.t, 1, which.max)
+#n.end<-t(nindmat)[0:(dim(cum.t)[1]-1)*dim(cum.t)[2]+p.maxt]
+#ext=sum(n.end==0, na.rm=TRUE)
+n.min<-apply(nindmat,1,min, na.rm=TRUE)
+n.ext<-sum(n.min==0)
+legend("topleft",legend=paste("extinctions =", n.ext, "/", nsim), bty="n")
+#points(temp.med,cresc.med, type="l", lwd=4)
+invisible(list(time=cum.t, pop.size=nindmat))
+}
+#estDem(tmax=10, n=0.2, m=0.2, N0=100, nsim=20, ciclo=5000)
+###################################
 ## Logistical Growth
 crescLog=function(N0, r, K, tmax)
 {
@@ -106,26 +136,41 @@ resulta=matrix(rep(NA,3*tmax),ncol=3)
 colnames(resulta)=c("time", "Continuous Model ", "Discrete Model")
 resulta[,1]=seq(0,(tmax-1))
 resulta[1,2:3]=N0
+#####################
+	if (is.na(N0) || N0 <= 0) 
+        {
+        stop(message = "Number of individuals at the simulation start must be a positive integer")
+        }
+	if (is.na(tmax) || tmax <= 0) 
+        {
+            stop("Number of simulations must be a positive integer")
+       }
+	if (is.na(K) || K <= 0)
+        {
+            stop("Carrying Capacity (K) must be a positive integer")
+        }
+#####################
 	for(t in 2:tmax)
 	{
-	resulta[t,2]=K/(1+((K-N0)/N0)*exp(-r*(t-1)))
+	nCont<-K/(1+((K-N0)/N0)*exp(-r*(t-1)))
+	ifelse(nCont<0,resulta[t,2]<-0, resulta[t,2]<-nCont)
 	lastN=resulta[t-1,3]
-	resulta[t,3]=lastN+r*lastN*(1-lastN/K)
+	nDisc<-lastN+r*lastN*(1-lastN/K)
+	ifelse(nDisc<0,resulta[t,3]<-0, resulta[t,3]<-nDisc)
 	}
-x11()
-plot(resulta[,1],resulta[,2],type="l", lty=2,ylim=c(min(resulta[,c(2,3)])*0.8, K*1.2), xlab="Time (t)", main="Logistic Population Growth", ylab="Population size (N)")	
-lines(resulta[,1],resulta[,3], col="red")	
+resulta[,c(2,3)]
+plot(resulta[,1],resulta[,2],type="l", lty=2,ylim=c(min(resulta[,c(2,3)])*0.8, max(c(K*1.2, resulta[,2], resulta[,3]))), xlab="Time (t)", main="Logistic Population Growth", ylab="Population size (N)", cex.lab=1.3, cex.axis=1.3, lwd=2, cex.main=1.5)	
+lines(resulta[,1],resulta[,3], col="red", lwd=2)	
 legend("bottomright", colnames(resulta)[2:3],lty=2,col=c(1,2),bty="n")
 abline(h=K, lty=3, col="blue")
 text(x=2, y=K, "Carrying capacity", col="blue",adj=c(0,0))
-text(x=tmax*0.5, y= resulta[(tmax/2),2], paste("r=", r),pos=3)
+text(x=tmax*0.4, y= resulta[(tmax/2),2], paste("r=", r),pos=3)
 invisible(resulta)
 }
-
 #crescLog(N0=10, r=0.05, K=80, tmax=100)
-
-
+################################################
 ## Populational Model for structured populations
+################################################
 popStr=function(p.sj, p.jj, p.ja, p.aa, fec, ns, nj, na, rw, cl, tmax)
 {
 x11()
@@ -196,6 +241,5 @@ matplot(tab.rel, type="l",col=c("gray", "red", "green", "darkgreen"),lwd=2,main=
 legend("topright",legend=c("Empty", "Seed", "Juvenil", "Adult") ,lty=1:4, col=c("gray", "red", "green", "darkgreen"), bty="n", cex=0.8 )
 invisible(list(simula=pais, xy=xy.sem))
 }
-
 #popStr(p.sj=0.05, p.jj=0.99, p.ja=0, p.aa=1, fec=1.2, ns=100,nj=150,na=50, rw=20, cl=20, tmax=100)
 #popStr(0.1,0.4,0.3,0.9,1.2,100,80,20, 20,20,100)
