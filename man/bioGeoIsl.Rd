@@ -53,7 +53,7 @@ bioGeoIsl(area, dist, P, weight.A=0.5, a.e=1, b.e=-0.01, c.i=1, d.i=-0.01, e.i=0
 }
 
 \details{
-?
+no details
 }
 
 \value{
@@ -67,7 +67,7 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}}
+Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
 \seealso{

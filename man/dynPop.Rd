@@ -14,7 +14,7 @@ Functions to simulate population dynamic models.
 }
 
 \usage{
-estDem(N0, b, d, tmax)
+estDem(tmax,n ,m ,N0 , nsim, ciclo)
 estExp(N0,r,varr,tmax) 
 crescLog(N0, r, K, tmax)
 popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
@@ -25,6 +25,10 @@ popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 }
   \item{tmax}{maximum simulation time.
 }
+  \item{nsim}{number of populations simulated.
+}
+  \item{ciclo}{size of cicles in simulation.
+}
   \item{cl}{number of columns to build the simulated scene.
 }
   \item{rw}{number of rows to build the simulated scene.
@@ -33,9 +37,9 @@ popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 }
   \item{varr}{variance.
 }
-  \item{b}{birth rate.
+  \item{n}{birth rate.
 }
-  \item{d}{dead rate.
+  \item{m}{dead rate.
 }
   \item{K}{carrying capacity.
 }
@@ -60,7 +64,7 @@ popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 \details{
 'estExp' simulates an exponential population growth with environmental stochasticity. 
 
-'estDem'simulates birth and death rates for deterministic and stochastic (enviromental) models.
+'estDem'simulates birth and death rates for stochastic (demographic) models.
 
 Stochastic models uses 'r' and 'lambda' values taken of a normal distribution with mean 'r' and variance 'varr'.
 
