@@ -251,12 +251,37 @@ grid(ln,cl)
 	}
 par(op)
 }
-
-
 ##############################
 ### Multispecies Functions ###
 ##############################
-
+###############################
+#Trade-off Multispecies Graphic
+### 
+gr.toff=function(rq, fsp1,pe,add=FALSE,...)
+{
+#	rq <- as.numeric(tclvalue(rqVar))
+#	fsp1 <- as.numeric(tclvalue(fsp1Var))
+#	pe <- as.numeric(tclvalue(peVar))
+	rank=1:rq
+	ci= pe/(1-fsp1)^(2*rank-1)
+	px= fsp1*(1-fsp1)^(rank-1)
+		if(add==FALSE)
+		{
+		toff<-x11( width=5, height=5)
+		}
+	old<-par(mar=c(3,3,3,3))
+	plot(ci~rank,col="red",ylim=c(0,max(ci)*1.1), type="b", ann=FALSE, axes=FALSE)
+	axis(4, cex.axis=0.8)#, yaxp=c(0,3,3))
+	par(new=TRUE)
+	plot(px~rank, ylim=c(0,fsp1),type="b", bty="n",  ann=FALSE, cex.axis=0.8)#yaxt="n", xaxp=c(0,10,5))
+	#axis(2, cex.axis=0.8)#, yaxp=c(0,0.2,4))
+	mtext("Specie competitive rank", 1, 2, cex=0.9)
+	mtext("Abundance", 2, 2, cex=0.9)
+	mtext("Colonization rate", 4, 2, cex=0.9)
+	mtext("Trade-off Species Rank ", 3, 0, cex=1.2)
+	par(old)
+}
+###############################
 ## animaCena used in 'regNicho'
 animaCena=function(dados)
 {

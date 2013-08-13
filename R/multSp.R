@@ -1,8 +1,6 @@
 ###########################################
 ### EcoVirtual - Multispecies Functions ###
 ###########################################
-
-
 ### Sucessional Niche
 regNicho=function(tmax, rw, cl, c1,c2, ec, dst,  er, sc, mx, rs) 
 {
@@ -49,12 +47,10 @@ matplot( 1:tmax,resulta[,2:5], type="l", main="Niche Regeneration Model" , xlab=
 legend("topright", c("Early", "Susceptible", "Mixed", "Resistant"), bty="n", lty=2:5, col=2:5, cex=0.7)
 invisible(cena)
 }
-
 #regNicho(tmax=50, rw=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  er=0.08, sc=0.02, mx=0, rs=0)
-
-
-
-### Trade-off between competition and colonization 
+##################################################
+### Trade-off between competition and colonization
+################################################## 
 comCompete = function(rw, cl, S, fi, fsp1, pe, fr=0, int=0, tmax)
 {
 rank=1:S
@@ -110,7 +106,7 @@ temp=1
 		antes<-depois
 		}
 #grafico
-x11()
+#x11()
 layout(matrix(data=c(1,2), nrow=2, ncol=1), widths=c(1,1), heights=c(4,1))
 matplot(1:tmax,t(resulta),type="l", lty=3, col=rainbow(S),bty="n", lwd=2,xlab="Time", ylab="Patch occupancy", main="Competition/Colonization Trade-off", sub=paste("\n best competitor abundance=",fsp1,"; mortality rate=",pe, "; disturbance frequency=",fr, "; disturbance intensity=", int), cex.sub=0.7) 
 old<-par(mar=c(3,5,2,4))
@@ -119,10 +115,7 @@ axis(1, at=c(1.5,9.5),tick=FALSE, labels=c("best competitor", "best colonizator"
 par(old)
 invisible(resulta)
 }
-
-#comCompete(tmax=1000,rw=100,cl=100, S=10, fi=1, fsp1=0.20, pe=0.01,fr=0,int=0)
-
-
+#comCompete(tmax=10,rw=100,cl=100, S=10, fi=1, fsp1=0.20, pe=0.01,fr=0,int=0)
 ## Sucessional stages matrix
 sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
 {
@@ -145,7 +138,6 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
           n0=sample(rep(0:(nfase-1), fase_n))
           arena[1:ncel]<-n0
           pais[,,1]<-arena
-          
           x11()
           image(0:rw, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Sucessional Model")
           grid(rw,cl)
@@ -160,7 +152,6 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
                     image(0:rw, 0:cl, pais[,,tc], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), add=TRUE)
                     Sys.sleep(.1)
           }
-          
           x11()
           op=par(mfrow=c(2,2))
           image(0:rw, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Initial Conditions")
@@ -170,7 +161,6 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
           }
           par(op)
           resulta=t(apply(pais,3, table))
-          
           x11()
           matplot(resulta, type="l", ylim=c(min(resulta)*0.8, max(resulta)*1.1), main="Stage Distribution",ylab="Number of patches", xlab="Time", col=cl_fase(nfase), lty=2, lwd=2)
           legend("topright", legend=paste("Stage", 1:nfase), lty=2, lwd=2, col=cl_fase(nfase), bty="n", cex=0.8)
@@ -182,7 +172,5 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
           legend("topleft", legend=paste("Stage Stable", 1:nfase), lty=1, lwd=0.9, col=cl_fase(nfase), bty="n", cex=0.8)
           invisible(pais)
      }
-
 #sucMatrix(mat.trans=matrix(data=c(0.5,0.5,0.5,0.5), nrow=2), init.prop=c(0.2,0.8),rw=20,cl=20, tmax=100)
-
 #sucMatrix(mat.trans=matrix(data=c(0.3,0.4,0.3,0.5,0.2,0.3, 0.2,0.4,0.4), nrow=3), init.prop=c(0.2,0.5,0.3),rw=20,cl=20, tmax=100)

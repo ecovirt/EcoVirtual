@@ -1,8 +1,8 @@
 Package: EcoVirtual
 Type: Package
 Title: Simulation of Ecological Models
-Version: 0.02
-Date: 2013-08-10
+Version: 0.03
+Date: 2013-08-13
 Author: Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 Maintainer: Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 Description: A package for simulations of Ecological Models. From populations, metapopulations, communities and biogeographical, classical models are presented as a learning proposal. 

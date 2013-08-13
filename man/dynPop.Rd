@@ -1,7 +1,8 @@
 \name{dynPop}
-\alias{estExp}
+\alias{popExp}
+\alias{estEnv}
 \alias{estDem}
-\alias{crescLog}
+\alias{popLog}
 \alias{popStr}
 \alias{dynPop}
 
@@ -14,14 +15,19 @@ Functions to simulate population dynamic models.
 }
 
 \usage{
+popExp(N0,lamb,tmax, intt)
+estEnv(N0,lamb,varr,tmax, npop, ext) 
 estDem(tmax,n ,m ,N0 , nsim, ciclo)
-estExp(N0,r,varr,tmax) 
-crescLog(N0, r, K, tmax)
+popLog(N0, r, K, tmax)
 popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 }
 
 \arguments{
   \item{N0}{number of individuals at start time.
+}
+  \item{lamb}{finite rate of population growth.
+}
+  \item{intt}{interval time size.
 }
   \item{tmax}{maximum simulation time.
 }
@@ -62,17 +68,17 @@ popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 }
 
 \details{
-'estExp' simulates an exponential population growth with environmental stochasticity. 
+popExp simulates an exponential population growth with environmental stochasticity. 
 
-'estDem'simulates birth and death rates for stochastic (demographic) models.
+estDem simulates birth and death rates for stochastic (demographic) models.
 
-Stochastic models uses 'r' and 'lambda' values taken of a normal distribution with mean 'r' and variance 'varr'.
+Stochastic models uses lambda values taken of a normal distribution with mean lambda and variance varr.
 
-'crescLog' simulates a logistic growth for continuous and discrete models.
+popLog simulates a logistic growth for continuous and discrete models.
 
-'popStr' simulates a structured population dynamics, with Leftkovitch matrices.
+popStr simulates a structured population dynamics, with Leftkovitch matrices.
 
-In 'popStr' the number of patches in the simulated scene is defined by rw*cl.
+In popStr the number of patches in the simulated scene is defined by rw*cl.
 
 }
 
