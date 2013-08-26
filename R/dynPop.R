@@ -4,99 +4,104 @@
 ### Exponential growth - discrete and continuos growth
 popExp <- function(N0,lamb,tmax, intt= 1) 
 {
-## logical tests for initial conditions
-#   N0 <- round(as.numeric(tclvalue(noVar)))
-        if (is.na(N0) || N0 <= 0) 
+    ## logical tests for initial conditions
+                                        #   N0 <- round(as.numeric(tclvalue(noVar)))
+    if (is.na(N0) || N0 <= 0) 
         {
             stop("Number of individuos at the simulation start must be a positive integer")
-#            return()
+                                        #            return()
         }
-#       tmax <- round(as.numeric(tclvalue(tmaxVar)))
-        if (is.na(tmax) || tmax <= 0) 
+                                        #       tmax <- round(as.numeric(tclvalue(tmaxVar)))
+    if (is.na(tmax) || tmax <= 0) 
         {
             stop("Number of simulations must be a positive integer")
-#            return()
+                                        #            return()
         }
 ##########################################
-#st<-0:tmax
-ntseq<-seq(0,tmax,by=intt) 
-resulta <- matrix(NA,nrow=length(ntseq), ncol=3)
-nc<-length(ntseq) -1
-rexp0=log(lamb)
-radj=rexp0*intt
-ladj=exp(radj)
-resulta[,1]<-ntseq
-resulta[,2]<-N0*exp(radj*(0:nc))
-resulta[,3]<-N0*ladj^(0:nc)
-ntmax=N0*lamb^tmax
-	if(N0 <= ntmax)
-	 {
-	 ymax<-ntmax
-	 ymin<-N0
-	 }else
-	 {
-	 ymax<-N0
-	 ymin<-ntmax
-	 }
-plot(seq(0,tmax, len=10), seq(ymin,ymax,len=10), type="n", main="Discrete and Continuous Exponential Growth", sub= expression(paste(lambda[adj],"=          ", r[adj], "=          ")), xlab="Time", ylab="Population Size (N)", cex.axis=1.3, cex.lab=1.3, xlim=c(0,tmax), ylim=c(ymin, ymax), bty="n")
-title(sub=paste("        ", round(ladj,3),"            ",round(radj,3) ),cex.sub=0.7)
-segments(x0=resulta[- dim(resulta)[1],1], y0=resulta[- dim(resulta)[1],3], x1=resulta[- 1,1], y1=resulta[- dim(resulta)[1],3], lty=2, col="blue")
-segments(x0=resulta[- 1,1], y0=resulta[- dim(resulta)[1],3], x1=resulta[- 1,1], y1=resulta[- 1,3], lty=2, col="blue")
-seqt=seq(0,tmax,len=1000)
-radj02<-rexp0*tmax/1000
-points(seqt, N0*exp(rexp0*seqt), type="l", lwd=2)
-points(resulta[,1], resulta[,3],pch=16, col="blue",cex=0.7)
-invisible(resulta)
+                                        #st<-0:tmax
+    ntseq<-seq(0,tmax,by=intt) 
+    resulta <- matrix(NA,nrow=length(ntseq), ncol=3)
+    nc<-length(ntseq) -1
+    rexp0=log(lamb)
+    radj=rexp0*intt
+    ladj=exp(radj)
+    resulta[,1]<-ntseq
+    resulta[,2]<-N0*exp(radj*(0:nc))
+    resulta[,3]<-N0*ladj^(0:nc)
+    ntmax=N0*lamb^tmax
+    if(N0 <= ntmax)
+        {
+            ymax<-ntmax
+            ymin<-N0
+        }else
+            {
+                ymax<-N0
+                ymin<-ntmax
+            }
+    plot(seq(0,tmax, len=10), seq(ymin,ymax,len=10), type="n", main="Discrete and Continuous Exponential Growth", sub= expression(paste(lambda[adj],"=          ", r[adj], "=          ")), xlab="Time", ylab="Population Size (N)", cex.axis=1.3, cex.lab=1.3, xlim=c(0,tmax), ylim=c(ymin, ymax), bty="n")
+    title(sub=paste("        ", round(ladj,3),"            ",round(radj,3) ),cex.sub=0.7)
+    ##segments(x0=resulta[- dim(resulta)[1],1], y0=resulta[- dim(resulta)[1],3], x1=resulta[- 1,1], y1=resulta[- dim(resulta)[1],3], lty=2, col="blue")
+    ##segments(x0=resulta[- 1,1], y0=resulta[- dim(resulta)[1],3], x1=resulta[- 1,1], y1=resulta[- 1,3], lty=2, col="blue")
+    seqt=seq(0,tmax,len=1000)
+    radj02<-rexp0*tmax/1000
+    points(seqt, N0*exp(rexp0*seqt), type="l", lwd=2)
+    points(resulta[,1], resulta[,3],pch=16, col="blue")
+    invisible(resulta)
 }
-#popExp(N0=10,lamb=1.1,tmax=10, intt= 0.9) 
+                                        #popExp(N0=10,lamb=1.1,tmax=10, intt= 0.9) 
 #####################################################
 ### Geometric growth with Environmental Stochasticity
 #####################################################
-estEnv <- function(N0,lamb,varr,tmax, npop= 10, ext=FALSE) 
+estEnv <- function(N0,lamb,varr,tmax, npop= 1, ext=FALSE) 
 {
-## logical tests for initial conditions
-#   N0 <- round(as.numeric(tclvalue(noVar)))
-        if (is.na(N0) || N0 <= 0) 
+    ## logical tests for initial conditions
+                                        #   N0 <- round(as.numeric(tclvalue(noVar)))
+    if (is.na(N0) || N0 <= 0) 
         {
             stop("Number of individuos at the simulation start must be a positive integer")
-#            return()
+                                        #            return()
         }
-#       tmax <- round(as.numeric(tclvalue(tmaxVar)))
-        if (is.na(tmax) || tmax <= 0) 
+                                        #       tmax <- round(as.numeric(tclvalue(tmaxVar)))
+    if (is.na(tmax) || tmax <= 0) 
         {
             stop("Number of simulations must be a positive integer")
-#            return()
+                                        #            return()
         }
-#        varr <- as.numeric(tclvalue(varrVar))
-        if (varr < 0)
+                                        #        varr <- as.numeric(tclvalue(varrVar))
+    if (varr < 0)
         {
             stop(message = "r Variance must be zero (no stocatiscit) or a positive value")
-#            return()
+                                        #            return()
         }
 ###############################################################################
-resulta <- matrix(NA,nrow=tmax, ncol=npop+2)
-resulta[,1] <- seq(0,tmax-1)
-resulta[1,2:(npop+2)] <- N0
-for (t in 2:tmax) 
+    resulta <- matrix(NA,nrow=tmax, ncol=npop+2)
+    resulta[,1] <- seq(0,tmax-1)
+    resulta[1,2:(npop+2)] <- N0
+    varlog <- log(varr/lamb + 1)
+    meanlog <- log(lamb)-varlog/2
+    for (t in 2:tmax) 
 	{
-	resulta[t,2] <- N0*lamb^(t-1)
-	lambe <- rnorm(npop,lamb,sqrt(varr)) 
-	resulta[t,3:(npop+2)] <- resulta[t-1,3:(npop+2)]*lambe 
-		if (sum(resulta[t,3:(npop+2)])>1 & ext==TRUE) 
+            resulta[t,2] <- N0*lamb^(t-1)
+            lambe <- rlnorm(npop,meanlog,sqrt(varlog)) 
+            resulta[t,3:(npop+2)] <- resulta[t-1,3:(npop+2)]*lambe 
+            if (sum(resulta[t,3:(npop+2)])>1 & ext==TRUE) 
 		{
-		resulta[t,(3:(npop+2))][resulta[t,(3:(npop+2))]<1] = 0
+                    resulta[t,(3:(npop+2))][resulta[t,(3:(npop+2))]<1] = 0
 		}
 	}
-#x11()
-#matplot(resulta[,1],resulta[,-c(1,2)], )
-cores=rainbow(npop)
-extN<-sum(resulta[tmax,-c(1,2)]<=0)
-matplot(resulta[,1],resulta[,-c(1,2)],type="l", lty=2, col=cores, main="Discrete Population Growth",xlab="Time(t)", cex=0.8, ylab="Population size (N)",ylim=c(0,max(resulta[,2:(npop+2)])), sub=paste("lambda = ", lamb, "; variance = ", varr, "; extinctions = ", extN, "/", npop),lwd=1.5, bty="n", cex.sub=0.8)
-lines(resulta[,1],resulta[,2], lwd=2)
-legend("topleft",c("deterministic","environment stocastic"),lty=c(1,2), col=c(1,3), bty="n")
-#text(x=2, y= resulta[round(tmax*0.8),2], paste("extinctions = ", extN, "/", npop), cex=0.7)
-#text(x=tmax*0.6, y= resulta[(tmax/2),2], paste("var=", varr), col="blue")
-invisible(resulta)
+                                        #x11()
+                                        #matplot(resulta[,1],resulta[,-c(1,2)], )
+    cores=rainbow(npop)
+    extN<-sum(resulta[tmax,-c(1,2)]<=0)
+    matplot(resulta[,1],resulta[,-c(1,2)],type="l", lty=2, col=cores,
+            main="Discrete Population Growth",xlab="Time(t)", cex=0.8, ylab="Population size (N)",
+            ylim=c(0,max(resulta[,2:(npop+2)])),
+            sub=paste("lambda = ", lamb, "; variance = ", varr, "; extinctions = ", extN, "/", npop),lwd=1.5, bty="n", cex.sub=0.8)
+    lines(resulta[,1],resulta[,2], lwd=2)
+    legend("topleft",c("deterministic","environment stocastic"),lty=c(1,2), col=c(1,3), bty="n")
+                                        #text(x=2, y= resulta[round(tmax*0.8),2], paste("extinctions = ", extN, "/", npop), cex=0.7)
+                                        #text(x=tmax*0.6, y= resulta[(tmax/2),2], paste("var=", varr), col="blue")
+    invisible(resulta)
 }
 #estEnv(N0 =  10 , lamb =  1.05 , varr =  0.02 , tmax =  100 , npop =  20 , ext = FALSE )
 ##################################################
