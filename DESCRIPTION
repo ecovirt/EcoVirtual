@@ -1,11 +1,11 @@
 Package: EcoVirtual
 Type: Package
 Title: Simulation of Ecological Models
-Version: 0.031
-Date: 2013-08-26
+Version: 0.04
+Date: 2013-09-07
 Author: Alexandre Adalardo de Oliveira and Paulo I Prado <prado@ib.usp.br>
 Maintainer: Alexandre Adalardo de Oliveira and Paulo I Prado <prado@ib.usp.br>
-Description: A package for simulations of Ecological Models. From populations, metapopulations, communities and biogeographical, classical models are presented as a learning proposal. 
+Description: A package for simulations of classical ecological models as a learning resource. 
 Depends: tcltk
 License: GPL (>= 2)
 LazyLoad: yes
