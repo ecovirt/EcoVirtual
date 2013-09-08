@@ -117,7 +117,7 @@ animaGame = function(xGame, total, sleep=0.01)
                     xGame=xGame[indx]
                     xseq=xseq[indx]
           }
-          plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Bet size",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", sub=paste("Maximum number of bets = ", total), cex.sub=0.9)
+          plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Money amount",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", cex.sub=0.9)
           abline(h=total/2, lty=2, col="red")
           cores= c("blue","black")
           for(i in 2:xmax)
@@ -128,7 +128,7 @@ animaGame = function(xGame, total, sleep=0.01)
           }
           polygon(x=c(-.2* xmax, -.2* xmax, xmax+ 0.1*xmax, xmax+ 0.1*xmax), y=c(-.2*total,0,0,-.2* total), col="gray")
           polygon(x=c(-.2*xmax, -.2*xmax, xmax+ 0.1*xmax, xmax+ 0.1*xmax), y=c(total,total+total*.5,total +total*.5,total), col="gray")
-          text(xmax/2, - 0.05* total, labels="Loser", col="red", cex=1.5)
+          text(xmax/2, - 0.05* total, labels="Looser", col="red", cex=1.5)
           text(xmax/2, total + 0.05* total, labels="Winner", col="green", cex=1.5)
 }
 

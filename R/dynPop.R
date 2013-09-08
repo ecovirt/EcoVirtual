@@ -105,92 +105,52 @@ estEnv <- function(N0,lamb,varr,tmax, npop= 1, ext=FALSE)
 }
 #estEnv(N0 =  10 , lamb =  1.05 , varr =  0.02 , tmax =  100 , npop =  20 , ext = FALSE )
 ##################################################
-### Simple Estocastic birth and death dynamics
-estDem = function(tmax=10, n=0.2, m=0.2, N0=10, nsim=20, ciclo=1000)
-{
-require(tcltk)
-ybord=matrix(runif((ciclo+1)*nsim,0,1), ncol=ciclo+1, nrow=nsim,byrow=TRUE)
-bdmat<-matrix(-1,ncol=ciclo+1, nrow=nsim)
-bdmat[ybord <= n/(n+m)]<-1
-bdmat[,1]<-N0
-nindmat<-t(apply(bdmat, 1, cumsum))
-##########
-negat<-which(nindmat==0,arr.ind=TRUE)
-uniq.row<-unique(negat[,1])
-mat.uniq<-match(uniq.row,negat)
-ext=0
-if(length(negat)>0)
-{
-	for(i in 1:length(uniq.row))
-	{
-	nindmat[uniq.row[i],(negat[mat.uniq[i],2]):dim(nindmat)[2]]<-0
-	ext=ext+1
-	}
+### Simple Estocastic birth death and immigration dynamics
+## function to run one populations, Gillespie algorithm
+BDM <- function(b, d, m=0, n0, tmax){
+    if(any(c(b,d,m)<0))stop("b, d, and m should not be negative")
+    N <- n0
+    tempo <- ctime <- 0
+    while(ctime<=tmax){
+        if(m==0&N[length(N)]==0) break
+        else{
+            ctime <- ctime+rexp(1 , rate=b*N[length(N)] + d*N[length(N)] + m )
+            tempo <- c(tempo,ctime)
+            N <- c( N,N[length(N)] + sample(c(1,-1), 1, prob=c(b*N[length(N)]+m,d*N[length(N)])))
+        }
+    }
+    if(N[length(N)]>0&ctime>tmax){
+        tempo[length(tempo)] <- tmax
+        N[length(N)] <- N[length(N)-1]
+    }
+    data.frame(time=tempo, N=N)
 }
-ymat<-matrix(runif((ciclo+1)*nsim,0,1), ncol=ciclo+1, nrow=nsim,byrow=TRUE)
-ymat[,1]<-N0
-smat<--(log(ymat))/(nindmat*(n+m))
-smat[,1]<-0
-smat[smat==Inf]<-NA
-#ymat<-cbind(0,ymat)
-cum.t<-t(apply(smat, 1, cumsum))
-nciclo=1
-pb1 = tkProgressBar(title="Null SimulationTest", label="STARTING", min= 0,max=100, 0)
-	while(sum(cum.t[,dim(cum.t)[2]]<tmax, na.rm=TRUE)>=1 & nciclo <100 & sum(is.na(cum.t[,dim(cum.t)[2]]))< nsim)
-	{
-	ybord1=matrix(runif(ciclo*nsim,0,1), ncol=ciclo, nrow=nsim,byrow=TRUE)
-	bdmat1<-matrix(-1,ncol=ciclo, nrow=nsim)
-   bdmat1[ybord1 <= n/(n+m)]<-1
-   bdmat1<-cbind(nindmat[,dim(nindmat)[2]], bdmat1)
-	nindmat1<-t(apply(bdmat1, 1, cumsum))
-	negat1<-which(nindmat1==0,arr.ind=TRUE)
-	uniq.row1<-unique(negat1[,1])
-	mat.uniq1<-match(uniq.row1,negat1)
-		if(length(negat1)>0)
-		{
-			for(i in 1:length(uniq.row1))
-			{
-			nindmat1[uniq.row1[i],(negat1[mat.uniq1[i],2]):dim(nindmat1)[2]]<-0	
-			ext=ext+1
-			}
-		}
-	ymat1<-matrix(runif((ciclo)*nsim,0,1), ncol=ciclo, nrow=nsim,byrow=TRUE)
-	ymat1<-cbind(NA,ymat1)
-	smat1<--(log(ymat1))/(nindmat1*(n+m))
-	smat1[,1]<-cum.t[,dim(cum.t)[2]]
-	smat1[smat1==Inf]<-NA
-#ymat<-cbind(0,ymat)
-	cum.t1<-t(apply(smat1, 1, cumsum))
-	cum.t<-cbind(cum.t, cum.t1[,-1])
-	nindmat<-cbind(nindmat,nindmat1[,-1])
-	info <- sprintf("%d%% done", nciclo)
-	nciclo=nciclo+1
-	#cat(paste("iteration #", nciclo*ciclo, "\n"))
-	setTkProgressBar(pb1, nciclo, sprintf("cicles (%s)", info), info)
-	}
-#cum.t<-cbind(0,cum.t)
-info <- sprintf("%d%% done", 100)
-setTkProgressBar(pb1, 100, sprintf("simulation (%s)", info), info)
-ind.tmax<-cum.t>(tmax)
-nindmat[ind.tmax]<-NA
-cum.t[ind.tmax]<-NA
-p.maxt<-apply(cum.t, 1, which.max)
-col.max<-max(p.maxt)
-nindmat<-nindmat[,1:(col.max)]
-cum.t<-cum.t[,1:col.max]
-cores <- rainbow(nsim)
-matplot(t(cum.t), t(nindmat),type="l", lty=2, main="Stocastich Simple Birth Death", xlab= "Time",col=cores, ylab="Population Size", cex.lab=1.2, cex.main=1.2, cex.axis=1.2, sub= paste("bird=",n, "dead =",m), bty="n")
-curve(N0*exp((n-m)*x), add=TRUE, lwd=3)
-######## numero de extinções
-#p.maxt<-apply(cum.t, 1, which.max)
-#n.end<-t(nindmat)[0:(dim(cum.t)[1]-1)*dim(cum.t)[2]+p.maxt]
-#ext=sum(n.end==0, na.rm=TRUE)
-n.min<-apply(nindmat,1,min, na.rm=TRUE)
-n.ext<-sum(n.min==0)
-legend("topleft",legend=paste("extinctions =", n.ext, "/", nsim), bty="n")
-#points(temp.med,cresc.med, type="l", lwd=4)
-close(pb1)
-invisible(list(time=cum.t, pop.size=nindmat))
+## function for n runs of stochastic birth death immigration
+estDem = function(tmax=10, n=0.2, m=0.2, migr=0, N0=10, nsim=20, ciclo=1000){
+    results <- vector(mode="list", length=nsim)
+    for(i in 1:nsim) results[[i]] <- BDM(b=n, d=m, m=migr, n0=N0, tmax=tmax)
+    cores <- rainbow(nsim)
+    plot(results[[1]], type="l",
+         main="Stochastic Birth, Death and Immigration",
+         xlab= "Time",
+         ylab="Population Size",
+         cex.lab=1.2,
+         cex.main=1.2,
+         cex.axis=1.2,
+         sub= paste("birth=",n, " death =",m, " migration=",migr),
+         bty="n",
+         ylim=c(0,max(sapply(results,function(x)max(x$N)))),
+         xlim=c(0,tmax),
+         col=cores[1]
+         )
+    for(i in 2:length(results)){
+        lines(results[[i]],col=cores[i])
+    }
+    if(migr==0){
+        n.ext <- sum(sapply(results,function(x)min(x$N))==0)
+        legend("topleft",legend=paste("extinctions =", n.ext, "/", nsim), bty="n")
+    }
+    invisible(results)
 }
 
 #estDem(tmax=10, n=0.2, m=0.2, N0=100, nsim=20, ciclo=1000)
