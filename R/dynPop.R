@@ -126,7 +126,8 @@ BDM <- function(b, d, m=0, n0, tmax){
     data.frame(time=tempo, N=N)
 }
 ## function for n runs of stochastic birth death immigration
-estDem = function(tmax=10, n=0.2, m=0.2, migr=0, N0=10, nsim=20, ciclo=1000){
+estDem = function(tmax=10, n=0.2, m=0.2, migr=0, N0=10, nsim=20, ciclo=1000)
+{
     results <- vector(mode="list", length=nsim)
     for(i in 1:nsim) results[[i]] <- BDM(b=n, d=m, m=migr, n0=N0, tmax=tmax)
     cores <- rainbow(nsim)
@@ -147,8 +148,24 @@ estDem = function(tmax=10, n=0.2, m=0.2, migr=0, N0=10, nsim=20, ciclo=1000){
         lines(results[[i]],col=cores[i])
     }
     if(migr==0){
+        curve(N0*exp((n-m)*x), add=T, lwd=2)
         n.ext <- sum(sapply(results,function(x)min(x$N))==0)
-        legend("topleft",legend=paste("extinctions =", n.ext, "/", nsim), bty="n")
+        if(n>m&all(sapply(results, function(x)any(x[,2]==N0*2)))){
+            d.time <- sapply(results,function(x)min(x[x[,2]==N0*2,1]))
+            legend("topleft",
+                   legend=c(paste("extinctions =", n.ext, "/", nsim),
+                       paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3))),
+                   bty="n")
+        }
+        else if(n<m&all(sapply(results, function(x)any(x[,2]<=N0/2)))){
+            h.time <- sapply(results,function(x)min(x[x[,2]<=N0/2,1]))
+            legend("topright",
+                   legend=c(paste("extinctions =", n.ext, "/", nsim),
+                       paste("Halving time: mean=",round(mean(h.time),3),"std dev=",round(sd(h.time),3))),
+                   bty="n")
+        }
+        else
+            legend("topleft",legend=c(paste("extinctions =", n.ext, "/", nsim)),bty="n")
     }
     invisible(results)
 }
