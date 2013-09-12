@@ -1,8 +1,8 @@
 Package: EcoVirtual
 Type: Package
 Title: Simulation of Ecological Models
-Version: 0.04.1
-Date: 2013-09-08
+Version: 0.04.2
+Date: 2013-09-11
 Author: Alexandre Adalardo de Oliveira and Paulo I Prado <prado@ib.usp.br>
 Maintainer: Alexandre Adalardo de Oliveira and Paulo I Prado <prado@ib.usp.br>
 Description: A package for simulations of classical ecological models as a learning resource. 

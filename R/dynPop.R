@@ -105,7 +105,7 @@ estEnv <- function(N0,lamb,varr,tmax, npop= 1, ext=FALSE)
 }
 #estEnv(N0 =  10 , lamb =  1.05 , varr =  0.02 , tmax =  100 , npop =  20 , ext = FALSE )
 ##################################################
-### Simple Estocastic birth death and immigration dynamics
+### Simple Stochastic birth death and immigration dynamics
 ## function to run one populations, Gillespie algorithm
 BDM <- function(b, d, m=0, n0, tmax){
     if(any(c(b,d,m)<0))stop("b, d, and m should not be negative")
@@ -119,7 +119,7 @@ BDM <- function(b, d, m=0, n0, tmax){
             N <- c( N,N[length(N)] + sample(c(1,-1), 1, prob=c(b*N[length(N)]+m,d*N[length(N)])))
         }
     }
-    if(N[length(N)]>0&ctime>tmax){
+    if(N[length(N)]>=0&ctime>tmax){
         tempo[length(tempo)] <- tmax
         N[length(N)] <- N[length(N)-1]
     }
@@ -152,10 +152,10 @@ estDem = function(tmax=10, n=0.2, m=0.2, migr=0, N0=10, nsim=20, ciclo=1000)
         n.ext <- sum(sapply(results,function(x)min(x$N))==0)
         if(n>m&all(sapply(results, function(x)any(x[,2]==N0*2)))){
             d.time <- sapply(results,function(x)min(x[x[,2]==N0*2,1]))
-            legend("topleft",
-                   legend=c(paste("extinctions =", n.ext, "/", nsim),
-                       paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3))),
-                   bty="n")
+            if(m>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
+                       paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3)))
+            else texto <- paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3))
+            legend("topleft",legend=texto,bty="n")
         }
         else if(n<m&all(sapply(results, function(x)any(x[,2]<=N0/2)))){
             h.time <- sapply(results,function(x)min(x[x[,2]<=N0/2,1]))
