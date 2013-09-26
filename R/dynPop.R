@@ -305,3 +305,29 @@ invisible(list(simula=pais, xy=xy.sem))
 }
 #popStr(p.sj=0.05, p.jj=0.99, p.ja=0, p.aa=1, fec=1.2, ns=100,nj=150,na=50, rw=20, cl=20, tmax=100)
 #popStr(0.1,0.4,0.3,0.9,1.2,100,80,20, 20,20,100)
+###############################################################
+#### Bifurcation and atractors - Discrete Logistic Growth 
+############################################################### 
+logDiscr<-function(N0, rd, K, tmax,...)
+  {
+  Nt=rep(NA,tmax+1)
+  Nt[1]<-N0
+    for(t in 2: (tmax+1))
+    {
+    Nt[t]=Nt[t-1] + (rd * Nt[t-1]* (1-(Nt[t-1]/K))) 
+    }
+return(Nt)
+}
+##
+bifAttr=function(N0, K, tmax, nrd,maxrd=3, minrd=1)
+{
+rd.s=seq(minrd,maxrd,length=nrd)
+r1=sapply(rd.s, function(x){logDiscr(N0=N0, rd=x, K=100,tmax=tmax)})
+r2=stack(as.data.frame(r1))
+names(r2)=c("N", "old.col")
+r2$rd=rep(rd.s,each=tmax+1)
+r2$time=rep(0:tmax, nrd)
+res.bif=subset(r2, time>0.5*tmax)
+plot(N~rd, data=res.bif, pch=".", cex=2, ylab="Population size (N) attractors", xlab="Discrete population growth rate (rd)", cex.axis=1.2, main="Discrete Logistic Bifurcation")
+}
+##bifAttr(N0=50,K=100,tmax=200,nrd=500, minrd=1.9, maxrd=3)

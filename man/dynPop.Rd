@@ -5,6 +5,8 @@
 \alias{popLog}
 \alias{popStr}
 \alias{dynPop}
+\alias{logDiscr}
+\alias{bifAttr}
 
 \title{
 Population Dynamic Models
@@ -40,6 +42,12 @@ popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
   \item{rw}{number of rows to build the simulated scene.
 }
   \item{r}{intrinsic growth rate.
+}
+  \item{rd}{discrete growth rate.
+}
+  \item{minrd}{minimum discrete growth rate.
+}
+  \item{maxrd}{maximum discrete growth rate.
 }
   \item{varr}{variance.
 }
