@@ -10,7 +10,8 @@ Simulates island biogeographical models, with rates of colonization and extincti
 }
 
 \usage{
-bioGeoIsl(area, dist, P, weight.A=0.5, a.e=1, b.e=-0.01, c.i=1, d.i=-0.01, e.i=0, f.i=.01, g.e=0, h.e=.01)
+bioGeoIsl(area, dist, P, weight.A=0.5, a.e=1, b.e=-0.01, c.i=1, d.i=-0.01, 
+e.i=0, f.i=.01, g.e=0, h.e=.01)
 }
 
 \arguments{
@@ -77,7 +78,8 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 
 
 \examples{
-bioGeoIsl(area=c(5,10,50,80), dist=c(10,100,100,10), P=100, weight.A=.5, a=1, b=-0.01, c=1, d=-0.01, e=0, f=.01, g=0, h=.01)
+bioGeoIsl(area=c(5,10,50,80), dist=c(10,100,100,10), P=100, weight.A=.5, a=1, 
+b=-0.01, c=1, d=-0.01, e=0, f=.01, g=0, h=.01)
 }
 
 \keyword{simulation}
