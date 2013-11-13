@@ -7,6 +7,7 @@
 \alias{animaMetaComp}
 \alias{animaRandWalk}
 \alias{grColExt}
+\alias{gr.toff}
 \alias{grFim}
 \alias{anima}
 
