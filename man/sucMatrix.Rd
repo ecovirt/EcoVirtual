@@ -53,7 +53,8 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 
 
 \examples{
-sucMatrix(mat.trans=matrix(data=c(0.5,0.5,0.5,0.5), nrow=2), init.prop=c(0.5,0.5),rw=20,cl=20, tmax=100)
+sucMatrix(mat.trans=matrix(data=c(0.5,0.5,0.5,0.5), nrow=2), 
+init.prop=c(0.5,0.5),rw=20,cl=20, tmax=100)
 
 }
 
