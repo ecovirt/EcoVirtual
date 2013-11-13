@@ -2,6 +2,7 @@
 \alias{popExp}
 \alias{estEnv}
 \alias{estDem}
+\alias{BDM}
 \alias{popLog}
 \alias{popStr}
 \alias{dynPop}
