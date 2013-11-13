@@ -322,7 +322,7 @@ return(Nt)
 bifAttr=function(N0, K, tmax, nrd,maxrd=3, minrd=1)
 {
 rd.s=seq(minrd,maxrd,length=nrd)
-r1=sapply(rd.s, function(x){logDiscr(N0=N0, rd=x, K=100,tmax=tmax)})
+r1=sapply(rd.s, function(x){logDiscr(N0=N0, rd=x, K=K,tmax=tmax)})
 r2=stack(as.data.frame(r1))
 names(r2)=c("N", "old.col")
 r2$rd=rep(rd.s,each=tmax+1)
