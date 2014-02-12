@@ -1,8 +1,8 @@
 \name{dynPop}
 \alias{popExp}
 \alias{estEnv}
-\alias{estDem}
 \alias{BDM}
+\alias{estDem}
 \alias{popLog}
 \alias{popStr}
 \alias{dynPop}
@@ -18,11 +18,13 @@ Functions to simulate population dynamic models.
 }
 
 \usage{
-popExp(N0,lamb,tmax, intt)
-estEnv(N0,lamb,varr,tmax, npop, ext) 
-estDem(tmax,n ,m ,N0 , nsim, ciclo)
-popLog(N0, r, K, tmax)
-popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
+popExp(N0, lamb, tmax, intt)
+estEnv(N0, lamb, tmax, varr, npop, ext) 
+BDM(tmax, b, d, m, n0)
+estDem(N0, tmax, n ,m , migr, nsim, ciclo)
+popLog(N0, tmax, r, K, ext)
+popStr(tmax, p.sj, p.jj, p.ja, p.aa, fec, ns, nj, na, rw, cl)
+logDiscr(N0, rd, K, tmax, ...)
 }
 
 \arguments{
@@ -30,31 +32,33 @@ popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 }
   \item{lamb}{finite rate of population growth.
 }
+  \item{tmax}{maximum simulation time.
+}
   \item{intt}{interval time size.
 }
-  \item{tmax}{maximum simulation time.
+  \item{varr}{variance.
+}
+  \item{npop}{
+}
+  \item{ext}{
+}
+  \item{b}{
+}
+  \item{d}{
+}
+  \item{n0}{
+}
+  \item{n}{birth rate.
+}
+  \item{m}{death rate.
+}
+  \item{migr}{
 }
   \item{nsim}{number of populations simulated.
 }
   \item{ciclo}{size of cicles in simulation.
 }
-  \item{cl}{number of columns to build the simulated scene.
-}
-  \item{rw}{number of rows to build the simulated scene.
-}
   \item{r}{intrinsic growth rate.
-}
-  \item{rd}{discrete growth rate.
-}
-  \item{minrd}{minimum discrete growth rate.
-}
-  \item{maxrd}{maximum discrete growth rate.
-}
-  \item{varr}{variance.
-}
-  \item{n}{birth rate.
-}
-  \item{m}{dead rate.
 }
   \item{K}{carrying capacity.
 }
@@ -66,13 +70,19 @@ popStr(p.sj, p.jj, p.ja, p.aa, fec, ns,nj,na, rw, cl, tmax)
 }
   \item{p.aa}{probability of adult survival.
 }
-  \item{ns}{number of seeds at initial time.
+  \item{fec}{mean number of propagulus per adult each cicle.
 }
-  \item{na}{number of adults at initial time.
+  \item{ns}{number of seeds at initial time.
 }
   \item{nj}{number of juvenil at initial time.
 }
-  \item{fec}{mean number of propagulus per adult each cicle.
+  \item{na}{number of adults at initial time.
+}
+  \item{rw}{number of rows to build the simulated scene.
+}
+  \item{cl}{number of columns to build the simulated scene.
+}
+  \item{rd}{
 }
 }
 

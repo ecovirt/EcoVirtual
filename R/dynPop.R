@@ -1,7 +1,10 @@
 ################################################
 ### Ecovirtual -  Population Dynamics Models ###
 ################################################
-### Exponential growth - discrete and continuos growth
+
+########################################################
+### Exponential growth - discrete and continuos growth ##
+#########################################################
 popExp <- function(N0,lamb,tmax, intt= 1) 
 {
     ## logical tests for initial conditions
@@ -48,11 +51,11 @@ popExp <- function(N0,lamb,tmax, intt= 1)
     points(resulta[,1], resulta[,3],pch=16, col="blue")
     invisible(resulta)
 }
-                                        #popExp(N0=10,lamb=1.1,tmax=10, intt= 0.9) 
-#####################################################
-### Geometric growth with Environmental Stochasticity
-#####################################################
-estEnv <- function(N0,lamb,varr,tmax, npop= 1, ext=FALSE) 
+ #popExp(N0=10,lamb=1.1,tmax=10, intt= 0.9) 
+########################################################
+### Geometric growth with Environmental Stochasticity ##
+#######################################################
+estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE) 
 {
     ## logical tests for initial conditions
                                         #   N0 <- round(as.numeric(tclvalue(noVar)))
@@ -104,10 +107,11 @@ estEnv <- function(N0,lamb,varr,tmax, npop= 1, ext=FALSE)
     invisible(resulta)
 }
 #estEnv(N0 =  10 , lamb =  1.05 , varr =  0.02 , tmax =  100 , npop =  20 , ext = FALSE )
-##################################################
-### Simple Stochastic birth death and immigration dynamics
-## function to run one populations, Gillespie algorithm
-BDM <- function(b, d, m=0, n0, tmax){
+############################################################
+### Simple Stochastic birth death and immigration dynamics ##
+## function to run one populations, Gillespie algorithm ####
+##########################################################
+BDM <- function(tmax, b, d, m=0, n0){
     if(any(c(b,d,m)<0))stop("b, d, and m should not be negative")
     N <- n0
     tempo <- ctime <- 0
@@ -125,8 +129,10 @@ BDM <- function(b, d, m=0, n0, tmax){
     }
     data.frame(time=tempo, N=N)
 }
-## function for n runs of stochastic birth death immigration
-estDem = function(tmax=10, n=0.2, m=0.2, migr=0, N0=10, nsim=20, ciclo=1000)
+###############################################################
+## function for n runs of stochastic birth death immigration ###
+###############################################################
+estDem = function(N0=10, tmax=10, n=0.2, m=0.2, migr=0, nsim=20, ciclo=1000)
 {
     results <- vector(mode="list", length=nsim)
     for(i in 1:nsim) results[[i]] <- BDM(b=n, d=m, m=migr, n0=N0, tmax=tmax)
@@ -171,9 +177,10 @@ estDem = function(tmax=10, n=0.2, m=0.2, migr=0, N0=10, nsim=20, ciclo=1000)
 }
 
 #estDem(tmax=10, n=0.2, m=0.2, N0=100, nsim=20, ciclo=1000)
-###################################
-## Logistical Growth
-popLog=function(N0, r, K, tmax, ext=FALSE)
+########################
+## Logistical Growth ###
+########################
+popLog=function(N0, tmax, r, K, ext=FALSE)
 {
 resulta=matrix(NA, nrow=tmax+1,ncol=3)
 colnames(resulta)=c("time", "Continuous Model ", "Discrete Model")
@@ -213,9 +220,9 @@ if(rangN[1]==-Inf){rangN[1]=-10}
 if(rangN[2]==Inf){rangN[2]=K*1.2}
 plot(resulta[,1], seq(floor(rangN[1]), ceiling(max(rangN[2],K)), len=dim(resulta)[1]), type="n", xlab="Time (t)", main="Logistic Population Growth", ylab="Population size (N)",cex.lab=1.3, cex.axis=1.3, cex.main=1.5, ylim=c(rangN[1], rangN[2]+5), bty="n")
 polygon(c(-10,-10, tmax*1.2, tmax*1.2), c(-40,0,0,-40), col="gray80")
-##########################
-### continuous logistical
-##########################
+###########################
+### continuous logistical #
+###########################
 seqt=seq(0,tmax,len=1000)
 #radj0<-r*tmax/1000
 seqN<-K/(1+((K-N0)/N0)*exp(-r*(seqt)))
@@ -233,7 +240,7 @@ invisible(resulta)
 ################################################
 ## Populational Model for structured populations
 ################################################
-popStr=function(p.sj, p.jj, p.ja, p.aa, fec, ns, nj, na, rw, cl, tmax)
+popStr=function(tmax, p.sj, p.jj, p.ja, p.aa, fec, ns, nj, na, rw, cl)
 {
 x11()
 ncel=rw*cl
@@ -308,7 +315,7 @@ invisible(list(simula=pais, xy=xy.sem))
 ###############################################################
 #### Bifurcation and atractors - Discrete Logistic Growth 
 ############################################################### 
-logDiscr<-function(N0, rd, K, tmax,...)
+logDiscr<-function(N0, tmax, rd, K,...)
   {
   Nt=rep(NA,tmax+1)
   Nt[1]<-N0
