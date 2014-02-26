@@ -111,31 +111,31 @@ estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE)
 ### Simple Stochastic birth death and immigration dynamics ##
 ## function to run one populations, Gillespie algorithm ####
 ##########################################################
-BDM <- function(tmax, b, d, m=0, n0){
-    if(any(c(b,d,m)<0))stop("b, d, and m should not be negative")
-    N <- n0
-    tempo <- ctime <- 0
-    while(ctime<=tmax){
-        if(m==0&N[length(N)]==0) break
-        else{
-            ctime <- ctime+rexp(1 , rate=b*N[length(N)] + d*N[length(N)] + m )
-            tempo <- c(tempo,ctime)
-            N <- c( N,N[length(N)] + sample(c(1,-1), 1, prob=c(b*N[length(N)]+m,d*N[length(N)])))
-        }
+BDM <- function(tmax, b, d, migr=0, N0){
+  if(any(c(b,d,migr)<0))stop("b, d, and migr should not be negative")
+  N <- N0
+  tempo <- ctime <- 0
+  while(ctime<=tmax){
+    if(migr==0&N[length(N)]==0) break
+    else{
+      ctime <- ctime+rexp(1 , rate=b*N[length(N)] + d*N[length(N)] + migr )
+      tempo <- c(tempo,ctime)
+      N <- c( N,N[length(N)] + sample(c(1,-1), 1, prob=c(b*N[length(N)]+migr,d*N[length(N)])))
     }
-    if(N[length(N)]>=0&ctime>tmax){
-        tempo[length(tempo)] <- tmax
-        N[length(N)] <- N[length(N)-1]
-    }
-    data.frame(time=tempo, N=N)
+  }
+  if(N[length(N)]>=0&ctime>tmax){
+    tempo[length(tempo)] <- tmax
+    N[length(N)] <- N[length(N)-1]
+  }
+  data.frame(time=tempo, N=N)
 }
 ###############################################################
 ## function for n runs of stochastic birth death immigration ###
 ###############################################################
-estDem = function(N0=10, tmax=10, n=0.2, m=0.2, migr=0, nsim=20, ciclo=1000)
+estDem = function(N0=10, tmax=10, b=0.2, d=0.2, migr=0, nsim=20, ciclo=1000)
 {
     results <- vector(mode="list", length=nsim)
-    for(i in 1:nsim) results[[i]] <- BDM(b=n, d=m, m=migr, n0=N0, tmax=tmax)
+    for(i in 1:nsim) results[[i]] <- BDM(b=b, d=d, migr=migr, N0=N0, tmax=tmax)
     cores <- rainbow(nsim)
     plot(results[[1]], type="l",
          main="Stochastic Birth, Death and Immigration",
@@ -144,7 +144,7 @@ estDem = function(N0=10, tmax=10, n=0.2, m=0.2, migr=0, nsim=20, ciclo=1000)
          cex.lab=1.2,
          cex.main=1.2,
          cex.axis=1.2,
-         sub= paste("birth=",n, " death =",m, " migration=",migr),
+         sub= paste("birth=",b, " death =",d, " migration=",migr),
          bty="n",
          ylim=c(0,max(sapply(results,function(x)max(x$N)))),
          xlim=c(0,tmax),
@@ -154,16 +154,16 @@ estDem = function(N0=10, tmax=10, n=0.2, m=0.2, migr=0, nsim=20, ciclo=1000)
         lines(results[[i]],col=cores[i])
     }
     if(migr==0){
-        curve(N0*exp((n-m)*x), add=T, lwd=2)
+        curve(N0*exp((b-d)*x), add=T, lwd=2)
         n.ext <- sum(sapply(results,function(x)min(x$N))==0)
-        if(n>m&all(sapply(results, function(x)any(x[,2]==N0*2)))){
+        if(b>d&all(sapply(results, function(x)any(x[,2]==N0*2)))){
             d.time <- sapply(results,function(x)min(x[x[,2]==N0*2,1]))
             if(m>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
                        paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3)))
             else texto <- paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3))
             legend("topleft",legend=texto,bty="n")
         }
-        else if(n<m&all(sapply(results, function(x)any(x[,2]<=N0/2)))){
+        else if(b<d&all(sapply(results, function(x)any(x[,2]<=N0/2)))){
             h.time <- sapply(results,function(x)min(x[x[,2]<=N0/2,1]))
             legend("topright",
                    legend=c(paste("extinctions =", n.ext, "/", nsim),
@@ -176,7 +176,7 @@ estDem = function(N0=10, tmax=10, n=0.2, m=0.2, migr=0, nsim=20, ciclo=1000)
     invisible(results)
 }
 
-#estDem(tmax=10, n=0.2, m=0.2, N0=100, nsim=20, ciclo=1000)
+#estDem(tmax=10, b=0.2, d=0.2, N0=100, nsim=20, ciclo=1000)
 ########################
 ## Logistical Growth ###
 ########################
@@ -315,7 +315,7 @@ invisible(list(simula=pais, xy=xy.sem))
 ###############################################################
 #### Bifurcation and atractors - Discrete Logistic Growth 
 ############################################################### 
-logDiscr<-function(N0, tmax, rd, K,...)
+logDiscr<-function(N0, tmax, rd, K)
   {
   Nt=rep(NA,tmax+1)
   Nt[1]<-N0
@@ -326,7 +326,7 @@ logDiscr<-function(N0, tmax, rd, K,...)
 return(Nt)
 }
 ##
-bifAttr=function(N0, K, tmax, nrd,maxrd=3, minrd=1)
+bifAttr=function(N0, K, tmax, nrd, maxrd=3, minrd=1)
 {
 rd.s=seq(minrd,maxrd,length=nrd)
 r1=sapply(rd.s, function(x){logDiscr(N0=N0, rd=x, K=K,tmax=tmax)})

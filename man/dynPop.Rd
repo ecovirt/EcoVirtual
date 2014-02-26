@@ -5,8 +5,8 @@
 \alias{estDem}
 \alias{popLog}
 \alias{popStr}
-\alias{dynPop}
 \alias{logDiscr}
+\alias{dynPop}
 \alias{bifAttr}
 
 \title{
@@ -20,11 +20,12 @@ Functions to simulate population dynamic models.
 \usage{
 popExp(N0, lamb, tmax, intt)
 estEnv(N0, lamb, tmax, varr, npop, ext) 
-BDM(tmax, b, d, m, n0)
-estDem(N0, tmax, n ,m , migr, nsim, ciclo)
+BDM(tmax, b, d, migr, N0)
+estDem(N0, tmax, b, d, migr, nsim, ciclo)
 popLog(N0, tmax, r, K, ext)
 popStr(tmax, p.sj, p.jj, p.ja, p.aa, fec, ns, nj, na, rw, cl)
-logDiscr(N0, rd, K, tmax, ...)
+logDiscr(N0, tmax, rd, K)
+bifAttr(N0, K, tmax, nrd, maxrd=3, minrd=1)
 }
 
 \arguments{
@@ -38,23 +39,17 @@ logDiscr(N0, rd, K, tmax, ...)
 }
   \item{varr}{variance.
 }
-  \item{npop}{
+  \item{npop}{number of simulated populations.
 }
-  \item{ext}{
+  \item{ext}{extintion.
 }
-  \item{b}{
+  \item{b}{birth rate.
 }
-  \item{d}{
+  \item{d}{death rate.
 }
-  \item{n0}{
+  \item{migr}{migration. logical.
 }
-  \item{n}{birth rate.
-}
-  \item{m}{death rate.
-}
-  \item{migr}{
-}
-  \item{nsim}{number of populations simulated.
+  \item{nsim}{number of simulated populations.
 }
   \item{ciclo}{size of cicles in simulation.
 }
@@ -82,14 +77,25 @@ logDiscr(N0, rd, K, tmax, ...)
 }
   \item{cl}{number of columns to build the simulated scene.
 }
-  \item{rd}{
+  \item{rd}{discrete growth rate.
+}
+  \item{nrd}{.
+}
+  \item{maxrd}{.
+}
+  \item{minrd}{.
 }
 }
+
 
 \details{
-popExp simulates an exponential population growth with environmental stochasticity. 
+popExp simulates discrete and continuous exponential population growth. 
 
-estDem simulates birth and death rates for stochastic (demographic) models.
+estEnv simulates a geometric population growth with environmental stochasticity.
+
+BDM simulates simple stochastic birth death and immigration dynamics of a population (Renshaw 1991).
+
+estDem creates a graphic output based on BDM simulations.
 
 Stochastic models uses lambda values taken of a normal distribution with mean lambda and variance varr.
 
@@ -98,6 +104,10 @@ popLog simulates a logistic growth for continuous and discrete models.
 popStr simulates a structured population dynamics, with Leftkovitch matrices.
 
 In popStr the number of patches in the simulated scene is defined by rw*cl.
+
+logDiscr simulates a discrete logistic growth model. 
+
+bifAttr creates a bifurcation graphic for logistic discrete models.
 
 }
 
@@ -108,6 +118,8 @@ The functions return graphics with the simulation results, and a matrix with the
 
 \references{
 Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
+Renshaw, E. 1991. Modelling biological populations in space and time Cambridge University Press.
+Stevens, M.H.H. 2009. A primer in ecology with R. New York, Springer.
 }
 
 \author{
