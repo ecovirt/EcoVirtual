@@ -24,10 +24,10 @@ animaColExt(min=0.01, max=1, cycles=100, Ext="crs", Col="dcr")
     number of cycles in the simulation.
 }
   \item{Ext}{
-   extinction rate. This can be 'crs' for an increasing extinction rate, 'fix' for a fixed extinction rate in 0.5, or 'dcr' for a decreasing extinction rate.   
+   a string representing the extinction rate. This can be 'crs' for an increasing extinction rate, 'fix' for a fixed extinction rate in 0.5, or 'dcr' for a decreasing extinction rate.   
 }
   \item{Col}{
-   colonization rate. This can be 'crs' for an increasing colonization rate, 'fix' for a fixed colonization rate in 0.5, or 'dcr' for a decreasing colonization rate.
+   a string representing the colonization rate. This can be 'crs' for an increasing colonization rate, 'fix' for a fixed colonization rate in 0.5, or 'dcr' for a decreasing colonization rate.
 }
 }
 
@@ -36,7 +36,7 @@ animaColExt(min=0.01, max=1, cycles=100, Ext="crs", Col="dcr")
 }
 
 \value{
-'animaColExt' returns a graph of the extinction and colonization rates varying one or both rates in relation with te number of species of an island.
+'animaColExt' returns a graph of the extinction and colonization rates varying one or both rates in relation with the number of species of an island.
 }
 
 \references{

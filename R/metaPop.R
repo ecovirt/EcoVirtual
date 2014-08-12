@@ -50,7 +50,7 @@ animaMeta2(paisag)
 grFim(paisag)
 x11()
 F=1-(pe/ci)
-plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Proportion of ocupation",
+plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Proportion of occupation",
 ylim=c(0,1),main=paste("Propagulus Rain and Internal Colonization","\n cols=",cl," rows=",rw," fi=",fi," ci=",ci," pe=",pe),font.lab=2,lwd=2)
 abline(h=F,col=2,lwd=2,lty=2)
 legend("topright", legend=("expected equilibrium"), lty=2, col="red", bty="n")
@@ -123,7 +123,7 @@ plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Occupancy proportion", yl
 abline(h=0,lty=2)
 points(1:tmax,c(ce*(1-fi),rese),type='l',lwd=2,col=4,lty=3)
 points(1:tmax,c(ci*fi,resi),type='l',lwd=2,col=6,lty=3)
-legend("topright", legend=c("patchs occupance", "colonization", "extintion"), lty=c(1,3,3), col=c(1,6,4), bty="n")
+legend("topright", legend=c("patchs occupancy", "colonization", "extinction"), lty=c(1,3,3), col=c(1,6,4), bty="n")
 invisible(paisag)
 }
 

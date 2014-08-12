@@ -7,10 +7,10 @@
 ###########################
 
 ## Relationship between extinction and colonization rates for the species richness
-animaColExt=function(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
+animaColExt=function(min=0.01, max=1, cycles=100, Ext="crs", Col="dcr")
 {
-          a=seq(from=min,to=max,length.out=cicles)
-          b=seq(from=max, to=min, length.out=cicles)
+          a=seq(from=min,to=max,length.out=cycles)
+          b=seq(from=max, to=min, length.out=cycles)
           nt=length(a)
           if(Ext=="fix"){ext=rep(0.5,nt)}
           if(Ext=="crs"){ext=a}
@@ -83,7 +83,7 @@ plot(area.isl,riq.final,log="xy",pch=16,col=rainbow(n.isl),bty="l",main=paste("N
 abline(mod1, lty=2)
 rqz<-apply(cena, c(2,3), sum)
 clz<-diff(riq.tempo)
-matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(n.isl), bty="l", xlab="Number of species", ylab="Colonization\n (Number of species/cicle)", main="Colonization Rate Curves", cex.main=1.2 )
+matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(n.isl), bty="l", xlab="Number of species", ylab="Colonization\n (Number of species/cycle)", main="Colonization Rate Curves", cex.main=1.2 )
 invisible(cena)
 }
 
@@ -192,10 +192,10 @@ extGame <- function(bet=1,total=100, tmax=2){
 
 
 ## Hubbell Neutral Model without imigration
-simHub1=function(S= 100, j=10, D=1, cicles=1e4, anima=TRUE)
+simHub1=function(S= 100, j=10, D=1, cycles=1e4, anima=TRUE)
 {
-if(cicles<200){cicles=200; cat("\n Minimum number of cicles: 200\n")}
-  stepseq=round(seq(101, cicles+1, len=100))
+if(cycles<200){cycles=200; cat("\n Minimum number of cycles: 200\n")}
+  stepseq=round(seq(101, cycles+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
   J <- S*j
@@ -247,23 +247,23 @@ if(anima==TRUE)
   animaHub(dadoHub=ind.mat)
   }
   x11()
-    plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/cicles,"sp/cicle"), cex.sub=0.8) 
+    plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cycles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/cycles,"sp/cycle"), cex.sub=0.8) 
   invisible(ind.mat)
 }
 
 #par(mfrow=c(2,2))
-#simHub1(S=10,j=10, D=1, cicles=5e3, anima=FALSE)
-#simHub1(j=5,cicles=2e4)
-#simHub1(j=10,cicles=2e4)
-#simHub1(j=20,cicles=2e4)
+#simHub1(S=10,j=10, D=1, cycles=5e3, anima=FALSE)
+#simHub1(j=5,cycles=2e4)
+#simHub1(j=10,cycles=2e4)
+#simHub1(j=20,cycles=2e4)
 #par(mfrow=c(1,1))
 
 
 ## Hubbell Neutral Model with immigration from a Metacommunity
-simHub2=function(S= 100, j=10, D=1, cicles=1e4, m=0.01, anima=TRUE)
+simHub2=function(S= 100, j=10, D=1, cycles=1e4, m=0.01, anima=TRUE)
 { 
-if(cicles<200){cicles=200; cat("\n Minimum number of cicles: 200\n")}
-  stepseq=round(seq(101, cicles+1, len=100))
+if(cycles<200){cycles=200; cat("\n Minimum number of cycles: 200\n")}
+  stepseq=round(seq(101, cycles+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da comunidade
   J <- S*j
@@ -336,19 +336,19 @@ x11()
   }
   ########### grafico interno ###############
   x11()
-  plot(tempo,apply(ind.mat,2,rich), xlab="Time (cicles)", ylab="Number of species", type="l",
-       main="Neutral Dynamics - Original Community Colonization",sub=paste( "S=",S," J=",J," m=",m,"Mean Extintion rate =",(S-rich(ind.mat[,ncol(ind.mat)]))/cicles,"sp/cicle"),ylim=c(0,S), cex.sub=0.7)
+  plot(tempo,apply(ind.mat,2,rich), xlab="Time (cycles)", ylab="Number of species", type="l",
+       main="Neutral Dynamics - Original Community Colonization",sub=paste( "S=",S," J=",J," m=",m,"Mean Extintion rate =",(S-rich(ind.mat[,ncol(ind.mat)]))/cycles,"sp/cycle"),ylim=c(0,S), cex.sub=0.7)
   invisible(ind.mat)
 }
 
-#simHub2(j=2,cicles=2e4,m=0.1)
+#simHub2(j=2,cycles=2e4,m=0.1)
 
 
 ## Hubbel Neutral Model with Immigration and speciation from a metacommunity
-simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, cicles=1e4, m=0.01, nu=0.001, anima=TRUE)
+simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, cycles=1e4, m=0.01, nu=0.001, anima=TRUE)
 {
-if(cicles<200){cicles=200; cat("\n Minimum number of cicles: 200\n")}
-  stepseq=round(seq(101, cicles+1, len=100))
+if(cycles<200){cycles=200; cat("\n Minimum number of cycles: 200\n")}
+  stepseq=round(seq(101, cycles+1, len=100))
   step=stepseq[2]- stepseq[1]
   ## Tamanho da metacomunidade
   Jm <- Sm*jm
@@ -474,14 +474,14 @@ if(anima==TRUE)
   crich<-apply(ind.mat,2,rich)
   ymax<-max(c(mrich,crich))
   ymax=ymax*1.1
-  plot(tempo,apply(meta.mat,2,rich), xlab="Time (cicles)", ylab="Number of species", type="l",
-       main="Neutra Dynamics - Metacomunity Colonization" ,sub=paste( "Jm=",Jm," nu=",nu," Theta=",2*Jm*nu, "S=",S," J=",J," m=",m, " Mean Extintion Rate=",(S-rich(ind.mat[,ncol(ind.mat)]))/cicles,"sp/cicle"), col="blue",  ylim=c(0,ymax), cex.sub=0.7)
+  plot(tempo,apply(meta.mat,2,rich), xlab="Time (cycles)", ylab="Number of species", type="l",
+       main="Neutral Dynamics - Metacommunity Colonization" ,sub=paste( "Jm=",Jm," nu=",nu," Theta=",2*Jm*nu, "S=",S," J=",J," m=",m, " Mean Extintion Rate=",(S-rich(ind.mat[,ncol(ind.mat)]))/cycles,"sp/cycle"), col="blue",  ylim=c(0,ymax), cex.sub=0.7)
   lines(tempo,apply(ind.mat,2,rich),col="red")
   text(tempo[length(tempo)*.6] ,crich[length(tempo)*.6]*1.1, "Community", col="red")
   text(tempo[length(tempo)*.9] ,mrich[length(tempo)*.9]*1.1, "Metacommunity", col="blue")
   invisible(resultados)
 }
 
-#simHub3(Sm=200, jm=20, S= 10, j=100, D=1, cicles=1e4, m=0.01, nu=0.001, anima=TRUE)
-#simHub3(j=10, cicles=2e4,m=0.1, anima=FALSE)
-#simHub3(j=2, cicles=2e3,nu=0.00001,m=0.1)
+#simHub3(Sm=200, jm=20, S= 10, j=100, D=1, cycles=1e4, m=0.01, nu=0.001, anima=TRUE)
+#simHub3(j=10, cycles=2e4,m=0.1, anima=FALSE)
+#simHub3(j=2, cycles=2e3,nu=0.00001,m=0.1)

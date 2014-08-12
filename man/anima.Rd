@@ -16,7 +16,7 @@ Internal EcoVirtual Graphics and Animations
 }
 
 \description{
-Internal functions for gaphics and animations of the simulations results. 
+Internal functions for graphics and animations of the simulations results. 
 }
 
 \usage{
@@ -41,7 +41,8 @@ grColExt(E , I , P, area)
 
 
 \details{
-Below there is each function and its primary function (where the graphical and animation function are used):
+
+	The list below relates each function graphical and its primary functions:
 
 animaCena - regNicho
 
