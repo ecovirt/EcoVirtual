@@ -41,7 +41,7 @@ bifAttr(N0, K, tmax, nrd, maxrd=3, minrd=1)
 }
   \item{npop}{number of simulated populations.
 }
-  \item{ext}{extintion.
+  \item{ext}{extinction.
 }
   \item{b}{birth rate.
 }
@@ -51,7 +51,7 @@ bifAttr(N0, K, tmax, nrd, maxrd=3, minrd=1)
 }
   \item{nsim}{number of simulated populations.
 }
-  \item{ciclo}{size of cicles in simulation.
+  \item{ciclo}{size of cycles in simulation.
 }
   \item{r}{intrinsic growth rate.
 }
@@ -65,7 +65,7 @@ bifAttr(N0, K, tmax, nrd, maxrd=3, minrd=1)
 }
   \item{p.aa}{probability of adult survival.
 }
-  \item{fec}{mean number of propagulus per adult each cicle.
+  \item{fec}{mean number of propagulus per adult each cycle.
 }
   \item{ns}{number of seeds at initial time.
 }

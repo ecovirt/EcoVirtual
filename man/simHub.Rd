@@ -13,9 +13,9 @@ Simulates the Neutral Theory of Biogeography by Hubbell.
 }
 
 \usage{
-simHub1(S, j, D, cicles, anima=TRUE)
-simHub2(S, j, D, cicles, m, anima=TRUE)
-simHub3(Sm, jm, S, j, D, cicles, m, nu, anima=TRUE)
+simHub1(S, j, D, cycles, anima=TRUE)
+simHub2(S, j, D, cycles, m, anima=TRUE)
+simHub3(Sm, jm, S, j, D, cycles, m, nu, anima=TRUE)
 }
 
 \arguments{
@@ -32,10 +32,10 @@ simHub3(Sm, jm, S, j, D, cicles, m, nu, anima=TRUE)
     individuals per species in the metacommunity.
 }
   \item{D}{
-    number of dead per cicle.
+    number of dead per cycle.
 }
-  \item{cicles}{
-    number of cicles in the simulation.
+  \item{cycles}{
+    number of cycles in the simulation.
 }
   \item{m}{
     colonization/immigration rate.
@@ -57,7 +57,7 @@ simHub3(Sm, jm, S, j, D, cicles, m, nu, anima=TRUE)
 }
 
 \value{
-These functions returns a graph with the number of species in time (cicles) in the metacommunity.
+These functions returns a graph with the number of species in time (cycles) in the metacommunity.
 
 They also return an invisible matrix with the results of species richness on each community per time.
 }
@@ -76,9 +76,9 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
 \examples{
-simHub1(S=10,j=10, D=1, cicles=5e3)
-simHub2(j=2,cicles=2e4,m=0.1)
-simHub3(Sm=200, jm=20, S= 10, j=100, D=1, cicles=1e4, m=0.01, nu=0.001, anima=TRUE)
+simHub1(S=10,j=10, D=1, cycles=5e3)
+simHub2(j=2,cycles=2e4,m=0.1)
+simHub3(Sm=200, jm=20, S= 10, j=100, D=1, cycles=1e4, m=0.01, nu=0.001, anima=TRUE)
 }
 
 \keyword{simulation}

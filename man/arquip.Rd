@@ -54,7 +54,7 @@ The mainland has richness (S) and the eveness can be controled argument abund. T
 \itemize{
 	\item The species-area relationship: number of species x island area at the end of the simulation. It also returns the coefficients c and z from species-area relationship $S=cA^z$.
 
-	\item Colonization rate curves: colonization (number of species per cicle) x number of species for each island.
+	\item Colonization rate curves: colonization (number of species per cycle) x number of species for each island.
 
 	\item Passive colonization: number of species x time for each island.
 
