@@ -51,11 +51,14 @@ compLV(n01,n02,tmax,r1,r2,k1,k2,alfa,beta)
 %	$$\frac{dN_2}{dt}=r_2N_2\left(\frac{K_2-N_2-\beta N_1}{K_2}\right) $$
 %}}
 \details{
-The Lotka-Volterra competition model follows the equations:
-\itemize{	\item SP1:
-dN_1/dt = r_1*N_1*((K_1-N_1-\alpha N_2)/K_1)
-	\item SP2:
-dN_2/dt = r_2*N_2*((K_2-N_2-\beta N_1)/K_2)
+	The Lotka-Volterra competition model follows the equations:
+	\itemize{	
+		\item SP1:
+		dN_1/dt = r_1*N_1*((K_1-N_1-alpha*N_2)/K_1)
+		\item SP2:
+		dN_2/dt = r_2*N_2*((K_2-N_2-beta*N_1)/K_2)
+	}
+}
 
 \value{
 'compLV' returns a graph of the population size in time, and a graph with the isoclines of the equilibrium for both species.
