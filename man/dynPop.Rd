@@ -79,11 +79,11 @@ bifAttr(N0, K, tmax, nrd, maxrd=3, minrd=1)
 }
   \item{rd}{discrete growth rate.
 }
-  \item{nrd}{.
+  \item{nrd}{number of discrete population growth rate to simulate.
 }
-  \item{maxrd}{.
+  \item{maxrd}{maximum discrete population growth rate.
 }
-  \item{minrd}{.
+  \item{minrd}{minimum discrete population growth rate.
 }
 }
 
