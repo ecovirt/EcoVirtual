@@ -52,7 +52,7 @@ The mainland has richness (S) and the evenness can be controled argument abund. 
 \value{
 'arquip' returns 3 graphics:
 \itemize{
-	\item The species-area relationship: number of species x island area at the end of the simulation. It also returns the coefficients c and z from species-area relationship $S=cA^z$.
+	\item The species-area relationship: number of species x island area at the end of the simulation. It also returns the coefficients c and z from species-area relationship \eqn{S=cA^z}.
 
 	\item Colonization rate curves: colonization (number of species per cycle) x number of species for each island.
 

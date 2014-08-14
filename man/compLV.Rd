@@ -43,21 +43,17 @@ compLV(n01,n02,tmax,r1,r2,k1,k2,alfa,beta)
 }
 }
 
-%\details{
-%The Lotka-Volterra competition model follows the equations:
-%\deqn{	\item[-] SP1:
-%	$$\frac{dN_1}{dt}=r_1N_1\left(\frac{K_1-N_1-\alpha N_2}{K_1}\right) $$
-%	\item[-] SP2:
-%	$$\frac{dN_2}{dt}=r_2N_2\left(\frac{K_2-N_2-\beta N_1}{K_2}\right) $$
-%}}
 \details{
-	The Lotka-Volterra competition model follows the equations:
-	\itemize{	
-		\item SP1:
-		dN_1/dt = r_1*N_1*((K_1-N_1-alpha*N_2)/K_1)
-		\item SP2:
-		dN_2/dt = r_2*N_2*((K_2-N_2-beta*N_1)/K_2)
-	}
+The Lotka-Volterra competition model follows the equations:
+\itemize{
+	\item SP1:
+	%%%% NOTE: deqn requires two arguments: \deqn{LaTeX}{ascii}
+	\deqn{\frac{dN_1}{dt}=r_1N_1\left(\frac{K_1-N_1-\alpha N_2}{K_1}\right)}{%
+		  dN_1/dt = r_1*N_1*((K_1-N_1-alpha*N_2)/K_1)}
+	\item SP2:  
+    \deqn{\frac{dN_2}{dt}=r_2N_2\left(\frac{K_2-N_2-\beta N_1}{K_2}\right)}{%
+		  dN_2/dt = r_2*N_2*((K_2-N_2-beta*N_1)/K_2)}
+}
 }
 
 \value{
