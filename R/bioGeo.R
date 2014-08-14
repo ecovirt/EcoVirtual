@@ -26,8 +26,8 @@ animaColExt=function(min=0.01, max=1, cycles=100, Ext="crs", Col="dcr")
 
 
 
-## Species colonization and species-area relationship in arquipelagoes
-arquip=function(n.isl,ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
+## Species colonization and species-area relationship in archipelagoes
+archip=function(n.isl,ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 {
 	ar.ampl=ar.max -ar.min
 	ar.isl= seq(ar.min, ar.max, length.out=n.isl)
@@ -87,8 +87,8 @@ matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(n.isl), bty="l", xlab="Numb
 invisible(cena)
 }
 
-#arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=rep(10,1000), tmax=100, anima=TRUE) #abund 'NORMAL'
-#arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE) #abund igual RCMDR, em eveness
+#archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=rep(10,1000), tmax=100, anima=TRUE) #abund 'NORMAL'
+#archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE) #abund igual RCMDR, em eveness
 
 
 

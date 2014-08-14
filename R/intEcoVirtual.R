@@ -10,7 +10,7 @@
 ## fuction rich used in 'simHub1' 'simHub2' simHub3'
 rich <- function(x)length(unique(x))
 
-## function animaIls used in 'arquip' function
+## function animaIls used in 'archip' function
 animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
 {
           Nspp=S

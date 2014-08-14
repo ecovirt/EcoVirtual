@@ -50,7 +50,7 @@ animaGame - extGame
 
 animaHub - simHub1, simHub2, simHub3
 
-animaIsl - arquip
+animaIsl - archip
 
 animaMeta2 - metaPop, metaCi, metaEr, metaCiEr
 

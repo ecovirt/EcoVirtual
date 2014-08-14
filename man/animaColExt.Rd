@@ -47,7 +47,7 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}}
 
 \seealso{
-	\code{\link{arquip}}
+	\code{\link{archip}}
 	\code{\link{bioGeoIsl}} 
 }
 

@@ -69,7 +69,7 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 
 \seealso{
 	\code{\link{animaColExt}}
-	\code{\link{arquip}}
+	\code{\link{archip}}
 }
 
 

@@ -1,5 +1,5 @@
-\name{arquip}
-\alias{arquip}
+\name{archip}
+\alias{archip}
 
 \title{
 Species Colonization and Species-Area Relationship in Archipelagos
@@ -10,7 +10,7 @@ Simulate species colonization from mainland to islands with different sizes.
 }
 
 \usage{
-arquip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
+archip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 }
 
 \arguments{
@@ -50,7 +50,7 @@ The mainland has richness (S) and the evenness can be controled argument abund. 
 }
 
 \value{
-'arquip' returns 3 graphics:
+'archip' returns 3 graphics:
 \itemize{
 	\item The species-area relationship: number of species x island area at the end of the simulation. It also returns the coefficients c and z from species-area relationship \eqn{S=cA^z}.
 
@@ -58,7 +58,7 @@ The mainland has richness (S) and the evenness can be controled argument abund. 
 
 	\item Passive colonization: number of species x time for each island.
 
-'arquip' also returns an invisible array with the simulation results.
+'archip' also returns an invisible array with the simulation results.
 }
 }
 
@@ -77,9 +77,9 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 \examples{
 
 \dontrun{
-arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=10, tmax=100, anima=TRUE)
+archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=10, tmax=100, anima=TRUE)
 
-arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE)
+archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE)
 }
 
 }
