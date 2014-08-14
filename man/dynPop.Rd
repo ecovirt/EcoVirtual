@@ -51,7 +51,7 @@ bifAttr(N0, K, tmax, nrd, maxrd=3, minrd=1)
 }
   \item{nsim}{number of simulated populations.
 }
-  \item{ciclo}{size of cycles in simulation.
+  \item{ciclo}{number of cycles in simulation.
 }
   \item{r}{intrinsic growth rate.
 }
@@ -59,23 +59,23 @@ bifAttr(N0, K, tmax, nrd, maxrd=3, minrd=1)
 }
   \item{p.sj}{probability of seed survival.
 }
-  \item{p.jj}{probability of juvenil survival.
+  \item{p.jj}{probability of juvenile survival.
 }
-  \item{p.ja}{probability of transition from juvenil to adult fase.
+  \item{p.ja}{probability of transition from juvenile to adult phase.
 }
   \item{p.aa}{probability of adult survival.
 }
-  \item{fec}{mean number of propagulus per adult each cycle.
+  \item{fec}{mean number of propagules per adult each cycle.
 }
   \item{ns}{number of seeds at initial time.
 }
-  \item{nj}{number of juvenil at initial time.
+  \item{nj}{number of juveniles at initial time.
 }
   \item{na}{number of adults at initial time.
 }
-  \item{rw}{number of rows to build the simulated scene.
+  \item{rw}{number of rows for the simulated scene.
 }
-  \item{cl}{number of columns to build the simulated scene.
+  \item{cl}{number of columns for the simulated scene.
 }
   \item{rd}{discrete growth rate.
 }
@@ -97,11 +97,11 @@ BDM simulates simple stochastic birth death and immigration dynamics of a popula
 
 estDem creates a graphic output based on BDM simulations.
 
-Stochastic models uses lambda values taken of a normal distribution with mean lambda and variance varr.
+Stochastic models uses lambda values taken from a normal distribution with mean lambda and variance varr.
 
 popLog simulates a logistic growth for continuous and discrete models.
 
-popStr simulates a structured population dynamics, with Leftkovitch matrices.
+popStr simulates a structured population dynamics, with Lefkovitch matrices.
 
 In popStr the number of patches in the simulated scene is defined by rw*cl.
 
@@ -127,7 +127,9 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
 \examples{
+\dontrun{
 popStr(p.sj=0.4, p.jj=0.6, p.ja=0.2, p.aa=0.9, fec=0.8, ns=100,nj=40,na=20, rw=30, cl=30, tmax=20)
+}
 }
 
 \keyword{population dynamics}

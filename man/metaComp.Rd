@@ -6,7 +6,7 @@ Metapopulation Competition Model
 }
 
 \description{
-Simulate a metapopulation dynamics with two competing species, a superior and a inferior competitor. Includes the possibility of habitat destruction in the model.
+Simulate a metapopulation dynamics with two competing species, a superior and an inferior competitor. Includes the possibility of habitat destruction in the model.
 }
 
 \usage{
@@ -18,16 +18,16 @@ metaComp(tmax, rw, cl, fi1, fi2, i1, i2, pe, D=0, anima=TRUE)
 maximum simulation time.
 }
   \item{cl}{
-number of columns to build the simulated landscape.
+number of columns for the simulated landscape.
 }
   \item{rw}{
-number of rowns to build the simulated landscape.
+number of rowns for the simulated landscape.
 }
   \item{fi1}{
-initial fraction of patchs occupeded by the superior competitor.
+initial fraction of patches occupied by the superior competitor.
 }
   \item{fi2}{
-initial fraction of patchs occupeded by the inferior competitor.
+initial fraction of patches occupied by the inferior competitor.
 }
   \item{i1}{
 colonization coefficient for the superior competitor.
@@ -55,7 +55,7 @@ The number of patches in the simulated landscape is defined by rw*cl.
 }
 
 \value{
-'metaComp' returns a grafic with the simulated landscapes and the results of the proportion of patch occupied by both species. 
+'metaComp' returns a graphic with the simulated landscapes and the results of the proportion of patch occupied by both species. 
 
 This function also return an invisible array with the simulation results.
 
@@ -76,8 +76,10 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
 \examples{
+\dontrun{
 metaComp(tmax=100,cl=20,rw=20,fi1=0.1,fi2=0.4,i1=0.4,i2=0.5,pe=0.25)
 metaComp(tmax=100,cl=20,rw=20,fi1=0.1,fi2=0.4,i1=0.4,i2=0.5,pe=0.25, D=0.1)
+}
 }
 
 \keyword{metapopulation}

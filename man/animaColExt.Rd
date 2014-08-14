@@ -52,7 +52,9 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}}
 }
 
 \examples{
+\dontrun{
 animaColExt(Ext='fix', Col="fix")
+}
 }
 
 \keyword{simulation}

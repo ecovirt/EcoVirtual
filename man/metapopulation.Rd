@@ -10,7 +10,7 @@ Metapopulation Models
 }
 
 \description{
-Simulate metapopulation dynamics with propagulus seed rain, internal colonization and rescue effect.
+Simulate metapopulation dynamics with propagules seed rain, internal colonization and rescue effect.
 }
 
 \usage{
@@ -22,10 +22,10 @@ metaCiEr(cl, rw, fi, ci, ce, tmax)
 
 \arguments{
   \item{cl}{
-  number of columns to build the simulated landscape.
+  number of columns for the simulated landscape.
 }
   \item{rw}{
-  number of rowns to build the simulated landscape.
+  number of rows for the simulated landscape.
 }
   \item{fi}{
   initial proportion of occupied patches.
@@ -48,9 +48,9 @@ metaCiEr(cl, rw, fi, ci, ce, tmax)
 }
 
 \details{
-'metaPop' is the seed rain metapopulation model, including only propagulus seed rain from a external pool (no extinction).
+'metaPop' is the seed rain metapopulation model, including only propagules seed rain from a external pool (no extinction).
 
-'metaCi' is the Internal Colonization model, where number of propagulus depends on number of occupied patches, there is no external pool.
+'metaCi' is the Internal Colonization model, where number of propagules depends on number of occupied patches, there is no external pool.
 
 'metaEr' is the Rescue Effect model, where extinction probability is negatively associated with number of occupied patches. 
 
@@ -76,10 +76,12 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
 \examples{
+\dontrun{
 metaPop(tmax=100,cl=10,rw=10,fi=0.5,pc=0.3,pe=0.15)
 metaCi(tmax=100,cl=10,rw=10,fi=0.1,ci=1,pe=0.5)
 metaEr(tmax=100, cl=10, rw=10, fi=0.2, pc=0.2, ce=0.15)
 metaCiEr(tmax=100, cl=10, rw=10, fi=0.2, ci=0.2, ce=0.15)
+}
 }
 
 \keyword{metapopulation}

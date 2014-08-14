@@ -2,7 +2,7 @@
 \alias{arquip}
 
 \title{
-Species Colonization and Species-Area Relationship in Arquipelagos
+Species Colonization and Species-Area Relationship in Archipelagos
 }
 
 \description{ 
@@ -41,10 +41,10 @@ arquip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 }
 
 \details{
-The mainland has richness (S) and the eveness can be controled argument abund. The 'abund' argument can be one of these 3 options:
+The mainland has richness (S) and the evenness can be controled argument abund. The 'abund' argument can be one of these 3 options:
 \enumerate{
 	\item a vector with the same length of the species richness, meaning the proportion of each species population; 
-	\item a single value more than 1 representing equal abundance of each species (maximum eveness); 
+	\item a single value more than 1 representing equal abundance of each species (maximum evenness); 
 	\item a single value between 0 and 1, meaning the model of geometric species rank-abundance distribution. The model is: abund*(1-abund)*((1:S)-1), where S is the number of species.
 }
 }
@@ -76,9 +76,11 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 
 \examples{
 
+\dontrun{
 arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=10, tmax=100, anima=TRUE)
 
 arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE)
+}
 
 }
 

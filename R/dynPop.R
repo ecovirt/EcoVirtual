@@ -154,11 +154,16 @@ estDem = function(N0=10, tmax=10, b=0.2, d=0.2, migr=0, nsim=20, ciclo=1000)
         lines(results[[i]],col=cores[i])
     }
     if(migr==0){
+		# Following code avoids spurious NOTE by R CMD check:
+		x <- NULL; rm(x);
+
         curve(N0*exp((b-d)*x), add=T, lwd=2)
         n.ext <- sum(sapply(results,function(x)min(x$N))==0)
         if(b>d&all(sapply(results, function(x)any(x[,2]==N0*2)))){
             d.time <- sapply(results,function(x)min(x[x[,2]==N0*2,1]))
-            if(m>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
+			# m não declarado, supondo n.ext (A.C. 13.ago.14)
+            #if(m>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
+            if(n.ext>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
                        paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3)))
             else texto <- paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3))
             legend("topleft",legend=texto,bty="n")

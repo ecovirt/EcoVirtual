@@ -49,9 +49,10 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
 \examples{
+\dontrun{
 extGame(bet=1,total=20)
 extGame(bet=1,total=100)
-
+}
 }
 
 \keyword{simulation}

@@ -72,6 +72,8 @@ Alexandre Adalardo
 }
 
 \examples{
+\dontrun{
 grColExt(E = 0.5 , I = 0.5 , P = 100, area=1:10)
+}
 }
 \keyword{ simulation }

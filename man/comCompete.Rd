@@ -6,7 +6,7 @@ Multispecies competition-colonization tradeoff
 }
 
 \description{
-Simulates the trade-off betweem colonization and competition abilities in a multispecies system.
+Simulates the trade-off between colonization and competition abilities in a multispecies system.
 }
 
 \usage{
@@ -15,16 +15,16 @@ comCompete(rw, cl, S, fi, fsp1, pe, fr=0, int=0, tmax)
 
 \arguments{
   \item{rw}{
-    number of rows to build the simulated landscape.
+    number of rows for the simulated landscape.
 }
   \item{cl}{
-   number of columns to build the simulated landscape.
+   number of columns for the simulated landscape.
 } 
   \item{S}{
     number of species.
 }
   \item{fi}{
-    initial fraction of patchs occupaded.
+    initial fraction of patchs occupied
 }
   \item{fsp1}{
     superior competitor abundance.
@@ -45,8 +45,6 @@ comCompete(rw, cl, S, fi, fsp1, pe, fr=0, int=0, tmax)
 
 \details{
 In the system, the competitive abilities are inversely proportional to the colonization abilities.
-
-
 
 The number of patches in the simulated landscape is defined by rw*cl. 
 }
@@ -70,7 +68,9 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
 \examples{
+\dontrun{
 comCompete(tmax=1000, rw=100, cl=100, S=10, fi=1, fsp1=0.20, pe=0.01, fr=0, int=0)
+}
 }
 
 \keyword{simulation}

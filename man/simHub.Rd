@@ -32,7 +32,7 @@ simHub3(Sm, jm, S, j, D, cycles, m, nu, anima=TRUE)
     individuals per species in the metacommunity.
 }
   \item{D}{
-    number of dead per cycle.
+    number of deaths per cycle.
 }
   \item{cycles}{
     number of cycles in the simulation.
@@ -76,9 +76,11 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 }
 
 \examples{
+\dontrun{
 simHub1(S=10,j=10, D=1, cycles=5e3)
 simHub2(j=2,cycles=2e4,m=0.1)
 simHub3(Sm=200, jm=20, S= 10, j=100, D=1, cycles=1e4, m=0.01, nu=0.001, anima=TRUE)
+}
 }
 
 \keyword{simulation}

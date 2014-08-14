@@ -53,33 +53,36 @@ animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
 ## grColExt used in 'animaColExt' and 'bioGeoIsl'
 grColExt=function(E , I , P, area)
 {
-          S = I*P/(I+E) ; T = I*E/(I+E)
-          nIsl=length(E)
-          corIsl=rainbow(nIsl)
-          curve(I[1]-I[1]*x/P[1],0,P[1],bty="n",xlab="Number of Species", ylab="Rate",xaxt="n",yaxt="n", font.lab=2,lwd=2,ylim=c(0,1),  main="Island Biogeography", col=corIsl[1])
-          curve((E[1]/P[1])*x,0,P,lwd=2,add=TRUE, col=corIsl[1], lty=2)
-          legend("top", legend=c("Colonization", "Extinction"),  bty="n",lty=c(1,2))
-          abline(v=0)
-          abline(h=0)
-          mtext("St",side=1,at=P,font=2, line=1)
-          linhas=seq(0,1.5, length.out=nIsl)
-          for(i in 1:nIsl)	
-          {
-                    curve(I[i]-I[i]*x/P,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=1)
-                    curve((E[i]/P)*x,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=2)
-                    mtext(paste("S", i, sep=""),side=1,at=S[i], cex=0.8,font=2,col=corIsl[i], line=linhas[i])
-                    mtext(paste("T", i, sep=""),side=2,at=T[i],cex=0.8,font=2,las=1,col=corIsl[i], line=linhas[i])
-                    points(S[i],T[i],col=corIsl[i],pch=16,cex=1)
-                    if(length(unique(area))>1)
-                    {
-                              siz_ar=2 +(area/max(area))
-                              points(S[i],T[i],col=corIsl[i],cex=siz_ar[i])
-                    }
-                    segments(S[i],T[i],S[i],0,lty=3,col=corIsl[i])
-                    segments(S[i],T[i],0,T[i],lty=3,col=corIsl[i])
-                    Sys.sleep(0.1)
-          }	
-        }
+	# Following code avoids spurious NOTE by R CMD check:
+	x <- NULL; rm(x);
+
+	S = I*P/(I+E) ; T = I*E/(I+E)
+	nIsl=length(E)
+	corIsl=rainbow(nIsl)
+	curve(I[1]-I[1]*x/P[1],0,P[1],bty="n",xlab="Number of Species", ylab="Rate",xaxt="n",yaxt="n", font.lab=2,lwd=2,ylim=c(0,1),  main="Island Biogeography", col=corIsl[1])
+	curve((E[1]/P[1])*x,0,P,lwd=2,add=TRUE, col=corIsl[1], lty=2)
+	legend("top", legend=c("Colonization", "Extinction"),  bty="n",lty=c(1,2))
+	abline(v=0)
+	abline(h=0)
+	mtext("St",side=1,at=P,font=2, line=1)
+	linhas=seq(0,1.5, length.out=nIsl)
+	for(i in 1:nIsl)	
+	{
+		curve(I[i]-I[i]*x/P,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=1)
+		curve((E[i]/P)*x,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=2)
+		mtext(paste("S", i, sep=""),side=1,at=S[i], cex=0.8,font=2,col=corIsl[i], line=linhas[i])
+		mtext(paste("T", i, sep=""),side=2,at=T[i],cex=0.8,font=2,las=1,col=corIsl[i], line=linhas[i])
+		points(S[i],T[i],col=corIsl[i],pch=16,cex=1)
+		if(length(unique(area))>1)
+		{
+			siz_ar=2 +(area/max(area))
+			points(S[i],T[i],col=corIsl[i],cex=siz_ar[i])
+		}
+		segments(S[i],T[i],S[i],0,lty=3,col=corIsl[i])
+		segments(S[i],T[i],0,T[i],lty=3,col=corIsl[i])
+		Sys.sleep(0.1)
+	}	
+}
 
 #grColExt(E = .5 , I = .5 , P = 100, area=1:10)
 

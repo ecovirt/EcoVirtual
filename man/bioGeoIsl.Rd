@@ -53,10 +53,6 @@ e.i=0, f.i=.01, g.e=0, h.e=.01)
 }
 }
 
-\details{
-no details
-}
-
 \value{
 'bioGeoIsl' returns a graph with the rates of colonization and extinction in relation with the species richness for each island.
 
@@ -78,8 +74,10 @@ Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 
 
 \examples{
+\dontrun{
 bioGeoIsl(area=c(5,10,50,80), dist=c(10,100,100,10), P=100, weight.A=.5, a=1, 
 b=-0.01, c=1, d=-0.01, e=0, f=.01, g=0, h=.01)
+}
 }
 
 \keyword{simulation}
