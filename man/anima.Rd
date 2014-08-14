@@ -31,10 +31,10 @@ grColExt(E , I , P, area)
 	colonization rate
 }
   \item{P}{
-
+	species available in mainland
 }
   \item{area}{
-
+	islands sizes
 }
 
 }
