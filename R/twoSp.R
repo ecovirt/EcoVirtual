@@ -24,7 +24,7 @@ resulta[1,c(2,3)]=c(n01,n02)
      resulta[t,3]=0
      }
   }
-x11()
+dev.new()
 old=par(mfrow=c(1,2), mar=c(4,4,2,1))
 plot(resulta[,1],resulta[,2],ylim=c(0,max(na.omit(resulta[,2:3]))),type="l",lty=4,xlab="time (t)",ylab="Population size", main="Population Growth", col="blue", lwd=1.5 )
 legend("topleft", legend=c("Sp. 1", "Sp. 2"), lty=4, col=c("blue", "green"), bty="n", cex=0.8)
@@ -84,12 +84,12 @@ metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
     pais[,,tc]<-c(depois,nD)
     antes <- depois
   }
-          x11()
+          dev.new()
 		if(anima==TRUE)
 		{
 		animaMetaComp(pais)
 		}
-x11()  
+dev.new()  
 plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Patch occupancy", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; rw=",rw,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
   lines(1:tmax,resultado[,3],col="green", lwd=2)
   abline(h=F1,col="blue",lwd=1.5,lty=2)

@@ -63,7 +63,8 @@ The mainland has richness (S) and the evenness can be controled argument abund. 
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}}
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
+}
 
 \references{
 Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
@@ -71,7 +72,8 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 
 \seealso{
 	\code{\link{animaColExt}},
-	\code{\link{bioGeoIsl}}
+	\code{\link{bioGeoIsl}},
+	\url{http://ecovirtual.ib.usp.br}
 }
 
 \examples{

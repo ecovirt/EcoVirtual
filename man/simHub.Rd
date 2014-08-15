@@ -66,13 +66,15 @@ They also return an invisible matrix with the results of species richness on eac
 Hubbell, S.P. 2001. The Unified Neutral Theory of Biodiversity and Biogeography. Princeton University Pres, 448p.
 }
 
+
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+Alexandre Adalardo de Oliveira and Paulo Inacio Prado \email{ecovirtualpackage@gmail.com}
 }
 
 \seealso{
- 	\code{\link{extGame}}
-  	\code{\link{randWalk}}
+	\code{\link{extGame}},
+  	\code{\link{randWalk}},
+        \url{http://ecovirtual.ib.usp.br}
 }
 
 \examples{

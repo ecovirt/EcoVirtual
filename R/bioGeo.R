@@ -18,7 +18,7 @@ animaColExt=function(min=0.01, max=1, cycles=100, Ext="crs", Col="dcr")
           if(Col=="fix"){col=rep(0.5,nt)}
           if(Col=="crs"){col=a}
           if(Col=="dcr"){col=b}
-          x11()
+          dev.new()
           grColExt(E=ext,I=col,P=100, area=1)
 }
 
@@ -66,7 +66,7 @@ riq.tempo=t(apply(cena, c(2,3), sum))
 	{
 	animaIsl(riq.tempo, ar.isl, locxy, sprain, S=S)
 	}
-x11()
+dev.new()
 layout(matrix(data=c(1,2), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
 old<-par(mar=c(5,4,3,3))#, oma=c(0,0,0,0))			
 matplot(riq.tempo, type="l", col=rainbow(n.isl), bty="l", cex.lab=1.2, xlab="Time", ylab="Number of Species", cex.axis=1.2, main="Passive Colonization", cex.main=1.2 )
@@ -75,7 +75,7 @@ image(x=1:n.isl, y=1, matrix(data=1:n.isl, nrow=n.isl,ncol=1),col=rainbow(n.isl)
 pos.x=1:(n.isl)
 area.isl=round(ar.isl^2,0)
 axis(1,at=pos.x, area.isl, cex.axis=0.8)
-x11()
+dev.new()
 par(mfrow=c(2,1), mar=c(5,5,4,2))
 riq.final<-riq.tempo[tmax,]
 mod1<-lm(log10(riq.final)~log10(area.isl))
@@ -95,7 +95,7 @@ invisible(cena)
 ## Island Biogeography, rates of colonization and extinctions for islands of different sizes and distances to continent.
 bioGeoIsl=function(area, dist , P , weight.A=.5 , a.e=1, b.e=-.01, c.i=1, d.i=-.01,e.i=0, f.i=.01,g.e=0, h.e=.01)
 {
-x11()
+dev.new()
 nf <- layout(matrix(c(1,2), 2, 1),widths=c(1), heights=c(4,1))
 def_par<-par(mar=c(4,7,3,7))
   E=((a.e+b.e*area)*weight.A+(g.e+h.e*dist)*(1-weight.A))
@@ -151,7 +151,7 @@ randWalk <- function(S=1,step=1,tmax=1e5,x1max=200, alleq=FALSE){
   }
   results[is.na(results)] <- 0
   time <- seq(0,tmax,by=cont)
-  x11()
+  dev.new()
   animaRandWalk(rwData=results, time= time, sleep=sleep)
   invisible(results)
 }
@@ -178,7 +178,7 @@ extGame <- function(bet=1,total=100, tmax=2){
     break()
     }
   }
-  x11()
+  dev.new()
   animaGame(results, total)
   invisible(results)
 }
@@ -241,12 +241,12 @@ if(!is.null(stepseq))
 tempo <- c(tempo,stepseq)
 }
   colnames(ind.mat) <- tempo
-x11()
+dev.new()
 if(anima==TRUE)
   {
   animaHub(dadoHub=ind.mat)
   }
-  x11()
+  dev.new()
     plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cycles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/cycles,"sp/cycle"), cex.sub=0.8) 
   invisible(ind.mat)
 }
@@ -329,13 +329,13 @@ if(cycles<200){cycles=200; cat("\n Minimum number of cycles: 200\n")}
   }
   tempo <- c(0:99,stepseq)
   colnames(ind.mat) <- tempo
-x11()
+dev.new()
   if(anima==TRUE)
   {
   animaHub(dadoHub=ind.mat)
   }
   ########### grafico interno ###############
-  x11()
+  dev.new()
   plot(tempo,apply(ind.mat,2,rich), xlab="Time (cycles)", ylab="Number of species", type="l",
        main="Neutral Dynamics - Original Community Colonization",sub=paste( "S=",S," J=",J," m=",m,"Mean Extintion rate =",(S-rich(ind.mat[,ncol(ind.mat)]))/cycles,"sp/cycle"),ylim=c(0,S), cex.sub=0.7)
   invisible(ind.mat)
@@ -463,13 +463,13 @@ if(cycles<200){cycles=200; cat("\n Minimum number of cycles: 200\n")}
   colnames(ind.mat) <- tempo
   colnames(meta.mat) <- tempo
   resultados <- list(metacomunidade=meta.mat,comunidade=ind.mat)
-x11()
+dev.new()
 if(anima==TRUE)
   {
   animaHub(dadoHub=resultados$comunidade)
   }
   ########### grafico interno ###############
-  x11()
+  dev.new()
   mrich<-apply(meta.mat,2,rich)
   crich<-apply(ind.mat,2,rich)
   ymax<-max(c(mrich,crich))

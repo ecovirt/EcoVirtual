@@ -16,10 +16,10 @@ metaPop <-function(cl,rw,fi,pc,pe, tmax)
 	       paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),cl*rw-sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(1-pc,pc))
 	       resultado[tc-1]=sum(paisag[,,tc])/(cl*rw)	
 	   }
-          x11()
+          dev.new()
 	animaMeta2(paisag)
 	grFim(paisag)
-	x11()
+	dev.new()
 	F=pc/(pc+pe)
 	plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Proportion of occupation",
 	ylim=c(0,1),main=paste("Propagulus rain","\n cols=",cl," rows=",rw," fi=",fi," pi=",pc," pe=",pe),font.lab=2,lwd=2)
@@ -45,10 +45,10 @@ resultado=numeric()
 	paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),cl*rw-sum(paisag[,,(tc-1)]), replace=TRUE,prob=c(1-pc,pc))
    resultado[tc-1]=sum(paisag[,,tc])/nmanchas
    }
-x11()
+dev.new()
 animaMeta2(paisag)
 grFim(paisag)
-x11()
+dev.new()
 F=1-(pe/ci)
 plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Proportion of occupation",
 ylim=c(0,1),main=paste("Propagulus Rain and Internal Colonization","\n cols=",cl," rows=",rw," fi=",fi," ci=",ci," pe=",pe),font.lab=2,lwd=2)
@@ -76,10 +76,10 @@ res=numeric()
 	resultado[tc-1]=sum(paisag[,,tc])/nmanchas
 	res[tc-1]=pe
 	}
-x11()
+dev.new()
 animaMeta2(paisag)
 grFim(paisag)
-x11()
+dev.new()
 F=pc/ce
 if(F>1){F=1}
 pe.eq=ce-pc
@@ -115,10 +115,10 @@ resi=numeric()
 	rese[tc-1]=pe
 	resi[tc-1]=pc
 	}
-x11()
+dev.new()
 animaMeta2(paisag)
 grFim(paisag)
-x11()
+dev.new()
 plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Occupancy proportion", ylim=c(0,1),main=paste("Propagulus Rain and Internal colonization and Rescue Effect","\n cols=",cl," rows=",rw," fi=",fi," ci=",ci, "ce=",ce),font.lab=2,lwd=2)
 abline(h=0,lty=2)
 points(1:tmax,c(ce*(1-fi),rese),type='l',lwd=2,col=4,lty=3)

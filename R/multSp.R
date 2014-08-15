@@ -42,7 +42,7 @@ resulta[1,(as.numeric(names(conta))+1)]<-conta
 	resulta[t,(as.numeric(names(conta))+1)]<-conta
 	}
 animaCena(cena)
-x11()
+dev.new()
 matplot( 1:tmax,resulta[,2:5], type="l", main="Niche Regeneration Model" , xlab="time", ylab="Patch occupancy", lty=2:5, col=2:5)
 legend("topright", c("Early", "Susceptible", "Mixed", "Resistant"), bty="n", lty=2:5, col=2:5, cex=0.7)
 invisible(cena)
@@ -106,7 +106,7 @@ temp=1
 		antes<-depois
 		}
 #grafico
-#x11()
+#dev.new()
 layout(matrix(data=c(1,2), nrow=2, ncol=1), widths=c(1,1), heights=c(4,1))
 matplot(1:tmax,t(resulta),type="l", lty=3, col=rainbow(S),bty="n", lwd=2,xlab="Time", ylab="Patch occupancy", main="Competition/Colonization Trade-off", sub=paste("\n best competitor abundance=",fsp1,"; mortality rate=",pe, "; disturbance frequency=",fr, "; disturbance intensity=", int), cex.sub=0.7) 
 old<-par(mar=c(3,5,2,4))
@@ -138,7 +138,7 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
           n0=sample(rep(0:(nfase-1), fase_n))
           arena[1:ncel]<-n0
           pais[,,1]<-arena
-          x11()
+          dev.new()
           image(0:rw, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Successional Model")
           grid(rw,cl)
           for (tc in 2:tmax)
@@ -152,7 +152,7 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
                     image(0:rw, 0:cl, pais[,,tc], col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), add=TRUE)
                     Sys.sleep(.1)
           }
-          x11()
+          dev.new()
           op=par(mfrow=c(2,2))
           image(0:rw, 0:cl, arena, col=cl_fase(nfase) , breaks=c(-0.1,(1:nfase)-0.1), xlab="", ylab="", main="Initial Conditions")
           for(ts in c(4,2,1))
@@ -161,7 +161,7 @@ sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
           }
           par(op)
           resulta=t(apply(pais,3, table))
-          x11()
+          dev.new()
           matplot(resulta, type="l", ylim=c(min(resulta)*0.8, max(resulta)*1.1), main="Stage Distribution",ylab="Number of patches", xlab="Time", col=cl_fase(nfase), lty=2, lwd=2)
           legend("topright", legend=paste("Stage", 1:nfase), lty=2, lwd=2, col=cl_fase(nfase), bty="n", cex=0.8)
           eigs_st=eigen(mat.trans)

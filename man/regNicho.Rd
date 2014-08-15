@@ -83,11 +83,12 @@ Stevens, MHH. 2009. A primer in ecology with R. New York, Springer.
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
 }
 
 \seealso{
-	\code{\link{comCompete}}
+	\code{\link{comCompete}},
+	 \url{http://ecovirtual.ib.usp.br}
 }
 
 \examples{

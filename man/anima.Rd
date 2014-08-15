@@ -64,13 +64,16 @@ grFim - metaPop, metaCi, metaEr, metaCiEr
 }
 
 \value{
-Represent the simulation result in a graphic device.
+Show simulation in a graphic device.
 }
 
 \author{
-Alexandre Adalardo
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
 }
 
+\seealso{
+	\url{http://ecovirtual.ib.usp.br}
+}
 \examples{
 \dontrun{
 grColExt(E = 0.5 , I = 0.5 , P = 100, area=1:10)

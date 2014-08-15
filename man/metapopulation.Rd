@@ -70,11 +70,13 @@ Gotelli, N.J. 1991. Metapopulation models: the rescue effect, the propagule rain
 
 Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
-
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+Alexandre Adalardo de Oliveira and Paulo Inacio Prado \email{ecovirtualpackage@gmail.com}
 }
 
+\seealso{
+        \url{http://ecovirtual.ib.usp.br}
+}
 \examples{
 \dontrun{
 metaPop(tmax=100,cl=10,rw=10,fi=0.5,pc=0.3,pe=0.15)

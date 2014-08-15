@@ -64,12 +64,13 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
 }
 
 \seealso{
 	\code{\link{animaColExt}}
-	\code{\link{archip}}
+	\code{\link{archip}},
+	\url{http://ecovirtual.ib.usp.br}
 }
 
 

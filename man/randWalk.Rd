@@ -50,12 +50,13 @@ See \url{ http://en.wikipedia.org/wiki/Random_walk}.
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+Alexandre Adalardo de Oliveira and Paulo Inacio Prado \email{ecovirtualpackage@gmail.com}
 }
 
 \seealso{
-	\code{\link{extGame}}
-  	\code{\link{simHub}}
+	\code{\link{extGame}},
+  	\code{\link{simHub}},
+        \url{http://ecovirtual.ib.usp.br}
 }
 
 \examples{

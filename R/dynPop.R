@@ -92,7 +92,7 @@ estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE)
                     resulta[t,(3:(npop+2))][resulta[t,(3:(npop+2))]<1] = 0
 		}
 	}
-                                        #x11()
+                                        #dev.new()
                                         #matplot(resulta[,1],resulta[,-c(1,2)], )
     cores=rainbow(npop)
     extN<-sum(resulta[tmax,-c(1,2)]<=0)
@@ -247,7 +247,7 @@ invisible(resulta)
 ################################################
 popStr=function(tmax, p.sj, p.jj, p.ja, p.aa, fec, ns, nj, na, rw, cl)
 {
-x11()
+dev.new()
 ncel=rw*cl
 arena=matrix(0,nrow=rw,ncol=cl)
 xy.sem=list()
@@ -310,7 +310,7 @@ pais[,,1]<-arena
 	}
 tab.rel=tab.fr/apply(tab.fr,1,sum)
 names(tab.rel)<-c("Empty", "Seed", "Juvenile", "Adult")
-x11()
+dev.new()
 matplot(tab.rel, type="l",col=c("gray", "red", "green", "darkgreen"),lwd=2,main= "Stage Frequency", ylab="Frequency", xlab="Time (t)")
 legend("topright",legend=c("Empty", "Seed", "Juvenile", "Adult") ,lty=1:4, col=c("gray", "red", "green", "darkgreen"), bty="n", cex=0.8 )
 invisible(list(simula=pais, xy=xy.sem))

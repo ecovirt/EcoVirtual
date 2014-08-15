@@ -139,7 +139,6 @@ animaGame = function(xGame, total, sleep=0.01)
 ## animaHub used in 'simHub1', 'simHub2', 'simHub3'
 animaHub=function(dadoHub, sleep=0.1)
 {
-          library(tcltk)
           maxsp=max(dadoHub)[1]
           uniqsp=unique(as.numeric(dadoHub))
           nind=dim(dadoHub)[1]
@@ -270,7 +269,7 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 	px= fsp1*(1-fsp1)^(rank-1)
 		if(add==FALSE)
 		{
-		toff<-x11( width=5, height=5)
+		toff<-dev.new( width=5, height=5)
 		}
 	old<-par(mar=c(3,3,3,3))
 	plot(ci~rank,col="red",ylim=c(0,max(ci)*1.1), type="b", ann=FALSE, axes=FALSE)
@@ -289,14 +288,14 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 animaCena=function(dados)
 {
 nt=dim(dados)[3]
-x11()
+dev.new()
 op=par(mfrow=c(5,5),  mar=c(0.1,0.1,0.1,0.1))
 	for(i in 1:nt)
 	{
 	image(dados[,,i], main="",  bty="n",xaxt='n',yaxt='n', col=c("white", "yellow", "orange", "blue", "green"))
 	grid(dim(dados)[2],dim(dados)[1])
 	}
-x11()
+dev.new()
 par(mfrow=c(2,2))
 image(dados[,,1], main= paste("Patch occupancy\n \t time=", 1 ),  bty="n",xaxt='n',yaxt='n',col=c("white", "yellow", "orange", "blue", "green"))
 grid(dim(dados)[2],dim(dados)[1])
