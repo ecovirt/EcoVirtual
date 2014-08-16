@@ -10,7 +10,7 @@ Simulate the balance between extinction and colonization rates given the equilib
 }
 
 \usage{
-animaColExt(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
+animaColExt(min=0.01, max=1, cycles=100, Ext="crs", Col="dcr")
 }
 
 \arguments{
@@ -20,14 +20,14 @@ animaColExt(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
   \item{max}{
     between 0-1. The maximum value of the extinction and colonization rates.
 }
-  \item{cicles}{
-    number of cicles in the simulation.
+  \item{cycles}{
+    number of cycles in the simulation.
 }
   \item{Ext}{
-   extinction rate. This can be 'crs' for an increasing extinction rate, 'fix' for a fixed extinction rate in 0.5, or 'dcr' for a decreasing extinction rate.   
+   a string representing the extinction rate. This can be 'crs' for an increasing extinction rate, 'fix' for a fixed extinction rate in 0.5, or 'dcr' for a decreasing extinction rate.   
 }
   \item{Col}{
-   colonization rate. This can be 'crs' for an increasing colonization rate, 'fix' for a fixed colonization rate in 0.5, or 'dcr' for a decreasing colonization rate.
+   a string representing the colonization rate. This can be 'crs' for an increasing colonization rate, 'fix' for a fixed colonization rate in 0.5, or 'dcr' for a decreasing colonization rate.
 }
 }
 
@@ -36,7 +36,7 @@ animaColExt(min=0.01, max=1, cicles=100, Ext="crs", Col="dcr")
 }
 
 \value{
-'animaColExt' returns a graph of the extinction and colonization rates varying one or both rates in relation with te number of species of an island.
+'animaColExt' returns a graph of the extinction and colonization rates varying one or both rates in relation with the number of species of an island.
 }
 
 \references{
@@ -44,15 +44,19 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}}
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
+}
 
 \seealso{
-	\code{\link{arquip}}
+	\code{\link{archip}}
 	\code{\link{bioGeoIsl}} 
+	\url{http://ecovirtual.ib.com.br}
 }
 
 \examples{
+\dontrun{
 animaColExt(Ext='fix', Col="fix")
+}
 }
 
 \keyword{simulation}

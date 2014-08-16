@@ -11,7 +11,7 @@ popExp <- function(N0,lamb,tmax, intt= 1)
                                         #   N0 <- round(as.numeric(tclvalue(noVar)))
     if (is.na(N0) || N0 <= 0) 
         {
-            stop("Number of individuos at the simulation start must be a positive integer")
+            stop("Number of individuals at the simulation start must be a positive integer")
                                         #            return()
         }
                                         #       tmax <- round(as.numeric(tclvalue(tmaxVar)))
@@ -61,7 +61,7 @@ estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE)
                                         #   N0 <- round(as.numeric(tclvalue(noVar)))
     if (is.na(N0) || N0 <= 0) 
         {
-            stop("Number of individuos at the simulation start must be a positive integer")
+            stop("Number of individuals at the simulation start must be a positive integer")
                                         #            return()
         }
                                         #       tmax <- round(as.numeric(tclvalue(tmaxVar)))
@@ -73,7 +73,7 @@ estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE)
                                         #        varr <- as.numeric(tclvalue(varrVar))
     if (varr < 0)
         {
-            stop(message = "r Variance must be zero (no stocatiscit) or a positive value")
+            stop(message = "r Variance must be zero (no stochatiscity) or a positive value")
                                         #            return()
         }
 ###############################################################################
@@ -92,7 +92,7 @@ estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE)
                     resulta[t,(3:(npop+2))][resulta[t,(3:(npop+2))]<1] = 0
 		}
 	}
-                                        #x11()
+                                        #dev.new()
                                         #matplot(resulta[,1],resulta[,-c(1,2)], )
     cores=rainbow(npop)
     extN<-sum(resulta[tmax,-c(1,2)]<=0)
@@ -101,7 +101,7 @@ estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE)
             ylim=c(0,max(resulta[,2:(npop+2)])),
             sub=paste("lambda = ", lamb, "; variance = ", varr, "; extinctions = ", extN, "/", npop),lwd=1.5, bty="n", cex.sub=0.8)
     lines(resulta[,1],resulta[,2], lwd=2)
-    legend("topleft",c("deterministic","environment stocastic"),lty=c(1,2), col=c(1,3), bty="n")
+    legend("topleft",c("deterministic","environment stochastic"),lty=c(1,2), col=c(1,3), bty="n")
                                         #text(x=2, y= resulta[round(tmax*0.8),2], paste("extinctions = ", extN, "/", npop), cex=0.7)
                                         #text(x=tmax*0.6, y= resulta[(tmax/2),2], paste("var=", varr), col="blue")
     invisible(resulta)
@@ -154,11 +154,16 @@ estDem = function(N0=10, tmax=10, b=0.2, d=0.2, migr=0, nsim=20, ciclo=1000)
         lines(results[[i]],col=cores[i])
     }
     if(migr==0){
+		# Following code avoids spurious NOTE by R CMD check:
+		x <- NULL; rm(x);
+
         curve(N0*exp((b-d)*x), add=T, lwd=2)
         n.ext <- sum(sapply(results,function(x)min(x$N))==0)
         if(b>d&all(sapply(results, function(x)any(x[,2]==N0*2)))){
             d.time <- sapply(results,function(x)min(x[x[,2]==N0*2,1]))
-            if(m>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
+			# m não declarado, supondo n.ext (A.C. 13.ago.14)
+            #if(m>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
+            if(n.ext>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
                        paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3)))
             else texto <- paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3))
             legend("topleft",legend=texto,bty="n")
@@ -242,7 +247,7 @@ invisible(resulta)
 ################################################
 popStr=function(tmax, p.sj, p.jj, p.ja, p.aa, fec, ns, nj, na, rw, cl)
 {
-x11()
+dev.new()
 ncel=rw*cl
 arena=matrix(0,nrow=rw,ncol=cl)
 xy.sem=list()
@@ -304,10 +309,10 @@ pais[,,1]<-arena
 	tab.fr[tc,2]<-n.fec
 	}
 tab.rel=tab.fr/apply(tab.fr,1,sum)
-names(tab.rel)<-c("Empty", "Seed", "Juvenil", "Adult")
-x11()
+names(tab.rel)<-c("Empty", "Seed", "Juvenile", "Adult")
+dev.new()
 matplot(tab.rel, type="l",col=c("gray", "red", "green", "darkgreen"),lwd=2,main= "Stage Frequency", ylab="Frequency", xlab="Time (t)")
-legend("topright",legend=c("Empty", "Seed", "Juvenil", "Adult") ,lty=1:4, col=c("gray", "red", "green", "darkgreen"), bty="n", cex=0.8 )
+legend("topright",legend=c("Empty", "Seed", "Juvenile", "Adult") ,lty=1:4, col=c("gray", "red", "green", "darkgreen"), bty="n", cex=0.8 )
 invisible(list(simula=pais, xy=xy.sem))
 }
 #popStr(p.sj=0.05, p.jj=0.99, p.ja=0, p.aa=1, fec=1.2, ns=100,nj=150,na=50, rw=20, cl=20, tmax=100)
