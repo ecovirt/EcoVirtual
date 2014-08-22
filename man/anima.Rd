@@ -16,7 +16,7 @@ Internal EcoVirtual Graphics and Animations
 }
 
 \description{
-Internal functions for gaphics and animations of the simulations results. 
+Internal functions for graphics and animations of the simulations results. 
 }
 
 \usage{
@@ -31,17 +31,18 @@ grColExt(E , I , P, area)
 	colonization rate
 }
   \item{P}{
-
+	species available in mainland
 }
   \item{area}{
-
+	islands sizes
 }
 
 }
 
 
 \details{
-Below there is each function and its primary function (where the graphical and animation function are used):
+
+	The list below relates each function graphical and its primary functions:
 
 animaCena - regNicho
 
@@ -49,7 +50,7 @@ animaGame - extGame
 
 animaHub - simHub1, simHub2, simHub3
 
-animaIsl - arquip
+animaIsl - archip
 
 animaMeta2 - metaPop, metaCi, metaEr, metaCiEr
 
@@ -63,14 +64,19 @@ grFim - metaPop, metaCi, metaEr, metaCiEr
 }
 
 \value{
-Represent the simulation result in a graphic device.
+Show simulation in a graphic device.
 }
 
 \author{
-Alexandre Adalardo
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
 }
 
+\seealso{
+	\url{http://ecovirtual.ib.usp.br}
+}
 \examples{
+\dontrun{
 grColExt(E = 0.5 , I = 0.5 , P = 100, area=1:10)
+}
 }
 \keyword{ simulation }

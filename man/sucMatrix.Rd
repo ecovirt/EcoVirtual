@@ -48,13 +48,15 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
 }
 
 
 \examples{
+\dontrun{
 sucMatrix(mat.trans=matrix(data=c(0.5,0.5,0.5,0.5), nrow=2), 
 init.prop=c(0.5,0.5),rw=20,cl=20, tmax=100)
+}
 
 }
 

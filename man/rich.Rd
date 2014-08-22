@@ -29,7 +29,7 @@ returns the number of species (species richness).
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
 }
 
 \examples{

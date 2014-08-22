@@ -40,18 +40,21 @@ A zero-sum game is a mathematical representation of a situation in which a parti
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+Alexandre Adalardo de Oliveira and Paulo Inacio Prado \email{ecovirtualpackage@gmail.com}
 }
 
+
 \seealso{
-	\code{\link{simHub}}
-  	\code{\link{randWalk}}
+	\code{\link{simHub}},
+  	\code{\link{randWalk}},
+	\url{http://ecovirtual.ib.usp.br}
 }
 
 \examples{
+\dontrun{
 extGame(bet=1,total=20)
 extGame(bet=1,total=100)
-
+}
 }
 
 \keyword{simulation}

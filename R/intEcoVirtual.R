@@ -10,7 +10,7 @@
 ## fuction rich used in 'simHub1' 'simHub2' simHub3'
 rich <- function(x)length(unique(x))
 
-## function animaIls used in 'arquip' function
+## function animaIls used in 'archip' function
 animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
 {
           Nspp=S
@@ -28,7 +28,7 @@ animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
           ## aqui inicia o grafico
           layout(matrix(data=c(2,1), nrow=2, ncol=1), widths=c(1,1), heights=c(5,1))
           old<-par(mar=c(2,2,1,3))
-          image(x=1:Nspp, y=1, matrix(data=1:Nspp, nrow=Nspp,ncol=1),col=col_riq, ylab="",xlab=paste("cicle", 1:length(maxt)), xaxt="n", yaxt="n", main="Richness")
+          image(x=1:Nspp, y=1, matrix(data=1:Nspp, nrow=Nspp,ncol=1),col=col_riq, ylab="",xlab=paste("cycle", 1:length(maxt)), xaxt="n", yaxt="n", main="Richness")
           axis(3, at=c(1.5,Nspp),tick=FALSE, labels=c("0", Nspp), mgp=c(0,0,0))
           polygon(x=c(1.5,1.5,Nspp,Nspp), y=c(0.6,1.4,1.4,0.6), lwd=2)
           plot(0:comp.max, 0:comp.max, usr=c(0,comp.max,0,comp.max), type="n", yaxt="n", xaxt="n", xlab="", ylab="", bty="n", main="Passive Sampling and Area ",mar=c(0,2,3,2), oma=c(0,0,0,0))
@@ -53,33 +53,36 @@ animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
 ## grColExt used in 'animaColExt' and 'bioGeoIsl'
 grColExt=function(E , I , P, area)
 {
-          S = I*P/(I+E) ; T = I*E/(I+E)
-          nIsl=length(E)
-          corIsl=rainbow(nIsl)
-          curve(I[1]-I[1]*x/P[1],0,P[1],bty="n",xlab="Number of Species", ylab="Rate",xaxt="n",yaxt="n", font.lab=2,lwd=2,ylim=c(0,1),  main="Island Biogeography", col=corIsl[1])
-          curve((E[1]/P[1])*x,0,P,lwd=2,add=TRUE, col=corIsl[1], lty=2)
-          legend("top", legend=c("Colonization", "Extinction"),  bty="n",lty=c(1,2))
-          abline(v=0)
-          abline(h=0)
-          mtext("St",side=1,at=P,font=2, line=1)
-          linhas=seq(0,1.5, length.out=nIsl)
-          for(i in 1:nIsl)	
-          {
-                    curve(I[i]-I[i]*x/P,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=1)
-                    curve((E[i]/P)*x,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=2)
-                    mtext(paste("S", i, sep=""),side=1,at=S[i], cex=0.8,font=2,col=corIsl[i], line=linhas[i])
-                    mtext(paste("T", i, sep=""),side=2,at=T[i],cex=0.8,font=2,las=1,col=corIsl[i], line=linhas[i])
-                    points(S[i],T[i],col=corIsl[i],pch=16,cex=1)
-                    if(length(unique(area))>1)
-                    {
-                              siz_ar=2 +(area/max(area))
-                              points(S[i],T[i],col=corIsl[i],cex=siz_ar[i])
-                    }
-                    segments(S[i],T[i],S[i],0,lty=3,col=corIsl[i])
-                    segments(S[i],T[i],0,T[i],lty=3,col=corIsl[i])
-                    Sys.sleep(0.1)
-          }	
-        }
+	# Following code avoids spurious NOTE by R CMD check:
+	x <- NULL; rm(x);
+
+	S = I*P/(I+E) ; T = I*E/(I+E)
+	nIsl=length(E)
+	corIsl=rainbow(nIsl)
+	curve(I[1]-I[1]*x/P[1],0,P[1],bty="n",xlab="Number of Species", ylab="Rate",xaxt="n",yaxt="n", font.lab=2,lwd=2,ylim=c(0,1),  main="Island Biogeography", col=corIsl[1])
+	curve((E[1]/P[1])*x,0,P,lwd=2,add=TRUE, col=corIsl[1], lty=2)
+	legend("top", legend=c("Colonization", "Extinction"),  bty="n",lty=c(1,2))
+	abline(v=0)
+	abline(h=0)
+	mtext("St",side=1,at=P,font=2, line=1)
+	linhas=seq(0,1.5, length.out=nIsl)
+	for(i in 1:nIsl)	
+	{
+		curve(I[i]-I[i]*x/P,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=1)
+		curve((E[i]/P)*x,0,P,lwd=2,add=TRUE, col=corIsl[i], lty=2)
+		mtext(paste("S", i, sep=""),side=1,at=S[i], cex=0.8,font=2,col=corIsl[i], line=linhas[i])
+		mtext(paste("T", i, sep=""),side=2,at=T[i],cex=0.8,font=2,las=1,col=corIsl[i], line=linhas[i])
+		points(S[i],T[i],col=corIsl[i],pch=16,cex=1)
+		if(length(unique(area))>1)
+		{
+			siz_ar=2 +(area/max(area))
+			points(S[i],T[i],col=corIsl[i],cex=siz_ar[i])
+		}
+		segments(S[i],T[i],S[i],0,lty=3,col=corIsl[i])
+		segments(S[i],T[i],0,T[i],lty=3,col=corIsl[i])
+		Sys.sleep(0.1)
+	}	
+}
 
 #grColExt(E = .5 , I = .5 , P = 100, area=1:10)
 
@@ -89,9 +92,9 @@ animaRandWalk = function(rwData, time=2, sleep=0.1)
 {
           xplus=max(time)*0.1
           ymax=max(apply(rwData, 2, max))[1]
-          plot(time, rwData[,which.max(apply(rwData, 2, max))[1]], xlab="Steps", ylab="Distance from the edge",cex.axis=1.2, cex.lab=1.2,ylim=c(-.1* ymax,ymax), main="Randon Walk", cex.main=1.5, type="n", xlim=c(0,max(time)))
+          plot(time, rwData[,which.max(apply(rwData, 2, max))[1]], xlab="Steps", ylab="Distance from the edge",cex.axis=1.2, cex.lab=1.2,ylim=c(-.1* ymax,ymax), main="Random Walk", cex.main=1.5, type="n", xlim=c(0,max(time)))
           polygon(x=c(-xplus, -xplus, max(time)+xplus, max(time)+xplus), y=c(ymax*-0.15,0,0,ymax*-0.15), col="gray")
-          text(max(time)/2, -0.05* ymax, labels="Absortion Surface", col="red", cex=1.5)
+          text(max(time)/2, -0.05* ymax, labels="Absorption Surface", col="red", cex=1.5)
           n=dim(rwData)[2]
           ncolors= rainbow(n)
           for(i in 2:length(time))
@@ -117,7 +120,7 @@ animaGame = function(xGame, total, sleep=0.01)
                     xGame=xGame[indx]
                     xseq=xseq[indx]
           }
-          plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cicle", ylab="Money amount",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", cex.sub=0.9)
+          plot(0:xmax, seq(0,total, len=xmax+1), xlab="Cycle", ylab="Money amount",cex.axis=1.2, cex.lab=1.2, ylim=c(-.1* total,total+total*0.1), main="Zero Sum Game", cex.main=1.5, type="n", cex.sub=0.9)
           abline(h=total/2, lty=2, col="red")
           cores= c("blue","black")
           for(i in 2:xmax)
@@ -128,7 +131,7 @@ animaGame = function(xGame, total, sleep=0.01)
           }
           polygon(x=c(-.2* xmax, -.2* xmax, xmax+ 0.1*xmax, xmax+ 0.1*xmax), y=c(-.2*total,0,0,-.2* total), col="gray")
           polygon(x=c(-.2*xmax, -.2*xmax, xmax+ 0.1*xmax, xmax+ 0.1*xmax), y=c(total,total+total*.5,total +total*.5,total), col="gray")
-          text(xmax/2, - 0.05* total, labels="Looser", col="red", cex=1.5)
+          text(xmax/2, - 0.05* total, labels="Loser", col="red", cex=1.5)
           text(xmax/2, total + 0.05* total, labels="Winner", col="green", cex=1.5)
 }
 
@@ -136,7 +139,6 @@ animaGame = function(xGame, total, sleep=0.01)
 ## animaHub used in 'simHub1', 'simHub2', 'simHub3'
 animaHub=function(dadoHub, sleep=0.1)
 {
-          library(tcltk)
           maxsp=max(dadoHub)[1]
           uniqsp=unique(as.numeric(dadoHub))
           nind=dim(dadoHub)[1]
@@ -224,7 +226,7 @@ image(0:ln, 0:cl, dados[,,1], col=c("white", "green") , breaks=c(0,0.99,5),main=
 grid(ln,cl)
 Sys.sleep(.5)
 conta12=dados[,,1]+ (2*dados[,,2])
-image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9),main="Metapopulation Dynamics", sub=paste("red= extintion; light green= colonization; dark green = permanence \n maximum time = ", nsim, sep=""), xlab="", ylab="")
+image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9),main="Metapopulation Dynamics", sub=paste("red= extinction; light green= colonization; dark green = permanence \n maximum time = ", nsim, sep=""), xlab="", ylab="")
 	for(i in 3:nsim)
 	{
 	conta12=dados[,,(i-1)]+ (2*dados[,,i])
@@ -247,7 +249,7 @@ grid(ln,cl)
 	{
 	sim=round(nsim/ts)
 	conta12=dados[,,(sim-1)]+ (2*dados[,,sim])
-	image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9),main="Metapopulation Dynamics", sub=paste("red= extintion; light green= colonization;\n dark green = permanence \t time = ", sim, "/", nsim, sep=""), xlab="", ylab="")
+	image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9),main="Metapopulation Dynamics", sub=paste("red= extinction; light green= colonization;\n dark green = permanence \t time = ", sim, "/", nsim, sep=""), xlab="", ylab="")
 	}
 par(op)
 }
@@ -267,7 +269,7 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 	px= fsp1*(1-fsp1)^(rank-1)
 		if(add==FALSE)
 		{
-		toff<-x11( width=5, height=5)
+		toff<-dev.new( width=5, height=5)
 		}
 	old<-par(mar=c(3,3,3,3))
 	plot(ci~rank,col="red",ylim=c(0,max(ci)*1.1), type="b", ann=FALSE, axes=FALSE)
@@ -275,7 +277,7 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 	par(new=TRUE)
 	plot(px~rank, ylim=c(0,fsp1),type="b", bty="n",  ann=FALSE, cex.axis=0.8)#yaxt="n", xaxp=c(0,10,5))
 	#axis(2, cex.axis=0.8)#, yaxp=c(0,0.2,4))
-	mtext("Specie competitive rank", 1, 2, cex=0.9)
+	mtext("Species competitive rank", 1, 2, cex=0.9)
 	mtext("Abundance", 2, 2, cex=0.9)
 	mtext("Colonization rate", 4, 2, cex=0.9)
 	mtext("Trade-off Species Rank ", 3, 0, cex=1.2)
@@ -286,14 +288,14 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 animaCena=function(dados)
 {
 nt=dim(dados)[3]
-x11()
+dev.new()
 op=par(mfrow=c(5,5),  mar=c(0.1,0.1,0.1,0.1))
 	for(i in 1:nt)
 	{
 	image(dados[,,i], main="",  bty="n",xaxt='n',yaxt='n', col=c("white", "yellow", "orange", "blue", "green"))
 	grid(dim(dados)[2],dim(dados)[1])
 	}
-x11()
+dev.new()
 par(mfrow=c(2,2))
 image(dados[,,1], main= paste("Patch occupancy\n \t time=", 1 ),  bty="n",xaxt='n',yaxt='n',col=c("white", "yellow", "orange", "blue", "green"))
 grid(dim(dados)[2],dim(dados)[1])

@@ -1,8 +1,8 @@
-\name{arquip}
-\alias{arquip}
+\name{archip}
+\alias{archip}
 
 \title{
-Species Colonization and Species-Area Relationship in Arquipelagos
+Species Colonization and Species-Area Relationship in Archipelagos
 }
 
 \description{ 
@@ -10,7 +10,7 @@ Simulate species colonization from mainland to islands with different sizes.
 }
 
 \usage{
-arquip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
+archip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 }
 
 \arguments{
@@ -41,29 +41,30 @@ arquip(n.isl, ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 }
 
 \details{
-The mainland has richness (S) and the eveness can be controled argument abund. The 'abund' argument can be one of these 3 options:
+The mainland has richness (S) and the evenness can be controled argument abund. The 'abund' argument can be one of these 3 options:
 \enumerate{
 	\item a vector with the same length of the species richness, meaning the proportion of each species population; 
-	\item a single value more than 1 representing equal abundance of each species (maximum eveness); 
+	\item a single value more than 1 representing equal abundance of each species (maximum evenness); 
 	\item a single value between 0 and 1, meaning the model of geometric species rank-abundance distribution. The model is: abund*(1-abund)*((1:S)-1), where S is the number of species.
 }
 }
 
 \value{
-'arquip' returns 3 graphics:
+'archip' returns 3 graphics:
 \itemize{
-	\item The species-area relationship: number of species x island area at the end of the simulation. It also returns the coefficients c and z from species-area relationship $S=cA^z$.
+	\item The species-area relationship: number of species x island area at the end of the simulation. It also returns the coefficients c and z from species-area relationship \eqn{S=cA^z}.
 
-	\item Colonization rate curves: colonization (number of species per cicle) x number of species for each island.
+	\item Colonization rate curves: colonization (number of species per cycle) x number of species for each island.
 
 	\item Passive colonization: number of species x time for each island.
 
-'arquip' also returns an invisible array with the simulation results.
+'archip' also returns an invisible array with the simulation results.
 }
 }
 
 \author{
-Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}}
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
+}
 
 \references{
 Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
@@ -71,14 +72,17 @@ Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
 
 \seealso{
 	\code{\link{animaColExt}},
-	\code{\link{bioGeoIsl}}
+	\code{\link{bioGeoIsl}},
+	\url{http://ecovirtual.ib.usp.br}
 }
 
 \examples{
 
-arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=10, tmax=100, anima=TRUE)
+\dontrun{
+archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=10, tmax=100, anima=TRUE)
 
-arquip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE)
+archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE)
+}
 
 }
 
