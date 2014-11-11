@@ -9,11 +9,11 @@ Neutral Theory of Biogeography
 }
 
 \description{
-Simulates the Neutral Theory of Biogeography by Hubbell.
+Simulates Community Dynamics as in the Neutral Theory of Biogeography
 }
 
 \usage{
-simHub1(S, j, D, cycles, anima=TRUE)
+simHub1(S, j, D, cycles, m.weights=1, anima=TRUE)
 simHub2(S, j, D, cycles, m, anima=TRUE)
 simHub3(Sm, jm, S, j, D, cycles, m, nu, anima=TRUE)
 }
@@ -42,18 +42,27 @@ simHub3(Sm, jm, S, j, D, cycles, m, nu, anima=TRUE)
 }
   \item{nu}{
     speciation rate.
-}
+  }
+  \item{m.weights}{
+    Mortality weights for each species. Mortality rates of individuals of each species is
+    proportional to species' abundances multiplied by these weights as
+    in Yu et al. (1998). In neutral dynamics all weigths are equal. If
+    length(m.weights)<S then species are divided in groups of
+    (approximately) S/length(m.weights) and species of each group have a
+    value in m.weights. This allows to create groups of species with
+  different mortality probabilities and compare to the neutral dynamics.
+    }
   \item{anima}{
     logical; if TRUE, the simulation frames of the metacommunity are shown.
 }
 }
 
 \details{
-'simHub1' is the model without immigration in the metacommunity
+'simHub1' is the model without immigration.
 
-'simHub2' incorporates the immigration rate in the metacommunity
+'simHub2' incorporates immigration rate from the metacommunity
 
-'simHub3' incorporates the immigration and speciation rates in the metacommunity.
+'simHub3' incorporates immigration and speciation rates in the metacommunity.
 }
 
 \value{
@@ -63,7 +72,12 @@ They also return an invisible matrix with the results of species richness on eac
 }
 
 \references{
-Hubbell, S.P. 2001. The Unified Neutral Theory of Biodiversity and Biogeography. Princeton University Pres, 448p.
+Hubbell, S.P. 2001. The Unified Neutral Theory of Biodiversity and
+Biogeography. Princeton University Pres, 448p.
+
+Yu, D. W., Terborgh, J. W., and Potts, M. D. 1998. Can high tree species
+richness be explained by Hubbell's null model?. Ecology Letters, 1(3):
+193--199. 
 }
 
 
