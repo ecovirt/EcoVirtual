@@ -156,11 +156,6 @@ randWalk <- function(S=1,step=1,tmax=1e5,x1max=200, alleq=FALSE){
   invisible(results)
 }
 
-#randWalk(S=10,step=10,tmax=1e4)
-#randWalk(S=10,step=1,tmax=1e4)
-#randWalk(S=10,step=1,tmax=1e4, x1max=300, alleq=TRUE)
-#randwalk(S=100,step=2,tmax=2e5)
-
 
 ## Zero Sum Game
 extGame <- function(bet=1,total=100, tmax=2){
@@ -183,80 +178,79 @@ extGame <- function(bet=1,total=100, tmax=2){
   invisible(results)
 }
 
-#old<-par(mfrow=c(2,2))
-#extGame(bet=1,total=20)
-#extGame(bet=1,total=50)
-#extGame(bet=1,total=100)
-#extGame(bet=1,total=200)
-#par(old)
 
 
 ## Hubbell Neutral Model without imigration
-simHub1=function(S= 100, j=10, D=1, cycles=1e4, anima=TRUE)
-{
-if(cycles<200){cycles=200; cat("\n Minimum number of cycles: 200\n")}
-  stepseq=round(seq(101, cycles+1, len=100))
-  step=stepseq[2]- stepseq[1]
-  ## Tamanho da comunidade
-  J <- S*j
-  ## Matrizes para guardar os resultados
-  ind.mat=matrix(nrow=J,ncol=100+length(stepseq)) 
-  ## CONDICOES INICIAIS##
-  ## Deduzidas de acordo com o modelo de Hubbell:
-  ## Todas as especies comecam com o mesmo numero de individuos (j=J/S)
-  ind.mat[,1] <- rep(1:S,each=j)
-  cod.sp <- ind.mat[,1]
+simHub1=function(S= 100, j=10, D=1, cycles=1e4, m.weights=1, anima=TRUE){
+    if(length(m.weights)>S){
+        m.weigths <- m.weights[1:S]
+        warning("length of m.weights truncated at end to match number of species (S)")
+    }
+    if(length(m.weights)<S){
+        w1 <- rep(NA,S)
+        w1 <- rep(m.weights, each=floor(S/length(m.weights)))
+        w1[is.na(w1)] <- m.weights[length(m.weights)]
+    }
+    if(length(m.weights)==S) w1 <- m.weights
+    if(cycles<200){cycles=200; cat("\n Minimum number of cycles: 200\n")}
+    stepseq=round(seq(101, cycles+1, len=100))
+    step=stepseq[2]- stepseq[1]
+    ## Size of the community
+    J <- S*j
+    ## Matrices to save results
+    ind.mat=matrix(nrow=J,ncol=100+length(stepseq)) 
+    ## Initial conditions##
+    ## All species start with the same number of individuals
+    ind.mat[,1] <- rep(1:S,each=j)
+    cod.sp <- ind.mat[,1]
 #################################################################
 ###########      incluindo 100 primeiros ciclos          ########
 #################################################################
-      for(k in 2:100)
-      {
-      ##Indice dos individuos que morrem
-      mortek <- sample(1:J,D)
-      ##Indice dos individuos que produzem filhotes para substituir os mortos
-      novosk <- sample(1:J,D,replace=TRUE)
-      ##Substituindo
-      cod.sp[mortek]<-cod.sp[novosk]
-      ind.mat[,k] <- cod.sp
-      }
+    for(k in 2:100)
+        {
+            ##Indice dos individuos que morrem
+            mortek <- sample(1:J,D, prob=w1[cod.sp])
+            ##Indice dos individuos que produzem filhotes para substituir os mortos
+            novosk <- sample(1:J,D,replace=TRUE)
+            ##Substituindo
+            cod.sp[mortek]<-cod.sp[novosk]
+            ind.mat[,k] <- cod.sp
+        }
 ###########################
-	cont=100
-	tempo=0:99
-  ##Aqui comecam as simulacoes
-if(!is.null(stepseq))
-{
-  for(i in 1:length(stepseq)){
-  cont=cont+1
-    for(j in 1:step){
-      ##Indice dos individuos que morrem
-      morte <- sample(1:J,D)
-      ##Indice dos individuos que produzem filhotes para substituir os mortos
-      novos <- sample(1:J,D,replace=TRUE)
-      ##Substituindo
-      cod.sp[morte]<-cod.sp[novos]
-    }
-    ## A cada step ciclos os resultados sao gravados
-    ind.mat[,cont] <- cod.sp
-  }
-tempo <- c(tempo,stepseq)
-}
-  colnames(ind.mat) <- tempo
-dev.new()
-if(anima==TRUE)
-  {
-  animaHub(dadoHub=ind.mat)
-  }
-  dev.new()
-    plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cycles)", ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,  main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J), sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/cycles,"sp/cycle"), cex.sub=0.8) 
-  invisible(ind.mat)
+    cont=100
+    tempo=0:99
+    ##Aqui comecam as simulacoes
+    if(!is.null(stepseq))
+        {
+            for(i in 1:length(stepseq)){
+                cont=cont+1
+                for(j in 1:step){
+                    ##Indice dos individuos que morrem
+                    morte <- sample(1:J,D, prob=w1[cod.sp])
+                    ##Indice dos individuos que produzem filhotes para substituir os mortos
+                    novos <- sample(1:J,D,replace=TRUE)
+                    ##Substituindo
+                    cod.sp[morte]<-cod.sp[novos]
+                }
+                ## A cada step ciclos os resultados sao gravados
+                ind.mat[,cont] <- cod.sp
+            }
+            tempo <- c(tempo,stepseq)
+        }
+    colnames(ind.mat) <- tempo
+    dev.new()
+    if(anima==TRUE)
+        {
+            animaHub(dadoHub=ind.mat)
+        }
+    dev.new()
+    plot(as.numeric(colnames(ind.mat)),apply(ind.mat,2,rich), xlab="Time (cycles)",
+         ylab="Number of species",ylim=c(0,S), cex.lab=1.2, type="l", col="red", lty=2,
+         main=paste("Neutral Model Without Colonization", "\n S=",S," J=",J),
+         sub=paste("Mean extintion=",(S-rich(ind.mat[,ncol(ind.mat)]))/cycles,"sp/cycle"), cex.sub=0.8) 
+    invisible(ind.mat)
 }
 
-#par(mfrow=c(2,2))
-#simHub1(S=10,j=10, D=1, cycles=5e3, anima=FALSE)
-#simHub1(j=5,cycles=2e4)
-#simHub1(j=10,cycles=2e4)
-#simHub1(j=20,cycles=2e4)
-#par(mfrow=c(1,1))
 
 
 ## Hubbell Neutral Model with immigration from a Metacommunity
@@ -341,7 +335,6 @@ dev.new()
   invisible(ind.mat)
 }
 
-#simHub2(j=2,cycles=2e4,m=0.1)
 
 
 ## Hubbel Neutral Model with Immigration and speciation from a metacommunity
@@ -482,6 +475,3 @@ if(anima==TRUE)
   invisible(resultados)
 }
 
-#simHub3(Sm=200, jm=20, S= 10, j=100, D=1, cycles=1e4, m=0.01, nu=0.001, anima=TRUE)
-#simHub3(j=10, cycles=2e4,m=0.1, anima=FALSE)
-#simHub3(j=2, cycles=2e3,nu=0.00001,m=0.1)
