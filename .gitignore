@@ -9,3 +9,8 @@
 
 # emacs temporary files
 *~
+
+# /man/
+/man/.RData
+/man/.Rhistory
+
