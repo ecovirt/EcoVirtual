@@ -238,7 +238,7 @@ abline(h=K, lty=3, col="blue", lwd=2)
 abline(h=0)
 text(x=0.2, y=K+1, "Carrying capacity", col="blue",adj=c(0,0), cex=0.7)
 #text(x=tmax*0.4, y= resulta[(tmax/2),2], paste("r=", r),pos=3)
-title(sub=paste("rd = rc = ", round(r,3)),cex.sub=0.9)
+title(sub=paste("rd = r = ", round(r,3)),cex.sub=0.9)
 invisible(resulta)
 }
 #popLog(N0=10, r=0.05, K=80, tmax=100, ext=FALSE)
