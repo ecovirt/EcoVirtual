@@ -3,7 +3,7 @@
 ###########################################
 
 
-### Propagulus Seed Rain 
+### Propagulus Seed Rain
 metaPop <-function(cl,rw,fi,pc,pe, tmax)
 {
 	paisag=array(0,dim=c(rw,cl,tmax))
@@ -84,17 +84,17 @@ F=pc/ce
 if(F>1){F=1}
 pe.eq=ce-pc
 if(pe.eq<0){pe.eq=0}
-plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Proportion/Probability", ylim=c(0,1),main=paste("Propagulus Rain and Rescue Effect","\n cols=",cl," rows=",rw," fi=",fi," pc=",pc," ce=",ce),font.lab=2,lwd=2) 
+plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Proportion/Probability", ylim=c(0,1),main=paste("Propagulus Rain and Rescue Effect","\n cols=",cl," rows=",rw," fi=",fi," pc=",pc," e=",ce),font.lab=2,lwd=2)
 abline(h=F,col=2,lwd=2,lty=2) # equilibrio F
 points(1:tmax,c(ce*(1-fi),res),type='l',lwd=2,col="blue") # pe observado
 abline(h=pe.eq,col="green",lwd=2,lty=2) # pe equilibrio
 
 ymin=min(resultado[(length(resultado)/2):(length(resultado))])
-legend(x=length(resultado)/2,y=ymin, legend=c("Proportion of occupancy (P)", "Equilibrium P", "Extintion probability (pe)", "pe equilibrium"), lty=c(1,2,1,2), col=c("black","red","blue", "green"), bty="n")
+legend(x=length(resultado)/2,y=ymin, legend=c("Proportion of occupancy (f)",  expression("Equilibrium "*hat(f)), "Extintion probability (pe)", "pe equilibrium"), lty=c(1,2,1,2), col=c("black","red","blue", "green"), bty="n")
 invisible(paisag)
 }
 
-#metaEr(100,20,20,0.25,0.1,0.1)
+#metaEr(20,20,0.25,0.1,0.1,100)
 
 ## Propagulus Seed Rain with Internal Colonization and Rescue Effect
 metaCiEr <-function(cl,rw,fi,ci,ce, tmax)
