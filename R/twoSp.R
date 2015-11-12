@@ -84,10 +84,10 @@ metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
     pais[,,tc]<-c(depois,nD)
     antes <- depois
   }
-          dev.new()
 		if(anima==TRUE)
 		{
-		animaMetaComp(pais)
+                    dev.new()
+                    animaMetaComp(pais)
 		}
 dev.new()  
 plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Patch occupancy", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; rw=",rw,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
