@@ -15,11 +15,11 @@ resulta[1,c(2,3)]=c(n01,n02)
    nsp2=resulta[(t-1),3]
    resulta[t,2]=nsp1 + r1*nsp1*((k1-nsp1-alfa*nsp2)/k1)
    resulta[t,3]=nsp2 + r2*nsp2*((k2-nsp2-beta*nsp1)/k2)
-     if (resulta[t,2]<1)  
+     if (resulta[t,2]<1)
      {
      resulta[t,2]=0
      }
-     if (resulta[t,3]<1)  
+     if (resulta[t,3]<1)
      {
      resulta[t,3]=0
      }
@@ -41,12 +41,12 @@ invisible(resulta)
 
 
 ## Metapopulation competition - patch occupancy between superior and inferior competitors
-metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
+metaComp<-function(tmax,rw,cl,f01,f02,i1,i2,pe,D=0, anima=TRUE)
 {
 	pais<-array(0, dim=c(rw,cl,tmax))
   F1 <- 1-(pe/i1)
   F2 <- pe/i1-i1/i2
-  		if(F1<=0) 
+  		if(F1<=0)
   		{
   		F1=0
   		F2 <- 1-(pe/i2)
@@ -54,8 +54,8 @@ metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
   Nt <- rw*cl
   N <- floor(Nt*(1-D))
   resultado=matrix(nrow=tmax,ncol=3)
-  n1 <- floor(fi1*N)
-  n2 <- floor(fi2*N)
+  n1 <- floor(f01*N)
+  n2 <- floor(f02*N)
   n0 <- N-(n1+n2)
   antes <- sample(rep(c(2,1,0),c(n2,n1,n0)))
    nD=rep(-0.5,Nt-N)
@@ -64,7 +64,7 @@ metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
   resultado[1,2:3] <- c(sum(antes==1),sum(antes==2))/N
   for(tc in 2:tmax)
   {
-    depois <- rep(0,N) 
+    depois <- rep(0,N)
     pi1=i1*sum(antes==1)/Nt
     pi2=i2*sum(antes==2)/Nt
 		if(pi1>1)
@@ -89,8 +89,8 @@ metaComp<-function(tmax,rw,cl,fi1,fi2,i1,i2,pe,D=0, anima=TRUE)
 		{
 		animaMetaComp(pais)
 		}
-dev.new()  
-plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Patch occupancy", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; rw=",rw,";  fi1=",fi1,";  fi2=", fi2,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
+dev.new()
+plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Patch occupancy", ylim=c(0,max(resultado[,c(2,3)]*1.1)),main="Competition and Internal Colonization", sub=paste("cl=",cl,"; rw=",rw,";  f01=",f01,";  f02=", f02,";  i1=",i1,";  i2=",i2,";  pe=",pe,";  D=",D, sep=""),cex.sub=0.7,lwd=2, col="blue")
   lines(1:tmax,resultado[,3],col="green", lwd=2)
   abline(h=F1,col="blue",lwd=1.5,lty=2)
   if(F2>0)abline(h=F2,col="green",lwd=1.5,lty=2)
@@ -100,6 +100,6 @@ plot(1:tmax,resultado[,2],type="l",xlab="Time",ylab="Patch occupancy", ylim=c(0,
   invisible(pais)
 }
 
-#metaComp(tmax=100,cl=20,rw=20,fi1=0.4,fi2=0.4,i1=0.1,i2=0.1,pe=0.05, D=0,anima=TRUE)
-#metaComp(tmax=100, cl=100, rw=100, fi1=0.1, fi2=0.4, i1=0.4, i2=0.5, pe=0.25, D=0)
+#metaComp(tmax=100,cl=20,rw=20,f01=0.4,f02=0.4,i1=0.1,i2=0.1,pe=0.05, D=0,anima=TRUE)
+#metaComp(tmax=100, cl=100, rw=100, f01=0.1, f02=0.4, i1=0.4, i2=0.5, pe=0.25, D=0)
 

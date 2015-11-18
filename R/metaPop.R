@@ -14,7 +14,7 @@ metaPop <-function(cl,rw,fi,pc,pe, tmax)
 		{
 	       paisag[,,tc][paisag[,,(tc-1)]==1]<-sample(c(0,1),sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(pe,1-pe))
 	       paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),cl*rw-sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(1-pc,pc))
-	       resultado[tc-1]=sum(paisag[,,tc])/(cl*rw)	
+	       resultado[tc-1]=sum(paisag[,,tc])/(cl*rw)
 	   }
           dev.new()
 	animaMeta2(paisag)
