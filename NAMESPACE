@@ -5,6 +5,8 @@
 exportPattern(".")
 
 # Import all packages listed as Imports or Depends
-import(
-tcltk
-)
+import(tcltk)
+importFrom("grDevices", "colorRamp", "colorRampPalette", "dev.new", "rainbow", "rgb")
+importFrom("graphics", "abline", "axis", "curve", "grid", "image", "layout", "legend", "lines", "matplot", "mtext", "par", "plot", "points", "polygon", "segments", "text", "title")
+importFrom("stats", "coef", "lm", "na.omit", "rexp", "rlnorm", "sd", "time")
+importFrom("utils", "stack")

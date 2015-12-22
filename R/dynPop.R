@@ -132,10 +132,23 @@ BDM <- function(tmax, b, d, migr=0, N0){
 ###############################################################
 ## function for n runs of stochastic birth death immigration ###
 ###############################################################
-estDem = function(N0=10, tmax=10, b=0.2, d=0.2, migr=0, nsim=20, ciclo=1000)
+estDem = function(N0=10, tmax=10, b=0.2, d=0.2, migr=0, nsim=20, ciclo=1000, barpr=TRUE)
 {
+    if(barpr ==TRUE)
+        {
+             pb = tkProgressBar(title = "Simulation Progress", max = nsim)
+        }
+   
     results <- vector(mode="list", length=nsim)
-    for(i in 1:nsim) results[[i]] <- BDM(b=b, d=d, migr=migr, N0=N0, tmax=tmax)
+    for(i in 1:nsim)
+        {
+            results[[i]] <- BDM(b=b, d=d, migr=migr, N0=N0, tmax=tmax)
+            if(barpr == TRUE)
+                {
+                    setTkProgressBar(pb, value = i, label = paste("simulation number ", i, "from a total of " , nsim, "." ,sep=""))
+                }
+        }
+    close(pb)
     cores <- rainbow(nsim)
     plot(results[[1]], type="l",
          main="Stochastic Birth, Death and Immigration",
@@ -181,7 +194,7 @@ estDem = function(N0=10, tmax=10, b=0.2, d=0.2, migr=0, nsim=20, ciclo=1000)
     invisible(results)
 }
 
-#estDem(tmax=10, b=0.2, d=0.2, N0=100, nsim=20, ciclo=1000)
+#estDem(tmax=100, b=0.2, d=0.2, N0=100, nsim=20, ciclo=1000)
 ########################
 ## Logistical Growth ###
 ########################
