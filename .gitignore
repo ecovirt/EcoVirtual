@@ -14,3 +14,5 @@
 /man/.RData
 /man/.Rhistory
 
+# directory metadata
+.directory

@@ -1,15 +1,12 @@
 #######################################
 ### EcoVirtual -Internal Functions ####
 #######################################
-
-
 ##############################################
 ### Island Biogeography and Neutral Theory ###
 ##############################################
-
 ## fuction rich used in 'simHub1' 'simHub2' simHub3'
 rich <- function(x)length(unique(x))
-
+################################
 ## function animaIls used in 'archip' function
 animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
 {
@@ -48,8 +45,7 @@ animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
           }
           par(old)
 }
-
-
+##################################################
 ## grColExt used in 'animaColExt' and 'bioGeoIsl'
 grColExt=function(E , I , P, area)
 {
@@ -83,10 +79,9 @@ grColExt=function(E , I , P, area)
 		Sys.sleep(0.1)
 	}	
 }
-
+##################################################
 #grColExt(E = .5 , I = .5 , P = 100, area=1:10)
-
-
+##################################################
 ## animaRandWalk used in 'randWalk'
 animaRandWalk = function(rwData, time=2, sleep=0.1)
 {
@@ -106,8 +101,7 @@ animaRandWalk = function(rwData, time=2, sleep=0.1)
                     Sys.sleep(sleep)
           }
 }
-
-
+##################################################
 ## animaGame used in 'extGame'
 animaGame = function(xGame, total, sleep=0.01)
 {
@@ -134,9 +128,9 @@ animaGame = function(xGame, total, sleep=0.01)
           text(xmax/2, - 0.05* total, labels="Loser", col="red", cex=1.5)
           text(xmax/2, total + 0.05* total, labels="Winner", col="green", cex=1.5)
 }
-
-
+##################################################
 ## animaHub used in 'simHub1', 'simHub2', 'simHub3'
+##################################################
 animaHub=function(dadoHub, sleep=0.1)
 {
           maxsp=max(dadoHub)[1]
@@ -181,41 +175,36 @@ animaHub=function(dadoHub, sleep=0.1)
           }
           close(pb)
 }
-
-
-
 ###############################
 ### Two Species Competition ###
 ###############################
-
 ### Meta competition 'animaMetaComp' used in 'metaComp'
 animaMetaComp=function(dados)
 {
 nsim=dim(dados)[3]
 ln=dim(dados)[1]
 cl=dim(dados)[2]
-op=par(mar=c(1,2,2,2))
-layout(matrix(c(2,1), ncol=1, nrow=2), heights=c(5,1),widths=c(1,1))
+op=par(mar=c(0,1,1,0))
+layout(matrix(c(2,1), ncol=1, nrow=2), heights=c(4,1),widths=c(1,1))
 plot(1:10,1:10,xaxt="n", yaxt="n", xlab="", ylab="", cex=0.8,type="n", , bty="n")
-legend(0.5,11.8,ncol=4, legend=c("not available", "empty", "sup. competitor", "inf. competitor"), pch=c(15,22,15,15), title="Patches legend", col=c("red","black", "blue", "green"),bty="n")
-image(0:ln, 0:cl, dados[,,1], col=c("red", "white","blue" ,"green") , breaks=c(-0.9,-0.001,0.1,1.5,2.9),main="Metapopulations Competition",  xlab="", ylab="")
+text(5.5, 9, labels="Patches legend", cex=1.4)
+legend(2,8, legend=c("not available", "empty"), pch=c(15,22), col=c("red","black"),bty="n", cex = 1.4)
+legend(6,8, legend=c("sup. competitor", "inf. competitor"), pch=c(15,15), col=c("blue","green"),bty="n", cex = 1.4)
+op <- par(mar=c(1,3,3,2), las=1)
+image(0:ln, 0:cl, dados[,,1], col=c("red", "white","blue" ,"green") , breaks=c(-0.9,-0.001,0.1,1.5,2.9), main="Metapopulations Competition", cex.main=1.4, xlab="", ylab="")
 grid(ln,cl)
 Sys.sleep(.5)
 	for(i in 2:nsim)
 	{
 	par(new=TRUE)
-image(0:ln, 0:cl, dados[,,i], col=c("red", "white","blue" ,"green") , breaks=c(-0.1,-0.001,0.1,1.9,2.9), xlab="", ylab="")
+image(0:ln, 0:cl, dados[,,i], col=c("red", "white","blue" ,"green") , breaks=c(-0.9,-0.001,0.1,1.5,2.9), xlab="", ylab="")
 grid(ln,cl)
 	Sys.sleep(.1)
 	}
 }
-
-
-
 #######################
 ### Metapopulations ###
 #######################
-
 ## animaMeta2 used in 'metaPop', 'metaEr', 'metaCi', 'metaCier'
 animaMeta2=function(dados)
 {
@@ -234,8 +223,7 @@ image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , brea
 	Sys.sleep(.1)
 	}
 }
-
-
+##################################################
 ## grFim used in 'metaPop', 'metaEr', 'metaCi', 'metaCier'
 grFim=function(dados)
 {
@@ -307,3 +295,4 @@ image(dados[,,nt], main= paste("Patch occupancy\n \t time=", nt ),  bty="n",xaxt
 grid(dim(dados)[2],dim(dados)[1])
 par(op)
 }
+######################END############################
