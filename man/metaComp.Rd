@@ -10,7 +10,7 @@ Simulate a metapopulation dynamics with two competing species, a superior and an
 }
 
 \usage{
-metaComp(tmax, rw, cl, fi1, fi2, i1, i2, pe, D=0, anima=TRUE)
+metaComp(tmax, rw, cl, f01, f02, i1, i2, pe, D=0, anima=TRUE)
 }
 
 \arguments{
@@ -23,10 +23,10 @@ number of columns for the simulated landscape.
   \item{rw}{
 number of rowns for the simulated landscape.
 }
-  \item{fi1}{
+  \item{f01}{
 initial fraction of patches occupied by the superior competitor.
 }
-  \item{fi2}{
+  \item{f02}{
 initial fraction of patches occupied by the inferior competitor.
 }
   \item{i1}{
@@ -80,8 +80,8 @@ Alexandre Adalardo de Oliveira and Paulo Inacio Prado \email{ecovirtualpackage@g
 
 \examples{
 \dontrun{
-metaComp(tmax=100,cl=20,rw=20,fi1=0.1,fi2=0.4,i1=0.4,i2=0.5,pe=0.25)
-metaComp(tmax=100,cl=20,rw=20,fi1=0.1,fi2=0.4,i1=0.4,i2=0.5,pe=0.25, D=0.1)
+metaComp(tmax=100,cl=20,rw=20,f01=0.1,f02=0.4,i1=0.4,i2=0.5,pe=0.25)
+metaComp(tmax=100,cl=20,rw=20,f01=0.1,f02=0.4,i1=0.4,i2=0.5,pe=0.25, D=0.1)
 }
 }
 
