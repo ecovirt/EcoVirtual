@@ -111,32 +111,96 @@ estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE)
 ### Simple Stochastic birth death and immigration dynamics ##
 ## function to run one populations, Gillespie algorithm ####
 ##########################################################
-BDM <- function(tmax, b, d, migr=0, N0){
-  if(any(c(b,d,migr)<0))stop("b, d, and migr should not be negative")
-  N <- N0
-  tempo <- ctime <- 0
-  while(ctime<=tmax){
-    if(migr==0&N[length(N)]==0) break
-    else{
-      ctime <- ctime+rexp(1 , rate=b*N[length(N)] + d*N[length(N)] + migr )
-      tempo <- c(tempo,ctime)
-      N <- c( N,N[length(N)] + sample(c(1,-1), 1, prob=c(b*N[length(N)]+migr,d*N[length(N)])))
+BDM <- function(tmax, Nmax=10000, b, d, migr=0, N0, barpr=TRUE)
+{
+    if(any(c(b,d,migr)<0))stop("b, d, and migr should not be negative")
+    if(barpr)
+        {
+            pb = tkProgressBar(title = "Simulation Progress", max = tmax)
+        }
+    N <- N0
+    tempo <- ctime <- 0
+    while(ctime<=tmax & N[length(N)]< Nmax)
+        {
+            if(migr==0&N[length(N)]==0) break
+            else
+                {
+                    ctime <- ctime+rexp(1 , rate=b*N[length(N)] + d*N[length(N)] + migr )
+                    tempo <- c(tempo,ctime)
+                    N <- c( N,N[length(N)] + sample(c(1,-1), 1, prob=c(b*N[length(N)]+migr,d*N[length(N)])))
+                    if(barpr)
+                        {
+                            setTkProgressBar(pb, value = ctime, label = paste("Time: ", ctime, " . Total time: ", tmax, sep=""))
+                        }
+          }
+        }
+    if(N[length(N)]>=0&ctime>tmax)
+        {
+            tempo[length(tempo)] <- tmax
+            N[length(N)] <- N[length(N)-1]
+        }
+    close(pb)
+    invisible(data.frame(time=tempo, Nt=N))
+}
+#############################################################
+### Just Another Gillespie algorithm for simple birth death #
+### without migration, but more efficient 
+##########################################################
+simpleBD = function(tmax=10, Nmax=10000, b=0.2, d=0.2, N0=10, cycles=1000, barpr=TRUE)
+    {
+        if(barpr)
+            {
+                pb = tkProgressBar(title = "Simulation Progress", max = tmax)
+            }
+ctime=0
+nind=N0
+while(ctime[length(ctime)]<tmax & (nind[length(nind)]>0 & nind[length(nind)] < Nmax))
+{
+### event sequence (bird or dead)
+ybd = runif(cycles,0,1)
+bd<-rep(-1,cycles)
+bd[ybd <= b/(b+d)] <- 1
+cbd <- cumsum(c(nind[length(nind)], bd))
+######## time sequence
+ytime <-runif(cycles,0,1)
+stime <- -(log(ytime))/(cbd[-cycles]*(b+d))
+ct <- cumsum(c(ctime[length(ctime)],stime))
+ctime <- c(ctime, ct[-1])
+nind <-c(nind,cbd[-1])
+if(barpr)
+          {
+              setTkProgressBar(pb, value = ct[length(ct)], label = paste("Simulation time: ", round(ct[length(ct)],1), " ;  maximum time: ", tmax, sep=""))
+          }
+#### 0 for population < 0 ####
+zeros <- nind==0
+if(sum(zeros) > 0)
+    {
+        first0 <- min(which(zeros))
+        seq0 <- ((first0+1):(length(nind)))
+        nind[seq0]<-0
+        ctime[is.infinite(ctime)] <- NA
     }
-  }
-  if(N[length(N)]>=0&ctime>tmax){
-    tempo[length(tempo)] <- tmax
-    N[length(N)] <- N[length(N)-1]
-  }
-  data.frame(time=tempo, N=N)
+
+}
+close(pb)
+invisible(data.frame(time=ctime, Nt=nind))
 }
 ###############################################################
 ## function for n runs of stochastic birth death immigration ###
 ###############################################################
-estDem = function(N0=10, tmax=10, b=0.2, d=0.2, migr=0, nsim=20, ciclo=1000)
+estDem = function(N0=10, tmax=10, Nmax=10000, b=0.2, d=0.2, migr=0, nsim=20, cycles=1000, type= c("BDM", "simpleBD"), barpr=TRUE)
 {
-    results <- vector(mode="list", length=nsim)
-    for(i in 1:nsim) results[[i]] <- BDM(b=b, d=d, migr=migr, N0=N0, tmax=tmax)
+    type = match.arg(type)
+    if(type=="simpleBD" & migr==0 )
+        {
+            results <- replicate(nsim, simpleBD(tmax=tmax, b=b, d=d, cycles=cycles, N0=N0, Nmax=Nmax), simplify=FALSE )
+        }else{
+            results <- replicate(nsim, BDM(tmax=tmax, b=b, d=d, N0=N0, Nmax=Nmax), simplify=FALSE )
+        }
+    n.ext <- sum(sapply(results,function(x){min(x$Nt[x$time<=tmax], na.rm=TRUE)})==0, na.rm=TRUE)
+    tseq=seq(0,tmax, len=1000)
     cores <- rainbow(nsim)
+    ymax<-max(sapply(results,function(x)max(x$Nt)))
     plot(results[[1]], type="l",
          main="Stochastic Birth, Death and Immigration",
          xlab= "Time",
@@ -146,42 +210,35 @@ estDem = function(N0=10, tmax=10, b=0.2, d=0.2, migr=0, nsim=20, ciclo=1000)
          cex.axis=1.2,
          sub= paste("birth=",b, " death =",d, " migration=",migr),
          bty="n",
-         ylim=c(0,max(sapply(results,function(x)max(x$N)))),
+         ylim=c(0,ymax),
          xlim=c(0,tmax),
          col=cores[1]
          )
     for(i in 2:length(results)){
         lines(results[[i]],col=cores[i])
     }
-    if(migr==0){
-		# Following code avoids spurious NOTE by R CMD check:
-		x <- NULL; rm(x);
-
-        curve(N0*exp((b-d)*x), add=T, lwd=2)
-        n.ext <- sum(sapply(results,function(x)min(x$N))==0)
-        if(b>d&all(sapply(results, function(x)any(x[,2]==N0*2)))){
-            d.time <- sapply(results,function(x)min(x[x[,2]==N0*2,1]))
-			# m não declarado, supondo n.ext (A.C. 13.ago.14)
+    Nt=N0*exp((b-d)*tseq)
+    lines(tseq, Nt, lwd=2)
+    if(migr==0)
+        {
+        if(b>d & all(sapply(results, function(x)any(x[,2]==N0*2))))
+            {
+            d.time <- sapply(results,function(x)min(x[x[,2]==N0*2,1],na.rm=TRUE))
+            # m não declarado, supondo n.ext (A.C. 13.ago.14)
             #if(m>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
-            if(n.ext>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
-                       paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3)))
-            else texto <- paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3))
-            legend("topleft",legend=texto,bty="n")
+            #texto <-c(paste("extinctions =", n.ext, "/", nsim), paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3)))
+            legend("topright",legend=paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3)),bty="n")
         }
-        else if(b<d&all(sapply(results, function(x)any(x[,2]<=N0/2)))){
-            h.time <- sapply(results,function(x)min(x[x[,2]<=N0/2,1]))
+        if(b<d & all(sapply(results, function(x)any(x[,2]<=N0/2)))){
+            h.time <- sapply(results,function(x)min(x[x[,2]<=N0/2,1], na.rm=TRUE))
             legend("topright",
-                   legend=c(paste("extinctions =", n.ext, "/", nsim),
-                       paste("Halving time: mean=",round(mean(h.time),3),"std dev=",round(sd(h.time),3))),
-                   bty="n")
+                   legend= paste("Halving time: mean= ",round(mean(h.time, na.rm=TRUE),3)," ,std dev= ",round(sd(h.time, na.rm=TRUE),3),sep=""), bty="n")
         }
-        else
-            legend("topleft",legend=c(paste("extinctions =", n.ext, "/", nsim)),bty="n")
     }
+    legend(0, ymax*0.9,legend=c(paste("extinctions =", n.ext, "/", nsim)),bty="n")
     invisible(results)
 }
-
-#estDem(tmax=10, b=0.2, d=0.2, N0=100, nsim=20, ciclo=1000)
+#res<-estDem(tmax=100, b=0.5, d=0.6, N0=10, nsim=100, cycles=1000, type="simpleBD", Nmax=10000)
 ########################
 ## Logistical Growth ###
 ########################
