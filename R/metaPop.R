@@ -96,8 +96,8 @@ invisible(paisag)
 
 #metaEr(100,20,20,0.25,0.1,0.1)
 
-## Propagulus Seed Rain with Internal Colonization and Rescue Effect
-metaCiEr <-function(cl,rw,fi,ci,ce, tmax)
+## Internal Colonization and Rescue Effect
+metaCiEr <-function(cl,rw,fi,ci,ce, tmax, anima=TRUE)
 {
 nmanchas=cl*rw
 paisag=array(0,dim=c(rw,cl,tmax))
@@ -115,11 +115,13 @@ resi=numeric()
 	rese[tc-1]=pe
 	resi[tc-1]=pc
 	}
-dev.new()
-animaMeta2(paisag)
-grFim(paisag)
-dev.new()
-plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Occupancy proportion", ylim=c(0,1),main=paste("Propagulus Rain and Internal colonization and Rescue Effect","\n cols=",cl," rows=",rw," fi=",fi," ci=",ci, "ce=",ce),font.lab=2,lwd=2)
+if(anima){
+    dev.new()
+    animaMeta2(paisag)
+    grFim(paisag)
+}
+    dev.new()
+plot(1:tmax,c(fi,resultado),type="l",xlab="Time",ylab="Occupancy proportion", ylim=c(0,1),main=paste("Internal colonization and Rescue Effect","\n cols=",cl," rows=",rw," fi=",fi," ci=",ci, "ce=",ce),font.lab=2,lwd=2)
 abline(h=0,lty=2)
 points(1:tmax,c(ce*(1-fi),rese),type='l',lwd=2,col=4,lty=3)
 points(1:tmax,c(ci*fi,resi),type='l',lwd=2,col=6,lty=3)
