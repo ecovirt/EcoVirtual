@@ -14,10 +14,10 @@ Simulate metapopulation dynamics with propagules seed rain, internal colonizatio
 }
 
 \usage{
-metaPop(cl,rw, fi, pc, pe, tmax)
-metaCi(cl, rw, fi, ci, pe, tmax)
-metaEr(cl, rw, fi, pc, ce, tmax)
-metaCiEr(cl, rw, fi, ci, ce, tmax)
+metaPop(cl,rw, f0, pi, pe, tmax)
+metaCi(cl, rw, f0, ci, pe, tmax)
+metaEr(cl, rw, f0, pi, ce, tmax)
+metaCiEr(cl, rw, f0, ci, ce, tmax)
 }
 
 \arguments{
@@ -27,10 +27,10 @@ metaCiEr(cl, rw, fi, ci, ce, tmax)
   \item{rw}{
   number of rows for the simulated landscape.
 }
-  \item{fi}{
+  \item{f0}{
   initial proportion of occupied patches.
 }
-  \item{pc}{
+  \item{pi}{
   probability of colonization.
 }
   \item{pe}{
@@ -79,10 +79,10 @@ Alexandre Adalardo de Oliveira and Paulo Inacio Prado \email{ecovirtualpackage@g
 }
 \examples{
 \dontrun{
-metaPop(tmax=100,cl=10,rw=10,fi=0.5,pc=0.3,pe=0.15)
-metaCi(tmax=100,cl=10,rw=10,fi=0.1,ci=1,pe=0.5)
-metaEr(tmax=100, cl=10, rw=10, fi=0.2, pc=0.2, ce=0.15)
-metaCiEr(tmax=100, cl=10, rw=10, fi=0.2, ci=0.2, ce=0.15)
+metaPop(cl=10,rw=10,f0=0.5,pi=0.3,pe=0.15, tmax=100)
+metaCi(cl=10,rw=10,f0=0.1,ci=1,pe=0.5, tmax=100)
+metaEr(cl=10, rw=10, f0=0.2, pi=0.2, ce=0.15, tmax=100)
+metaCiEr(cl=10, rw=10, f0=0.2, ci=0.2, ce=0.15, tmax=100)
 }
 }
 
