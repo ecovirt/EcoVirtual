@@ -2,7 +2,7 @@
 ### EcoVirtual - Multispecies Functions ###
 ###########################################
 ### Sucessional Niche
-regNicho=function(tmax, rw, cl, c1,c2, ec, dst,  er, sc, mx, rs) 
+regNicho=function(tmax, rw, cl, c1,c2, ec, dst,  er, sc, mx, rs, anima=TRUE) 
 {
 N=cl*rw
 V=1-er-sc-mx-rs
@@ -40,8 +40,12 @@ resulta[1,(as.numeric(names(conta))+1)]<-conta
 	cena[,,t][rsvf]<-sample(c(0,4), nrs, replace=TRUE, prob=c(dst,1 - dst))
 	conta=table(cena[,,t])/N
 	resulta[t,(as.numeric(names(conta))+1)]<-conta
-	}
-animaCena(cena)
+    }
+if(anima==TRUE)
+    {
+        dev.new()   
+        animaCena(cena)
+    }
 dev.new()
 matplot( 1:tmax,resulta[,2:5], type="l", main="Niche Regeneration Model" , xlab="time", ylab="Patch occupancy", lty=2:5, col=2:5)
 legend("topright", c("Early", "Susceptible", "Mixed", "Resistant"), bty="n", lty=2:5, col=2:5, cex=0.7)

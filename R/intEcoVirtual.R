@@ -1,3 +1,4 @@
+
 #######################################
 ### EcoVirtual -Internal Functions ####
 #######################################
@@ -87,7 +88,7 @@ animaRandWalk = function(rwData, time=2, sleep=0.1)
 {
           xplus=max(time)*0.1
           ymax=max(apply(rwData, 2, max))[1]
-          plot(time, rwData[,which.max(apply(rwData, 2, max))[1]], xlab="Steps", ylab="Distance from the edge",cex.axis=1.2, cex.lab=1.2,ylim=c(-.1* ymax,ymax), main="Random Walk", cex.main=1.5, type="n", xlim=c(0,max(time)))
+          plot(time, rwData[,which.max(apply(rwData, 2, max))[1]], xlab="Cicles", ylab="Distance from the edge",cex.axis=1.2, cex.lab=1.2,ylim=c(-.1* ymax,ymax), main="Random Walk", cex.main=1.5, type="n", xlim=c(0,max(time)))
           polygon(x=c(-xplus, -xplus, max(time)+xplus, max(time)+xplus), y=c(ymax*-0.15,0,0,ymax*-0.15), col="gray")
           text(max(time)/2, -0.05* ymax, labels="Absorption Surface", col="red", cex=1.5)
           n=dim(rwData)[2]
@@ -276,7 +277,7 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 animaCena=function(dados)
 {
 nt=dim(dados)[3]
-dev.new()
+#dev.new()
 op=par(mfrow=c(5,5),  mar=c(0.1,0.1,0.1,0.1))
 	for(i in 1:nt)
 	{

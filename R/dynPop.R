@@ -130,7 +130,7 @@ BDM <- function(tmax, Nmax=10000, b, d, migr=0, N0, barpr=TRUE)
                     N <- c( N,N[length(N)] + sample(c(1,-1), 1, prob=c(b*N[length(N)]+migr,d*N[length(N)])))
                     if(barpr)
                         {
-                            setTkProgressBar(pb, value = ctime, label = paste("Time: ", ctime, " . Total time: ", tmax, sep=""))
+                            setTkProgressBar(pb, value = ctime, label = paste("Time: ",round(ct[length(ct)],1), " . Total time: ", tmax, sep=""))
                         }
           }
         }
@@ -188,7 +188,7 @@ invisible(data.frame(time=ctime, Nt=nind))
 ###############################################################
 ## function for n runs of stochastic birth death immigration ###
 ###############################################################
-estDem = function(N0=10, tmax=10, Nmax=10000, b=0.2, d=0.2, migr=0, nsim=20, cycles=1000, type= c("BDM", "simpleBD"), barpr=TRUE)
+estDem = function(N0=10, tmax=10, Nmax=10000, b=0.2, d=0.2, migr=0, nsim=20, cycles=1000, type= c("simpleBD", "BDM"), barpr=TRUE)
 {
     type = match.arg(type)
     if(type=="simpleBD" & migr==0 )
@@ -398,5 +398,6 @@ r2$rd=rep(rd.s,each=tmax+1)
 r2$time=rep(0:tmax, nrd)
 res.bif=subset(r2, time>0.5*tmax)
 plot(N~rd, data=res.bif, pch=".", cex=2, ylab="Population size (N) attractors", xlab="Discrete population growth rate (rd)", cex.axis=1.2, main="Discrete Logistic Bifurcation")
+invisible(res.bif)
 }
 ##bifAttr(N0=50,K=100,tmax=200,nrd=500, minrd=1.9, maxrd=3)
