@@ -111,7 +111,7 @@ estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE)
 ### Simple Stochastic birth death and immigration dynamics ##
 ## function to run one populations, Gillespie algorithm ####
 ##########################################################
-BDM <- function(tmax, Nmax=10000, b, d, migr=0, N0, barpr=TRUE)
+BDM <- function(tmax, nmax=10000, b, d, migr=0, N0, barpr=FALSE)
 {
     if(any(c(b,d,migr)<0))stop("b, d, and migr should not be negative")
     if(barpr)
@@ -120,7 +120,7 @@ BDM <- function(tmax, Nmax=10000, b, d, migr=0, N0, barpr=TRUE)
         }
     N <- N0
     tempo <- ctime <- 0
-    while(ctime<=tmax & N[length(N)]< Nmax)
+    while(ctime<=tmax & N[length(N)]< nmax)
         {
             if(migr==0&N[length(N)]==0) break
             else
@@ -130,7 +130,7 @@ BDM <- function(tmax, Nmax=10000, b, d, migr=0, N0, barpr=TRUE)
                     N <- c( N,N[length(N)] + sample(c(1,-1), 1, prob=c(b*N[length(N)]+migr,d*N[length(N)])))
                     if(barpr)
                         {
-                            setTkProgressBar(pb, value = ctime, label = paste("Time: ",round(ct[length(ct)],1), " . Total time: ", tmax, sep=""))
+                            setTkProgressBar(pb, value = ctime, label = paste("Time: ",round(ctime[length(ctime)],1), " . Total time: ", tmax, sep=""))
                         }
           }
         }
@@ -139,22 +139,25 @@ BDM <- function(tmax, Nmax=10000, b, d, migr=0, N0, barpr=TRUE)
             tempo[length(tempo)] <- tmax
             N[length(N)] <- N[length(N)-1]
         }
-    close(pb)
+    if(barpr)
+        {
+            close(pb)
+        }
     invisible(data.frame(time=tempo, Nt=N))
 }
 #############################################################
 ### Just Another Gillespie algorithm for simple birth death #
 ### without migration, but more efficient 
 ##########################################################
-simpleBD = function(tmax=10, Nmax=10000, b=0.2, d=0.2, N0=10, cycles=1000, barpr=TRUE)
-    {
+simpleBD = function(tmax=10, nmax =10000 , b=0.2, d=0.2, N0=10, cycles=1000, barpr=FALSE)
+    { 
         if(barpr)
             {
                 pb = tkProgressBar(title = "Simulation Progress", max = tmax)
             }
 ctime=0
 nind=N0
-while(ctime[length(ctime)]<tmax & (nind[length(nind)]>0 & nind[length(nind)] < Nmax))
+while(ctime[length(ctime)]<tmax & (nind[length(nind)]>0 & nind[length(nind)] < nmax))
 {
 ### event sequence (bird or dead)
 ybd = runif(cycles,0,1)
@@ -182,20 +185,23 @@ if(sum(zeros) > 0)
     }
 
 }
-close(pb)
+if(barpr)
+    {
+        close(pb)
+    }
 invisible(data.frame(time=ctime, Nt=nind))
 }
 ###############################################################
 ## function for n runs of stochastic birth death immigration ###
 ###############################################################
-estDem = function(N0=10, tmax=10, Nmax=10000, b=0.2, d=0.2, migr=0, nsim=20, cycles=1000, type= c("simpleBD", "BDM"), barpr=TRUE)
+estDem = function(N0=10, tmax=10, nmax=10000, b=0.2, d=0.2, migr=0, nsim=20, cycles=1000, type= c("simpleBD", "BDM"), barpr= FALSE)
 {
     type = match.arg(type)
     if(type=="simpleBD" & migr==0 )
         {
-            results <- replicate(nsim, simpleBD(tmax=tmax, b=b, d=d, cycles=cycles, N0=N0, Nmax=Nmax), simplify=FALSE )
+            results <- replicate(nsim, simpleBD(tmax=tmax, b=b, d=d, cycles=cycles, N0=N0, nmax=nmax, barpr=barpr), simplify=FALSE )
         }else{
-            results <- replicate(nsim, BDM(tmax=tmax, b=b, d=d, N0=N0, Nmax=Nmax), simplify=FALSE )
+            results <- replicate(nsim, BDM(tmax=tmax, b=b, d=d, N0=N0, nmax=nmax, barpr=barpr), simplify=FALSE )
         }
     n.ext <- sum(sapply(results,function(x){min(x$Nt[x$time<=tmax], na.rm=TRUE)})==0, na.rm=TRUE)
     tseq=seq(0,tmax, len=1000)
@@ -238,7 +244,7 @@ estDem = function(N0=10, tmax=10, Nmax=10000, b=0.2, d=0.2, migr=0, nsim=20, cyc
     legend(0, ymax*0.9,legend=c(paste("extinctions =", n.ext, "/", nsim)),bty="n")
     invisible(results)
 }
-#res<-estDem(tmax=100, b=0.5, d=0.6, N0=10, nsim=100, cycles=1000, type="simpleBD", Nmax=10000)
+#res<-estDem(tmax=100, b=0.5, d=0.6, N0=10, nsim=100, cycles=1000, type="simpleBD", nmax=10000)
 ########################
 ## Logistical Growth ###
 ########################

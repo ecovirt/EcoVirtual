@@ -131,7 +131,7 @@ plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Occupancy proportion", yl
 abline(h=0,lty=2)
 points(1:tmax,c(ce*(1-f0),rese),type='l',lwd=2,col=4,lty=3)
 points(1:tmax,c(ci*f0,resi),type='l',lwd=2,col=6,lty=3)
-legend("topright", legend=c("patchs occupancy", "colonization", "extinction"), lty=c(1,3,3), col=c(1,6,4), bty="n")
+legend("topright", legend=c("patch occupancy", "colonization", "extinction"), lty=c(1,3,3), col=c(1,6,4), bty="n")
 invisible(paisag)
 }
 #############################END###############################################
