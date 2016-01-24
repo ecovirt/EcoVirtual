@@ -1,38 +1,38 @@
+
 ###########################################
 ### Ecovirtual - Metapopulations Models ###
 ###########################################
-
-
 ### Propagulus Seed Rain
-metaPop <-function(cl,rw,f0,pi,pe, tmax)
+metaPop <-function(cl,rw,f0,pi,pe, tmax, anima=TRUE)
 {
-	paisag=array(0,dim=c(rw,cl,tmax))
-   nmanchas=cl*rw
-	paisag[,,1]=matrix(sample(c(1,0),nmanchas,prob=c(f0,1-f0), replace=TRUE),rw,cl)
-	resultado=numeric()
-		for(tc in 2:tmax)
-		{
-	       paisag[,,tc][paisag[,,(tc-1)]==1]<-sample(c(0,1),sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(pe,1-pe))
-	       paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),cl*rw-sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(1-pi,pi))
-	       resultado[tc-1]=sum(paisag[,,tc])/(cl*rw)
-	   }
-          dev.new()
+paisag=array(0,dim=c(rw,cl,tmax))
+nmanchas=cl*rw
+paisag[,,1]=matrix(sample(c(1,0),nmanchas,prob=c(f0,1-f0), replace=TRUE),rw,cl)
+resultado=numeric()
+for(tc in 2:tmax)
+    {
+        paisag[,,tc][paisag[,,(tc-1)]==1]<-sample(c(0,1),sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(pe,1-pe))
+        paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),cl*rw-sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(1-pi,pi))
+        resultado[tc-1]=sum(paisag[,,tc])/(cl*rw)
+    }
+if(anima==TRUE)
+    {
+        dev.new()
 	animaMeta2(paisag)
 	grFim(paisag)
-	dev.new()
-	F=pi/(pi+pe)
-	plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion of occupation",
-	ylim=c(0,1),main=paste("Propagulus rain","\n cols=",cl," rows=",rw," f0=",f0," pi=",pi," pe=",pe),font.lab=2,lwd=2)
-	abline(h=F,col=2,lwd=2,lty=2)
-	legend("topright", legend=("expected equilibrium"), lty=2, col="red", bty="n")
-  invisible(paisag)
+    }
+dev.new()
+F=pi/(pi+pe)
+plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion of occupation", ylim=c(0,1),main=paste("Propagulus rain","\n cols=",cl," rows=",rw," f0=",f0," pi=",pi," pe=",pe),font.lab=2,lwd=2)
+abline(h=F,col=2,lwd=2,lty=2)
+legend("topright", legend=("expected equilibrium"), lty=2, col="red", bty="n")
+invisible(paisag)
 }
-
 #metaPop(tmax=100,cl=20,rw=20,f0=0.2,pe=0.2,pi=0.5)
-
-
+##################################################
 ## Propagulus seed rain with Internal Colonization
-metaCi <-function(cl,rw,f0,ci,pe, tmax)
+##################################################
+metaCi <-function(cl,rw,f0,ci,pe, tmax, anima=TRUE)
 {
 paisag=array(0,dim=c(rw,cl,tmax))
 nmanchas=cl*rw
@@ -44,10 +44,13 @@ resultado=numeric()
 	paisag[,,tc][paisag[,,(tc-1)]==1]<-sample(c(0,1),sum(paisag[,,(tc-1)]), replace=TRUE,prob=c(pe,1-pe))
 	paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),cl*rw-sum(paisag[,,(tc-1)]), replace=TRUE,prob=c(1-pi,pi))
    resultado[tc-1]=sum(paisag[,,tc])/nmanchas
-   }
-dev.new()
-animaMeta2(paisag)
-grFim(paisag)
+    }
+if(anima==TRUE)
+    {
+        dev.new()
+        animaMeta2(paisag)
+        grFim(paisag)
+    }
 dev.new()
 F=1-(pe/ci)
 plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion of occupation",
@@ -56,12 +59,11 @@ abline(h=F,col=2,lwd=2,lty=2)
 legend("topright", legend=("expected equilibrium"), lty=2, col="red", bty="n")
 invisible(paisag)
 }
-
 #metaCi(tmax=100,cl=10,rw=10,f0=.1,ci=1,pe=0.5)
-
-
+##################################################
 ## Propagulus Seed Rain with Rescue EFfect
-metaEr <-function(cl,rw,f0,pi,ce, tmax)
+##################################################
+metaEr <-function(cl,rw,f0,pi,ce, tmax, anima=TRUE)
 {
 nmanchas=cl*rw
 paisag=array(0,dim=c(rw,cl,tmax))
@@ -75,10 +77,13 @@ res=numeric()
 	paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),cl*rw-sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(1-pi,pi))
 	resultado[tc-1]=sum(paisag[,,tc])/nmanchas
 	res[tc-1]=pe
-	}
-dev.new()
-animaMeta2(paisag)
-grFim(paisag)
+    }
+if(anima==TRUE)
+    {
+        dev.new()
+        animaMeta2(paisag)
+        grFim(paisag)
+    }
 dev.new()
 F=pi/ce
 if(F>1){F=1}
@@ -88,15 +93,14 @@ plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion/Probability", 
 abline(h=F,col=2,lwd=2,lty=2) # equilibrio F
 points(1:tmax,c(ce*(1-f0),res),type='l',lwd=2,col="blue") # pe observado
 abline(h=pe.eq,col="green",lwd=2,lty=2) # pe equilibrio
-
 ymin=min(resultado[(length(resultado)/2):(length(resultado))])
 legend(x=length(resultado)/2,y=ymin, legend=c("Proportion of occupancy (f)",  expression("Equilibrium "*hat(f)), "Extintion probability (pe)", "pe equilibrium"), lty=c(1,2,1,2), col=c("black","red","blue", "green"), bty="n")
 invisible(paisag)
 }
-
 #metaEr(20,20,0.25,0.1,0.1,100)
-
+##################################################
 ## Internal Colonization and Rescue Effect
+##################################################
 metaCiEr <-function(cl,rw,f0,ci,ce, tmax, anima=TRUE)
 {
 nmanchas=cl*rw
@@ -115,18 +119,19 @@ resi=numeric()
 	rese[tc-1]=pe
 	resi[tc-1]=pi
 	}
-if(anima){
-    dev.new()
-    animaMeta2(paisag)
-    grFim(paisag)
-}
+if(anima)
+    {
+        dev.new()
+        animaMeta2(paisag)
+        grFim(paisag)
+    }
 dev.new()
-plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Occupancy proportion", ylim=c(0,1),main=paste("Propagulus Rain and Internal colonization and Rescue Effect","\n cols=",cl," rows=",rw," f0=",f0," ci=",ci, "ce=",ce),font.lab=2,lwd=2)
+op= par(las=1)
+plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Occupancy proportion", ylim=c(0,1),main=paste("Internal Colonization and Rescue Effect\n cols=",cl," rows=",rw," f0=",f0," ci=",ci, "ce=",ce),font.lab=2,lwd=2, cex.axis=1.2, cex.lab=1.2, cex.main=1.2)
 abline(h=0,lty=2)
 points(1:tmax,c(ce*(1-f0),rese),type='l',lwd=2,col=4,lty=3)
 points(1:tmax,c(ci*f0,resi),type='l',lwd=2,col=6,lty=3)
-legend("topright", legend=c("patchs occupancy", "colonization", "extinction"), lty=c(1,3,3), col=c(1,6,4), bty="n")
+legend("topright", legend=c("patch occupancy", "colonization", "extinction"), lty=c(1,3,3), col=c(1,6,4), bty="n")
 invisible(paisag)
 }
-
-#metaCiEr(100,10,10,0.5,0.5,0.5)
+#############################END###############################################

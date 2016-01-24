@@ -4,7 +4,7 @@
 ## Lotka-Volterra competition, populational growth and isoclines
 compLV=function(n01,n02,tmax,r1,r2,k1,k2,alfa,beta)
 {
-resulta=matrix(0, ncol=3, nrow=tmax)
+resulta=matrix(0, ncol=3, nrow=tmax, dimnames=list(NULL, c("time", "Nsp1","Nsp2")))
 resulta[,1]=0:(tmax-1)
 resulta[1,c(2,3)]=c(n01,n02)
   for(t in 2:tmax)
@@ -30,7 +30,6 @@ lines(resulta[,1],resulta[,3], col="green", lty=4, lwd=1.5)
 plot(resulta[,2],resulta[,3],type="l",col="red",xlab="N1",ylab="N2",ylim=c(0,max(c(na.omit(resulta[,3]),k1/alfa,k2))),xlim=c(0,max(c(na.omit(resulta[,2]),k2/beta,k1))), main="Isoclines")
 segments(0,k1/alfa,k1,0,lty=4, lwd=1.5, col="blue")
 segments(0,k2,k2/beta,0,lty=4,lwd=1.5, col="green" )
-
 legend("topleft", title="Equilibrium without habitat destruction",legend=c("isocline sp.1 ", "Isocline sp. 2", "Populations trajectory"), lty=c(4,4,1), col=c("blue", "green", "red"), bty="n", cex=0.8)
 invisible(resulta)
 }
