@@ -212,15 +212,22 @@ animaMeta2=function(dados)
 nsim=dim(dados)[3]
 ln=dim(dados)[1]
 cl=dim(dados)[2]
-image(0:ln, 0:cl, dados[,,1], col=c("white", "green") , breaks=c(0,0.99,5),main="Metapopulation Dynamics", sub=paste("Initial configuration from", nsim," simulations",  sep=""), xlab="", ylab="")	
+op=par(mar=c(0,1,1,0))
+layout(matrix(c(2,1), ncol=1, nrow=2), heights=c(4,1),widths=c(1,1))
+plot(1:10,1:10,xaxt="n", yaxt="n", xlab="", ylab="", cex=0.8,type="n", , bty="n")
+text(5.5, 9, labels="Patches legend", cex=1.4)
+legend(2,8, legend=c("empty", "extinction"), pch=c(22,15), col=c("black", "red"),bty="n", cex = 1.4)
+legend(6,8, legend=c("colonization", "permanence"), pch=c(15,15), col=c("lightgreen","darkgreen"),bty="n", cex = 1.4)
+op <- par(mar=c(1,3,3,2), las=1)
+image(0:ln, 0:cl, dados[,,1], col=c("white","green") ,  breaks=c(0,0.99,5), main="Metapopulations Dynamics", cex.main=1.4, xlab="", ylab="")
 grid(ln,cl)
 Sys.sleep(.5)
-conta12=dados[,,1]+ (2*dados[,,2])
-image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9),main="Metapopulation Dynamics", sub=paste("red= extinction; light green= colonization; dark green = permanence \n maximum time = ", nsim, sep=""), xlab="", ylab="")
-	for(i in 3:nsim)
+	for(i in 2:nsim)
 	{
+	par(new=TRUE)
 	conta12=dados[,,(i-1)]+ (2*dados[,,i])
-	image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9), xlab="", ylab="", add=TRUE)
+	image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9), xlab="", ylab="")
+        grid(ln,cl)
 	Sys.sleep(.1)
 	}
 }
@@ -228,18 +235,26 @@ image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , brea
 ## grFim used in 'metaPop', 'metaEr', 'metaCi', 'metaCier'
 grFim=function(dados)
 {
-op=par(mfrow=c(2,2))
 nsim=dim(dados)[3]
 ln=dim(dados)[1]
 cl=dim(dados)[2]
-image(0:ln, 0:cl, dados[,,1], col=c("white", "green") , breaks=c(0,0.99,5),main="Metapopulation Dynamics", sub=paste("time = 1/", nsim, sep=""), xlab="", ylab="")	
+op=par(mar=c(0,1,1,0))
+layout(matrix(c(3,5,1,4,6,2), ncol=2, nrow=3), heights=c(4,4,1),widths=c(1,1))
+plot(1:10,1:10,xaxt="n", yaxt="n", xlab="", ylab="", cex=0.8,type="n", , bty="n")
+#text(8, 9, labels="Patches legend", cex=1.4)
+legend(5,9, legend=c("empty", "extinction"), pch=c(22,15), col=c("black", "red"),bty="n", cex = 1.5)
+plot(1:10,1:10,xaxt="n", yaxt="n", xlab="", ylab="", cex=0.8,type="n", , bty="n")
+legend(2,9, legend=c("colonization", "permanence"), pch=c(15,15), col=c("lightgreen","darkgreen"),bty="n", cex = 1.5)
+op <- par(mar=c(1,3,3,2), las=1)
+sqt=round(seq(1,nsim,len=4))[2:4]
+image(0:ln, 0:cl, dados[,,1], col=c("white","green") ,  breaks=c(0,0.99,5), main="Metapopulations Dynamics time = 0", cex.main=1.4, xlab="", ylab="")
 grid(ln,cl)
-	for(ts in c(4,2,1))
-	{
-	sim=round(nsim/ts)
-	conta12=dados[,,(sim-1)]+ (2*dados[,,sim])
-	image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9),main="Metapopulation Dynamics", sub=paste("red= extinction; light green= colonization;\n dark green = permanence \t time = ", sim, "/", nsim, sep=""), xlab="", ylab="")
-	}
+for(i in sqt)
+{
+    conta12=dados[,,(i-1)]+ (2*dados[,,i])
+    image(0:ln, 0:cl, conta12, col=c("white","red","lightgreen", "darkgreen") , breaks=c(0,0.9,1.9,2.9,3.9), xlab="", ylab="", main = paste("Simulation ", i,"/", nsim))
+    grid(ln,cl)
+}
 par(op)
 }
 ##############################
@@ -276,24 +291,33 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 ## animaCena used in 'regNicho'
 animaCena=function(dados)
 {
-nt=dim(dados)[3]
+nsim=dim(dados)[3]
+ln=dim(dados)[1]
+cl=dim(dados)[2]
 #dev.new()
 op=par(mfrow=c(5,5),  mar=c(0.1,0.1,0.1,0.1))
-	for(i in 1:nt)
+	for(i in 1:nsim)
 	{
-	image(dados[,,i], main="",  bty="n",xaxt='n',yaxt='n', col=c("white", "yellow", "orange", "blue", "green"))
-	grid(dim(dados)[2],dim(dados)[1])
+	image(dados[,,i], main="",  bty="n",xaxt='n',yaxt='n', col=c("white", "gold", "orange", "blue", "green"))
+	grid(cl,ln)
 	}
 dev.new()
-par(mfrow=c(2,2))
-image(dados[,,1], main= paste("Patch occupancy\n \t time=", 1 ),  bty="n",xaxt='n',yaxt='n',col=c("white", "yellow", "orange", "blue", "green"))
-grid(dim(dados)[2],dim(dados)[1])
-image(dados[,,round(nt/3)], main= paste("Patch occupancy\n \t time=", round(nt/3) ),  bty="n",xaxt='n',yaxt='n',col=c("white", "yellow", "orange", "blue", "green"))
-grid(dim(dados)[2],dim(dados)[1])
-image(dados[,,round(2*nt/3)], main= paste("Patch occupancy\n \ttime=", round(2*nt/3) ),  bty="n",xaxt='n',yaxt='n',col=c("white", "yellow", "orange", "blue", "green"))
-grid(dim(dados)[2],dim(dados)[1])
-image(dados[,,nt], main= paste("Patch occupancy\n \t time=", nt ),  bty="n",xaxt='n',yaxt='n',col=c("white", "yellow", "orange", "blue", "green"))
-grid(dim(dados)[2],dim(dados)[1])
+
+op=par(mar=c(0,1,1,0))
+layout(matrix(c(3,5,1,4,6,2), ncol=2, nrow=3), heights=c(4,4,1),widths=c(1,1))
+plot(1:10,1:10,xaxt="n", yaxt="n", xlab="", ylab="", cex=0.8,type="n", , bty="n")
+legend(5,10, legend=c("early", "susceptible"), pch=c(15,15), col=c("gold", "orange"),bty="n", cex = 1.8)
+plot(1:10,1:10,xaxt="n", yaxt="n", xlab="", ylab="", cex=0.8,type="n", , bty="n")
+legend(2,10, legend=c("mixed", "resistant"), pch=c(15,15), col=c("blue","green"),bty="n", cex = 1.8)
+sqt=round(seq(1,nsim,len=4))[2:4]
+image(dados[,,1], main= paste("Patch occupancy time=", 1 ),  bty="n",xaxt='n',yaxt='n',col=c("white", "gold", "orange", "blue", "green"))
+grid(cl,ln)
+
+for(i in sqt)
+{
+image(dados[,,i], main= paste("Patch occupancy time=", i, "/", nsim ),  bty="n",xaxt='n',yaxt='n',col=c("white", "gold", "orange", "blue", "green"))
+grid(cl,ln)
+}
 par(op)
 }
 ######################END############################

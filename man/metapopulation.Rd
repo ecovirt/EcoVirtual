@@ -37,10 +37,10 @@ metaCiEr(cl, rw, f0, ci, ce, tmax)
   probability of extinction.
 }
   \item{ci}{
-  colonization coefficient.
+  colonization coefficient, represents the maximum probability of colonization (when f=1) and should be a number between 0 and 1.
 }
   \item{ce}{
-   extiction coefficient.
+   coefficient of extinction, represents the maximum probability of extinction (when f=0) and should be a number between 0 and 1.
 }
   \item{tmax}{
     maximum simulation time.
