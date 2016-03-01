@@ -25,7 +25,7 @@ e.i=0, f.i=.01, g.e=0, h.e=.01)
     the number of species in the mainland (species richness of the pool).
 }
   \item{weight.A}{
-    ratio between the area and the distance effects.
+    ratio between the area and  distance effects. Should be a number between 0 to 1. When the ration is 1 the extinction is only affected by size and colonization only by distance. The default ratio is 0.5, meaning that distance and size equally influence colonization and extinction. 
 }
   \item{a.e}{
     basal extiction coefficient for area.

@@ -5,6 +5,10 @@
 ### Propagulus Seed Rain
 metaPop <-function(cl,rw,f0,pi,pe, tmax, anima=TRUE)
 {
+    if(pi>1 | pe>1 |pi<0 | pe<0)
+    {
+        stop("probabilities (pe and pi) shoulb be a number between 0 and 1")
+    }
 paisag=array(0,dim=c(rw,cl,tmax))
 nmanchas=cl*rw
 paisag[,,1]=matrix(sample(c(1,0),nmanchas,prob=c(f0,1-f0), replace=TRUE),rw,cl)
@@ -23,7 +27,8 @@ if(anima==TRUE)
     }
 dev.new()
 F=pi/(pi+pe)
-plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion of occupation", ylim=c(0,1),main=paste("Propagulus rain","\n cols=",cl," rows=",rw," f0=",f0," pi=",pi," pe=",pe),font.lab=2,lwd=2)
+op = par(mar=c(5.5,5,4,2), las=1,mgp= c(3.2,1,0))
+plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion of occupation", ylim=c(0,1),main="Propagulus rain",sub= paste(" cols=",cl," rows=",rw," f0=",f0," pi=",pi," pe=",pe),cex.lab=1.3, cex.main=1.4, cex.axis=1.2,lwd=2, cex.sub=1.1, col="blue")
 abline(h=F,col=2,lwd=2,lty=2)
 legend("topright", legend=("expected equilibrium"), lty=2, col="red", bty="n")
 invisible(paisag)
@@ -34,17 +39,29 @@ invisible(paisag)
 ##################################################
 metaCi <-function(cl,rw,f0,ci,pe, tmax, anima=TRUE)
 {
+     if( pe>1 | pe<0)
+    {
+        stop("probabilities (pe) should be a number between 0 and 1")
+    }
+     if(ci>1 | ci<0)
+     {
+         stop("coefficient of colonization (ci) represents the maximum probability of colonization (when f=1) and should be a number between 0 and 1")
+     }
 paisag=array(0,dim=c(rw,cl,tmax))
 nmanchas=cl*rw
-paisag[,,1]=matrix(sample(c(rep(1,f0*nmanchas), rep(0,round((1-f0)*nmanchas)))), ncol=cl)
+paisag[,,1]=matrix(sample(c(rep(1,f0*nmanchas), rep(0,round((1-f0)*nmanchas)))),ncol=cl)
 resultado=numeric()
 	for(tc in 2:tmax)
 	{
-	pi=ci*sum(paisag[,,tc-1])/(cl*rw)
+        pi=ci* (sum(paisag[,,tc-1])/(cl*rw))
+        if(pi>1)
+        {
+            pi=1
+        }
 	paisag[,,tc][paisag[,,(tc-1)]==1]<-sample(c(0,1),sum(paisag[,,(tc-1)]), replace=TRUE,prob=c(pe,1-pe))
 	paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),cl*rw-sum(paisag[,,(tc-1)]), replace=TRUE,prob=c(1-pi,pi))
    resultado[tc-1]=sum(paisag[,,tc])/nmanchas
-    }
+        }
 if(anima==TRUE)
     {
         dev.new()
@@ -53,10 +70,12 @@ if(anima==TRUE)
     }
 dev.new()
 F=1-(pe/ci)
-plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion of occupation",
-ylim=c(0,1),main=paste("Propagulus Rain and Internal Colonization","\n cols=",cl," rows=",rw," f0=",f0," ci=",ci," pe=",pe),font.lab=2,lwd=2)
+if(F>1){F=1}
+if(F<0){F=0}
+op = par(mar=c(5.5,5,4,2), las=1,mgp= c(3.2,1,0))
+plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion of occupation",ylim=c(0,1),main=paste("Propagulus Rain and Internal Colonization"),sub=paste(" cols=",cl," rows=",rw," f0=",f0," ci=",ci," pe=",pe),cex.lab=1.3, cex.main=1.4, cex.axis=1.2,lwd=2, cex.sub=1.1, col="blue")
 abline(h=F,col=2,lwd=2,lty=2)
-legend("topright", legend=("expected equilibrium"), lty=2, col="red", bty="n")
+legend("topright", legend=(c("population trajectory","expected equilibrium")), lty=1:2, col=c("blue","red"), bty="n")
 invisible(paisag)
 }
 #metaCi(tmax=100,cl=10,rw=10,f0=.1,ci=1,pe=0.5)
@@ -65,6 +84,14 @@ invisible(paisag)
 ##################################################
 metaEr <-function(cl,rw,f0,pi,ce, tmax, anima=TRUE)
 {
+     if( pi>1 | pi<0)
+    {
+        stop("probabilities (pi) should be a number between 0 and 1")
+    }
+     if(ce>1 | ce<0)
+     {
+         stop("coefficient of extinction (ce) represents the maximum probability of extinction (when f=0) and should be a number between 0 and 1")
+     }
 nmanchas=cl*rw
 paisag=array(0,dim=c(rw,cl,tmax))
 paisag[,,1]=matrix(sample(c(1,0),nmanchas,prob=c(f0,1-f0), replace=TRUE),rw,cl)
@@ -72,7 +99,11 @@ resultado=numeric()
 res=numeric()
 	for(tc in 2:tmax)
 	{
-	pe=ce*(1-sum(paisag[,,tc-1])/nmanchas)
+        pe=ce*(1-sum(paisag[,,tc-1])/nmanchas)
+        if(pe>1)
+        {
+            pe=1
+        }
 	paisag[,,tc][paisag[,,(tc-1)]==1]<-sample(c(0,1),sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(pe,1-pe))
 	paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),cl*rw-sum(paisag[,,(tc-1)]), replace=TRUE, prob=c(1-pi,pi))
 	resultado[tc-1]=sum(paisag[,,tc])/nmanchas
@@ -89,7 +120,9 @@ F=pi/ce
 if(F>1){F=1}
 pe.eq=ce-pi
 if(pe.eq<0){pe.eq=0}
-plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion/Probability", ylim=c(0,1),main=paste("Propagulus Rain and Rescue Effect","\n cols=",cl," rows=",rw," f0=",f0," pi=",pi," e=",ce),font.lab=2,lwd=2)
+op = par(mar=c(5.5,5,4,2), las=1,mgp= c(3.2,1,0))
+plot(1:tmax,c(f0,resultado),type="l",xlab="Time",ylab="Proportion/Probability", ylim=c(0,1),main=paste("Propagulus Rain and Rescue Effect"),sub=paste("cols=",cl," rows=",rw," f0=",f0," pi=",pi," e=",ce), cex.lab=1.3, cex.main=1.4, cex.axis=1.2,lwd=2, cex.sub=1.1) 
+
 abline(h=F,col=2,lwd=2,lty=2) # equilibrio F
 points(1:tmax,c(ce*(1-f0),res),type='l',lwd=2,col="blue") # pe observado
 abline(h=pe.eq,col="green",lwd=2,lty=2) # pe equilibrio
@@ -103,6 +136,14 @@ invisible(paisag)
 ##################################################
 metaCiEr <-function(cl,rw,f0,ci,ce, tmax, anima=TRUE)
 {
+     if(ci>1 | ci<0)
+     {
+         stop("coefficient of colonization (ci) represents the maximum probability of colonization (when f=1) and should be a number between 0 and 1")
+     }
+     if(ce>1 | ce<0)
+     {
+         stop("coefficient of extinction (ce) represents the maximum probability of extinction (when f=0) and should be a number between 0 and 1")
+     }
 nmanchas=cl*rw
 paisag=array(0,dim=c(rw,cl,tmax))
 paisag[,,1]=sample(c(rep(0,round(nmanchas-f0*nmanchas)),rep(1,round(f0*nmanchas))))
@@ -112,7 +153,15 @@ resi=numeric()
 	for(tc in 2:tmax)
 	{
 	pe=ce*(1-(sum(paisag[,,tc-1])/nmanchas))
+        if(pe>1)
+        {
+            pe=1
+        }
 	pi=ci*sum(paisag[,,tc-1])/nmanchas
+        if(pi>1)
+        {
+            pi=1
+        }
 	paisag[,,tc][paisag[,,(tc-1)]==1]<-sample(c(0,1),sum(paisag[,,tc-1]),replace=TRUE,prob=c(pe,1-pe))
 	paisag[,,tc][paisag[,,(tc-1)]==0]<-sample(c(0,1),nmanchas-sum(paisag[,,tc-1]),replace=TRUE,prob=c(1-pi,pi))
 	resultado[tc-1]=sum(paisag[,,tc])/nmanchas

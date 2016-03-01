@@ -47,8 +47,9 @@ if(anima==TRUE)
         animaCena(cena)
     }
 dev.new()
-matplot( 1:tmax,resulta[,2:5], type="l", main="Niche Regeneration Model" , xlab="time", ylab="Patch occupancy", lty=2:5, col=2:5)
-legend("topright", c("Early", "Susceptible", "Mixed", "Resistant"), bty="n", lty=2:5, col=2:5, cex=0.7)
+op = par(mar=c(5.5,5,4,2), las=1,mgp= c(3.2,1,0))
+matplot( 1:tmax,resulta[,2:5], type="l", main="Niche Regeneration Model" , xlab="time", ylab="Patch occupancy", lty=2:5, col=c( "gold", "orange", "blue", "green"),cex.lab=1.3, cex.main=1.4, cex.axis=1.2,lwd=2, cex.sub=1.1)
+legend("topright", c("Early", "Susceptible", "Mixed", "Resistant"), bty="n", lty=2:5, col=c("gold", "orange", "blue", "green"), cex= 1.2, lwd=2)
 invisible(cena)
 }
 #regNicho(tmax=50, rw=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  er=0.08, sc=0.02, mx=0, rs=0)
