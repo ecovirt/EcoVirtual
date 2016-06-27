@@ -2,6 +2,46 @@
 ### Ecovirtual - Two Species Competition Models ###
 ###################################################
 ## Lotka-Volterra competition, populational growth and isoclines
+
+
+##' Lotka-Volterra Competition Model
+##' 
+##' Simulate the Lotka-Volterra competition model for two populations.
+##' 
+##' The Lotka-Volterra competition model follows the equations: \itemize{ \item
+##' SP1: %%%% NOTE: deqn requires two arguments: \deqn{LaTeX}{ascii}
+##' \deqn{\frac{dN_1}{dt}=r_1N_1\left(\frac{K_1-N_1-\alpha N_2}{K_1}\right)}{%
+##' dN_1/dt = r_1*N_1*((K_1-N_1-alpha*N_2)/K_1)} \item SP2:
+##' \deqn{\frac{dN_2}{dt}=r_2N_2\left(\frac{K_2-N_2-\beta N_1}{K_2}\right)}{%
+##' dN_2/dt = r_2*N_2*((K_2-N_2-beta*N_1)/K_2)} }
+##' 
+##' @param n01 initial population for the superior competitor species.
+##' @param n02 initial population for the inferior competitor species.
+##' @param tmax maximum simulation time.
+##' @param r1 intrinsic growth rate for the superior competitor species.
+##' @param r2 intrinsic growth rate for the inferior competitor species.
+##' @param k1 carrying capacity for the superior competitor species.
+##' @param k2 carrying capacity for the inferior competitor species.
+##' @param alfa alfa coefficient.
+##' @param beta beta coefficient
+##' @return 'compLV' returns a graph of the population size in time, and a
+##' graph with the isoclines of the equilibrium for both species. 'compLV' also
+##' returns an invisible matrix with the population size of each species in
+##' time.
+##' @author Alexandre Adalardo de Oliveira \email{ecovirtualpackage@@gmail.com}
+##' @seealso \url{http://ecovirtual.ib.usp.br}
+##' @references Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer
+##' Associates, 291pp. Hastings, A. 1980. Disturbance, coexistence, history and
+##' competition for space. Theoretical Population Biology, 18:363-373. Stevens,
+##' M.H.H. 2009. A primer in ecology with R. New York, Springer.
+##' @keywords simulation competition
+##' @examples
+##' 
+##' \dontrun{
+##' 	compLV(n01=10, n02=10,r1=0.05, r2=0.03, k1=80, k2=50, alfa=1.2, beta=0.5, tmax=200)
+##' }
+##' 
+##' @export compLV
 compLV=function(n01,n02,tmax,r1,r2,k1,k2,alfa,beta)
 {
 resulta=matrix(0, ncol=3, nrow=tmax, dimnames=list(NULL, c("time", "Nsp1","Nsp2")))
@@ -38,6 +78,56 @@ invisible(resulta)
 
 
 ## Metapopulation competition - patch occupancy between superior and inferior competitors
+
+
+##' Metapopulation Competition Model
+##' 
+##' Simulate a metapopulation dynamics with two competing species, a superior
+##' and an inferior competitor. Includes the possibility of habitat destruction
+##' in the model.
+##' 
+##' This function uses the metapopulationa model with internal colonization
+##' (see function metaCi in \code{\link{metapopulation}}) for the superior
+##' competitor. The inferior competitor can only occupy empty patches and is
+##' displaced by the superior competitor if it occupies the same patch.
+##' 
+##' The argument 'D' inserts the influences of habitat destruction in the
+##' model.
+##' 
+##' The number of patches in the simulated landscape is defined by rw*cl.
+##' 
+##' @param tmax maximum simulation time.
+##' @param cl number of columns for the simulated landscape.
+##' @param rw number of rowns for the simulated landscape.
+##' @param f01 initial fraction of patches occupied by the superior competitor.
+##' @param f02 initial fraction of patches occupied by the inferior competitor.
+##' @param i1 colonization coefficient for the superior competitor.
+##' @param i2 colonization coefficient for the inferior competitor.
+##' @param pe probability of extinction (equal for both species).
+##' @param D proportion of habitat destroyed.
+##' @param anima logical; if TRUE, show simulation frames.
+##' @return 'metaComp' returns a graphic with the simulated landscapes and the
+##' results of the proportion of patch occupied by both species.
+##' 
+##' This function also return an invisible array with the simulation results.
+##' @author Alexandre Adalardo de Oliveira and Paulo Inacio Prado
+##' \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{comCompete}}, \url{http://ecovirtual.ib.usp.br}
+##' @references Stevens, M.H.H. 2009. A primer in ecology with R. New York,
+##' Springer.
+##' 
+##' Gotelli, N.J. 1991. Metapopulation models: the rescue effect, the propagule
+##' rain, and the core-satellite hypothesis. The American Naturalist
+##' 138:768-776.
+##' @keywords metapopulation simulation
+##' @examples
+##' 
+##' \dontrun{
+##' metaComp(tmax=100,cl=20,rw=20,f01=0.1,f02=0.4,i1=0.4,i2=0.5,pe=0.25)
+##' metaComp(tmax=100,cl=20,rw=20,f01=0.1,f02=0.4,i1=0.4,i2=0.5,pe=0.25, D=0.1)
+##' }
+##' 
+##' @export metaComp
 metaComp<-function(tmax,rw,cl,f01,f02,i1,i2,pe,D=0, anima=TRUE)
 {
 pais<-array(0, dim=c(rw,cl,tmax))

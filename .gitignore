@@ -16,3 +16,8 @@
 
 # directory metadata
 .directory
+# original copies
+*.orig
+*old
+# temp files
+\#*

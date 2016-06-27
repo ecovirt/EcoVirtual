@@ -1,0 +1,9 @@
+^README\.md$
+\#*\#
+^\.\#*
+^\.directory$
+\.gitignore$
+^\.git$
+^NAMESPACE_old$
+^R/metapop.R.orig$
+^R/twoSp.R.orig$

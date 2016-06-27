@@ -1,7 +1,88 @@
 ################################################
 ### Ecovirtual -  Population Dynamics Models ###
 ################################################
-
+##' Population Dynamic Models
+##' 
+##' Functions to simulate population dynamic models.
+##' 
+##' popExp simulates discrete and continuous exponential population growth.
+##' 
+##' estEnv simulates a geometric population growth with environmental
+##' stochasticity.
+##' 
+##' BDM simulates simple stochastic birth death and immigration dynamics of a
+##' population (Renshaw 1991). simpleBD another algorithm for simple birth dead
+##' dynamics. This is usually more efficient than BDM but not implemented
+##' migration.
+##' 
+##' estDem creates a graphic output based on BDM simulations.
+##' 
+##' Stochastic models uses lambda values taken from a normal distribution with
+##' mean lambda and variance varr.
+##' 
+##' popLog simulates a logistic growth for continuous and discrete models.
+##' 
+##' popStr simulates a structured population dynamics, with Lefkovitch
+##' matrices.
+##' 
+##' In popStr the number of patches in the simulated scene is defined by rw*cl.
+##' 
+##' logDiscr simulates a discrete logistic growth model.
+##' 
+##' bifAttr creates a bifurcation graphic for logistic discrete models.
+##'
+##' @name dynPop
+##' @aliases popExp estEnv BDM simpleBD estDem popLog popStr logDiscr dynPop
+##' bifAttr
+##' @param N0 number of individuals at start time.
+##' @param lamb finite rate of population growth.
+##' @param tmax maximum simulation time.
+##' @param nmax maximum population size.
+##' @param intt interval time size.
+##' @param varr variance.
+##' @param npop number of simulated populations.
+##' @param ext extinction.
+##' @param b birth rate.
+##' @param d death rate.
+##' @param migr migration. logical.
+##' @param nsim number of simulated populations.
+##' @param cycles number of cycles in simulation.
+##' @param r intrinsic growth rate.
+##' @param K carrying capacity.
+##' @param p.sj probability of seed survival.
+##' @param p.jj probability of juvenile survival.
+##' @param p.ja probability of transition from juvenile to adult phase.
+##' @param p.aa probability of adult survival.
+##' @param fec mean number of propagules per adult each cycle.
+##' @param ns number of seeds at initial time.
+##' @param nj number of juveniles at initial time.
+##' @param na number of adults at initial time.
+##' @param rw number of rows for the simulated scene.
+##' @param cl number of columns for the simulated scene.
+##' @param rd discrete growth rate.
+##' @param nrd number of discrete population growth rate to simulate.
+##' @param maxrd maximum discrete population growth rate.
+##' @param minrd minimum discrete population growth rate.
+##' @param barpr show progress bar.
+##' @param type type of stochastic algorithm.
+##' @return The functions return graphics with the simulation results, and a
+##' matrix with the population size for deterministic and stochastic models.
+##' @author Alexandre Adalardo de Oliveira and Paulo Inacio Prado
+##' \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{metaComp}}, \url{http://ecovirtual.ib.usp.br}
+##' @references Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer
+##' Associates, 291pp. Renshaw, E. 1991. Modelling biological populations in
+##' space and time Cambridge University Press. Stevens, M.H.H. 2009. A primer
+##' in ecology with R. New York, Springer.
+##' @keywords population dynamics simulation
+##' @importFrom stats rexp rlnorm sd time
+##' @importFrom utils stack
+##' @examples
+##' 
+##' \dontrun{
+##' popStr(p.sj=0.4, p.jj=0.6, p.ja=0.2, p.aa=0.9, fec=0.8, ns=100,nj=40,na=20, rw=30, cl=30, tmax=20)
+##' }
+##'
 ########################################################
 ### Exponential growth - discrete and continuos growth ##
 #########################################################
@@ -55,6 +136,7 @@ popExp <- function(N0,lamb,tmax, intt= 1)
 ########################################################
 ### Geometric growth with Environmental Stochasticity ##
 #######################################################
+##' @rdname dynPop
 estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE) 
 {
     ## logical tests for initial conditions
@@ -111,6 +193,7 @@ estEnv <- function(N0, lamb, tmax, varr, npop= 1, ext=FALSE)
 ### Simple Stochastic birth death and immigration dynamics ##
 ## function to run one populations, Gillespie algorithm ####
 ##########################################################
+##' @rdname dynPop
 BDM <- function(tmax, nmax=10000, b, d, migr=0, N0, barpr=FALSE)
 {
     if(any(c(b,d,migr)<0))stop("b, d, and migr should not be negative")
@@ -149,6 +232,7 @@ BDM <- function(tmax, nmax=10000, b, d, migr=0, N0, barpr=FALSE)
 ### Just Another Gillespie algorithm for simple birth death #
 ### without migration, but more efficient 
 ##########################################################
+##' @rdname dynPop
 simpleBD = function(tmax=10, nmax =10000 , b=0.2, d=0.2, N0=10, cycles=1000, barpr=FALSE)
     { 
         if(barpr)
@@ -194,6 +278,7 @@ invisible(data.frame(time=ctime, Nt=nind))
 ###############################################################
 ## function for n runs of stochastic birth death immigration ###
 ###############################################################
+##' @rdname dynPop
 estDem = function(N0=10, tmax=10, nmax=10000, b=0.2, d=0.2, migr=0, nsim=20, cycles=1000, type= c("simpleBD", "BDM"), barpr= FALSE)
 {
     type = match.arg(type)
@@ -248,6 +333,7 @@ estDem = function(N0=10, tmax=10, nmax=10000, b=0.2, d=0.2, migr=0, nsim=20, cyc
 ########################
 ## Logistical Growth ###
 ########################
+##' @rdname dynPop
 popLog=function(N0, tmax, r, K, ext=FALSE)
 {
 resulta=matrix(NA, nrow=tmax+1,ncol=3)
@@ -308,6 +394,7 @@ invisible(resulta)
 ################################################
 ## Populational Model for structured populations
 ################################################
+##' @rdname dynPop
 popStr=function(tmax, p.sj, p.jj, p.ja, p.aa, fec, ns, nj, na, rw, cl)
 {
 dev.new()
@@ -383,6 +470,7 @@ invisible(list(simula=pais, xy=xy.sem))
 ###############################################################
 #### Bifurcation and atractors - Discrete Logistic Growth 
 ############################################################### 
+##' @rdname dynPop
 logDiscr<-function(N0, tmax, rd, K)
   {
   Nt=rep(NA,tmax+1)
@@ -393,7 +481,10 @@ logDiscr<-function(N0, tmax, rd, K)
     }
 return(Nt)
 }
-##
+#####################################
+#  Bifurcation graphic for logistic
+#####################################
+##' @rdname dynPop
 bifAttr=function(N0, K, tmax, nrd, maxrd=3, minrd=1)
 {
 rd.s=seq(minrd,maxrd,length=nrd)
