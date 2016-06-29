@@ -55,7 +55,7 @@ Associates, 291pp.
 }
 \seealso{
 \code{\link{archip}} \code{\link{bioGeoIsl}}
-\url{http://ecovirtual.ib.com.br}
+\url{http://ecovirtual.ib.usp.br}
 }
 \keyword{Biogeography}
 \keyword{Island}

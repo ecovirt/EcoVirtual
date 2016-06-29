@@ -315,7 +315,7 @@ estDem = function(N0=10, tmax=10, nmax=10000, b=0.2, d=0.2, migr=0, nsim=20, cyc
         if(b>d & all(sapply(results, function(x)any(x[,2]==N0*2))))
             {
             d.time <- sapply(results,function(x)min(x[x[,2]==N0*2,1],na.rm=TRUE))
-            # m não declarado, supondo n.ext (A.C. 13.ago.14)
+            # m nao declarado, supondo n.ext (A.C. 13.ago.14)
             #if(m>0) texto <-c(paste("extinctions =", n.ext, "/", nsim),
             #texto <-c(paste("extinctions =", n.ext, "/", nsim), paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3)))
             legend("topright",legend=paste("Doubling time: mean=",round(mean(d.time),3),"std dev=",round(sd(d.time),3)),bty="n")

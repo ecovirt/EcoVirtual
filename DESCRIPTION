@@ -6,7 +6,7 @@ Date: 2016-06-24
 Author: Alexandre Adalardo de Oliveira and Paulo Inacio Prado
     <ecovirtualpackage@gmail.com>
 Maintainer: Alexandre Adalardo de Oliveira <ecovirtualpackage@gmail.com>
-Description: A package for simulations of classical ecological models as a
+Description: Computer simulations of classical ecological models as a
     learning resource.
 Depends:
     tcltk
