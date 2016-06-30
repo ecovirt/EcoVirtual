@@ -2,6 +2,66 @@
 ### EcoVirtual - Multispecies Functions ###
 ###########################################
 ### Sucessional Niche
+
+
+##' Successional Niche Model
+##' 
+##' Simulates the process of niche succession by successional stages in a
+##' community with 2 species (a superior and an inferior competitor), following
+##' the model of Pacala and Rees (1998).
+##' 
+##' There are five possible states of this model: \itemize{ \item \emph{free} -
+##' open, unoccupied space; \item \emph{early} - occupied by only the early
+##' successional species; \item \emph{susceptible} - occupied by only the late
+##' succesional species and susceptible to invasion by the early succesional
+##' species; \item \emph{mixed} - occupied by both species; \item
+##' \emph{resistant} - occupied by only the late successional species.  }
+##' 
+##' The early successional species is the inferior competitor in the model, and
+##' the later successional species is the superior competitor.
+##' 
+##' The number of patches in the simulated landscape is defined by rw*cl.
+##' 
+##' 'dst' is the proportion of patches in any stage that turns empty, it
+##' represents a disturbance in the landscape.
+##' 
+##' 'ec' is the probability of succeptible and mixed stages turns resistant
+##' stage.
+##' 
+##' @param tmax maximum simulation time.
+##' @param rw number of rows for the simulated landscape.
+##' @param cl number of columns for the simulated landscape.
+##' @param c1 colonization rate for the late successional species (superior
+##' competitor).
+##' @param c2 colonization rate for the early successional species (inferior
+##' competitor).
+##' @param ec rate of competitive exclusion.
+##' @param dst disturbance rate.
+##' @param er inicial proportion of patches in early stage.
+##' @param sc inicial proportion of patches in susceptible stage.
+##' @param mx initial proportion of patches in mixed stage.
+##' @param rs initial proportion of pathces in resistant stage.
+##' @param anima show animation frames.
+##' @return 'regNicho' returns the simulation results of patch occupancy in
+##' time for each successional stage.
+##' 
+##' 'regNicho' also returns an invisible array with the simulation results per
+##' time.
+##' @author Alexandre Adalardo de Oliveira \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{comCompete}}, \url{http://ecovirtual.ib.usp.br}
+##' @references Pacala, S & Rees, M. 1998. Models suggesting field experiments
+##' to test two hypotheses explaining successional diversity. The American
+##' Naturalist 152(2): 729:737.
+##' 
+##' Stevens, MHH. 2009. A primer in ecology with R. New York, Springer.
+##' @keywords simulation Niche sucession
+##' @examples
+##' 
+##' \dontrun{
+##' regNicho(tmax=50, rw=100, cl=100, c1=0.2, c2=0.8, ec=0.5, dst=0.04,  er=0.08, sc=0.02, mx=0, rs=0)
+##' }
+##' 
+##' @export regNicho
 regNicho=function(tmax, rw, cl, c1,c2, ec, dst,  er, sc, mx, rs, anima=TRUE) 
 {
 N=cl*rw
@@ -56,6 +116,45 @@ invisible(cena)
 ##################################################
 ### Trade-off between competition and colonization
 ################################################## 
+
+
+##' Multispecies competition-colonization tradeoff
+##' 
+##' Simulates the trade-off between colonization and competition abilities in a
+##' multispecies system.
+##' 
+##' In the system, the competitive abilities are inversely proportional to the
+##' colonization abilities.
+##' 
+##' The number of patches in the simulated landscape is defined by rw*cl.
+##' 
+##' @param rw number of rows for the simulated landscape.
+##' @param cl number of columns for the simulated landscape.
+##' @param S number of species.
+##' @param fi initial fraction of patchs occupied
+##' @param fsp1 superior competitor abundance.
+##' @param pe mortality rate.
+##' @param fr disturbance frequency.
+##' @param int disturbance intensity.
+##' @param tmax maximum simulation time.
+##' @return 'comCompete' returns a graph with the proportion of patches
+##' occupied in time by each species and the trade-off scale, the superior
+##' competitor in one side and the superior colonizator in the other.
+##' @author Alexandre Adalardo de Oliveira \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{metaComp}}, \url{http://ecovirtual.ib.usp.br}
+##' @references Tilman. R. 1994. Competition and biodiversity in spatially
+##' structured habitats. Ecology,75:2-16.
+##' 
+##' Stevens, M.H.H. 2009. A primer in ecology with R. New York, Springer.
+##' @keywords simulation metacompetition
+##' @importFrom stats na.omit
+##' @examples
+##' 
+##' \dontrun{
+##' comCompete(tmax=1000, rw=100, cl=100, S=10, fi=1, fsp1=0.20, pe=0.01, fr=0, int=0)
+##' }
+##' 
+##' @export comCompete
 comCompete = function(rw, cl, S, fi, fsp1, pe, fr=0, int=0, tmax)
 {
 rank=1:S
@@ -122,6 +221,39 @@ invisible(resulta)
 }
 #comCompete(tmax=10,rw=100,cl=100, S=10, fi=1, fsp1=0.20, pe=0.01,fr=0,int=0)
 ## Sucessional stages matrix
+
+
+##' Successional Stages Matrix
+##' 
+##' Simulates a successional model based on a transitional matrix of stages and
+##' its initial proportion of occurence in the landscape.
+##' 
+##' 
+##' The number of patches in the simulated landscape is defined by rw*cl.
+##' 
+##' @param mat.trans a matrix of stage transition probabilites.
+##' @param init.prop a vector with the initial proportions of each stage.
+##' @param rw number of rows to build the simulated landscape.
+##' @param cl number of columns to build the simulated landscape.
+##' @param tmax maximum simulation time.
+##' @return 'sucMatrix' return a simulation graphic with the proportions of
+##' stages in the landscape in time, and a stage distribution graphic with the
+##' results of the simulation with the number o patches in time for each stage.
+##' 
+##' 'sucMatrix' also return an invisible array with the simulation results.
+##' @author Alexandre Adalardo de Oliveira \email{ecovirtualpackage@@gmail.com}
+##' @references Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer
+##' Associates, 291pp.
+##' @keywords simulation ecological succession
+##' @examples
+##' 
+##' \dontrun{
+##' sucMatrix(mat.trans=matrix(data=c(0.5,0.5,0.5,0.5), nrow=2), 
+##' init.prop=c(0.5,0.5),rw=20,cl=20, tmax=100)
+##' }
+##' 
+##' 
+##' @export sucMatrix
 sucMatrix=function(mat.trans, init.prop, rw, cl, tmax)
 {
           mat.trans=as.matrix(mat.trans)

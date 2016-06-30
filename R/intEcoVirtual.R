@@ -1,4 +1,3 @@
-
 #######################################
 ### EcoVirtual -Internal Functions ####
 #######################################
@@ -6,8 +5,87 @@
 ### Island Biogeography and Neutral Theory ###
 ##############################################
 ## fuction rich used in 'simHub1' 'simHub2' simHub3'
+##' Number of Species
+##' 
+##' Count the number of species (species richness) from a vector with a species
+##' list.
+##' 
+##' This function is used internally in the functions 'simHub1', simHub2', and
+##' 'simHub3'.
+##' 
+##' @param x a vector with names.
+##' @return returns the number of species (species richness).
+##' @author Alexandre Adalardo de Oliveira \email{ecovirtualpackage@@gmail.com}
+##' @keywords simulation Neutral Theory Internal Functions
+##' @import tcltk
+##' @importFrom grDevices colorRamp dev.new rainbow rgb
+##' @importFrom graphics abline axis curve grid image layout legend lines matplot mtext par plot points polygon segments text title
+##' @examples
+##' 
+##' lsp <- sample(LETTERS,50,replace=TRUE)
+##' lsp
+##' rich(lsp)
+##' 
+##' @export rich         
 rich <- function(x)length(unique(x))
 ################################
+##' Internal EcoVirtual Graphics and Animations
+##' 
+##' Internal functions for graphics and animations of the simulations results.
+##' 
+##' 
+##' The list below relates each function graphical and its primary functions:
+##' 
+##' animaCena - regNicho
+##' 
+##' animaGame - extGame
+##' 
+##' animaHub - simHub1, simHub2, simHub3
+##' 
+##' animaIsl - archip
+##' 
+##' animaMeta2 - metaPop, metaCi, metaEr, metaCiEr
+##' 
+##' animaMetaComp - metaComp
+##' 
+##' animaRandWalk - randWalk
+##' 
+##' grColExt - animaColExt, bioGeoIsl
+##' 
+##' grFim - metaPop, metaCi, metaEr, metaCiEr
+##'
+##' @name anima
+##' @aliases animaCena animaGame animaHub animaIsl animaMeta2 animaMetaComp
+##' animaRandWalk grColExt gr.toff grFim anima
+##' @param E extinction rate
+##' @param I colonization rate
+##' @param P species available in mainland
+##' @param area islands sizes
+##' @param riq.tempo data from archip function
+##' @param ar.isl vector of island areas
+##' @param locxy species arrival point
+##' @param sprain arrival species id
+##' @param col_riq vector of species colors
+##' @param S number of species
+##' @param dadoHub data from neutral model simulation
+##' @param sleep sleep time between simulations frame
+##' @param dados data from metapopulation simulation
+##' @param rq number of species
+##' @param fsp1 abundance of the most abundante species
+##' @param pe mortality/extinction rate 
+##' @param add add a graphic
+##' @param ... other parameters
+##' @return Show simulation in a graphic device.
+##' @author Alexandre Adalardo de Oliveira \email{ecovirtualpackage@@gmail.com}
+##' @seealso \url{http://ecovirtual.ib.usp.br}
+##' @keywords simulation
+##' @examples
+##' 
+##' \dontrun{
+##' grColExt(E = 0.5 , I = 0.5 , P = 100, area=1:10)
+##' }
+##'
+##' @export animaCena animaGame animaHub animaIsl animaMeta2 animaMetaComp animaRandWalk grColExt grFim
 ## function animaIls used in 'archip' function
 animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
 {
@@ -48,6 +126,7 @@ animaIsl=function(riq.tempo, ar.isl, locxy, sprain, col_riq=col_riq, S=S)
 }
 ##################################################
 ## grColExt used in 'animaColExt' and 'bioGeoIsl'
+##' @rdname anima
 grColExt=function(E , I , P, area)
 {
 	# Following code avoids spurious NOTE by R CMD check:
@@ -132,6 +211,7 @@ animaGame = function(xGame, total, sleep=0.01)
 ##################################################
 ## animaHub used in 'simHub1', 'simHub2', 'simHub3'
 ##################################################
+##' @rdname anima
 animaHub=function(dadoHub, sleep=0.1)
 {
           maxsp=max(dadoHub)[1]
@@ -180,6 +260,7 @@ animaHub=function(dadoHub, sleep=0.1)
 ### Two Species Competition ###
 ###############################
 ### Meta competition 'animaMetaComp' used in 'metaComp'
+##' @rdname anima
 animaMetaComp=function(dados)
 {
 nsim=dim(dados)[3]
@@ -207,6 +288,7 @@ grid(ln,cl)
 ### Metapopulations ###
 #######################
 ## animaMeta2 used in 'metaPop', 'metaEr', 'metaCi', 'metaCier'
+##' @rdname anima
 animaMeta2=function(dados)
 {
 nsim=dim(dados)[3]
@@ -233,6 +315,7 @@ Sys.sleep(.5)
 }
 ##################################################
 ## grFim used in 'metaPop', 'metaEr', 'metaCi', 'metaCier'
+##' @rdname anima
 grFim=function(dados)
 {
 nsim=dim(dados)[3]
@@ -263,6 +346,7 @@ par(op)
 ###############################
 #Trade-off Multispecies Graphic
 ### 
+##' @rdname anima
 gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 {
 #	rq <- as.numeric(tclvalue(rqVar))
@@ -289,6 +373,7 @@ gr.toff=function(rq, fsp1,pe,add=FALSE,...)
 }
 ###############################
 ## animaCena used in 'regNicho'
+##' @rdname anima
 animaCena=function(dados)
 {
 nsim=dim(dados)[3]

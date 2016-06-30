@@ -5,6 +5,44 @@
 ### Island Biogeography ###
 ###########################
 ## Relationship between extinction and colonization rates for the species richness
+##############################
+##' Colonization and Extinction balance in the Island Biogeography Equilibrium
+##' model
+##' 
+##' Simulate the balance between extinction and colonization rates given the
+##' equilibrium number of species in a island, based on the Island Biogeography
+##' Equilibrium model.
+##' 
+##' The number of species is the balance between extinction and colonization
+##' rates at the equilibrium.
+##' 
+##' @param min between 0-1. The minimum value of the extinction and
+##' colonization rates.
+##' @param max between 0-1. The maximum value of the extinction and
+##' colonization rates.
+##' @param cycles number of cycles in the simulation.
+##' @param Ext a string representing the extinction rate. This can be 'crs' for
+##' an increasing extinction rate, 'fix' for a fixed extinction rate in 0.5, or
+##' 'dcr' for a decreasing extinction rate.
+##' @param Col a string representing the colonization rate. This can be 'crs'
+##' for an increasing colonization rate, 'fix' for a fixed colonization rate in
+##' 0.5, or 'dcr' for a decreasing colonization rate.
+##' @return 'animaColExt' returns a graph of the extinction and colonization
+##' rates varying one or both rates in relation with the number of species of
+##' an island.
+##' @author Alexandre Adalardo de Oliveira \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{archip}} \code{\link{bioGeoIsl}}
+##' \url{http://ecovirtual.ib.usp.br}
+##' @references Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer
+##' Associates, 291pp.
+##' @keywords simulation Island Biogeography
+##' @examples
+##' 
+##' \dontrun{
+##' animaColExt(Ext='fix', Col="fix")
+##' }
+##' 
+##' @export animaColExt
 animaColExt=function(min=0.01, max=1, cycles=100, Ext="crs", Col="dcr")
 {
           a=seq(from=min,to=max,length.out=cycles)
@@ -25,6 +63,59 @@ animaColExt=function(min=0.01, max=1, cycles=100, Ext="crs", Col="dcr")
 
 
 ## Species colonization and species-area relationship in archipelagoes
+
+
+##' Species Colonization and Species-Area Relationship in Archipelagos
+##' 
+##' Simulate species colonization from mainland to islands with different
+##' sizes.
+##' 
+##' The mainland has richness (S) and the evenness can be controled argument
+##' abund. The 'abund' argument can be one of these 3 options: \enumerate{
+##' \item a vector with the same length of the species richness, meaning the
+##' proportion of each species population; \item a single value more than 1
+##' representing equal abundance of each species (maximum evenness); \item a
+##' single value between 0 and 1, meaning the model of geometric species
+##' rank-abundance distribution. The model is: abund*(1-abund)*((1:S)-1), where
+##' S is the number of species. }
+##' 
+##' @param n.isl numeric, number of islands.
+##' @param ar.min numeric, area of the smallest island.
+##' @param ar.max numeric, area of the biggest island.
+##' @param S numeric, number of species (species richness from mainland).
+##' @param seed.rain numeric, seed rain. Number of seeds colonizing islands on
+##' each time.
+##' @param abund numeric, abundance of each species in the seed rain.
+##' @param tmax numeric, maximum time for the simulations.
+##' @param anima logical; if TRUE, show simulation frames.
+##' @return 'archip' returns 3 graphics: \itemize{ \item The species-area
+##' relationship: number of species x island area at the end of the simulation.
+##' It also returns the coefficients c and z from species-area relationship
+##' \eqn{S=cA^z}.
+##' 
+##' \item Colonization rate curves: colonization (number of species per cycle)
+##' x number of species for each island.
+##' 
+##' \item Passive colonization: number of species x time for each island.
+##' 
+##' 'archip' also returns an invisible array with the simulation results. }
+##' @author Alexandre Adalardo de Oliveira \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{animaColExt}}, \code{\link{bioGeoIsl}},
+##' \url{http://ecovirtual.ib.usp.br}
+##' @references Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer
+##' Associates, 291pp.
+##' @keywords simulation island biogeography Species-area relationship
+##' @examples
+##' 
+##' 
+##' \dontrun{
+##' archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=10, tmax=100, anima=TRUE)
+##' 
+##' archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE)
+##' }
+##' 
+##' 
+##' @export archip
 archip=function(n.isl,ar.min, ar.max, S, seed.rain, abund, tmax=100, anima=TRUE)
 {
 	ar.ampl=ar.max -ar.min
@@ -84,13 +175,56 @@ clz<-diff(riq.tempo)
 matplot(riq.tempo[2:100,],clz, type="l", col=rainbow(n.isl), bty="l", xlab="Number of species", ylab="Colonization\n (Number of species/cycle)", main="Colonization Rate Curves", cex.main=1.2 )
 invisible(cena)
 }
-
 #archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=rep(10,1000), tmax=100, anima=TRUE) #abund 'NORMAL'
 #archip(n.isl=10,ar.min=10, ar.max=100, S=1000, seed.rain=100, abund=0.5, tmax=100, anima=TRUE) #abund igual RCMDR, em eveness
-
-
-
+##################################################
 ## Island Biogeography, rates of colonization and extinctions for islands of different sizes and distances to continent.
+##################################################
+##' Island Biogeographical Model
+##' 
+##' Simulates island biogeographical models, with rates of colonization and
+##' extinction for islands of different sizes and distances to the mainland.
+##' 
+##' 
+##' @param area a vector with the sizes of the island areas. It must have the
+##' same length as 'dist'
+##' @param dist a vector with the distances of the islands to the mainland. It
+##' must have the same length as 'areas'
+##' @param P the number of species in the mainland (species richness of the
+##' pool).
+##' @param weight.A ratio between the area and distance effects. Should be a
+##' number between 0 to 1. When the ration is 1 the extinction is only affected
+##' by size and colonization only by distance. The default ratio is 0.5,
+##' meaning that distance and size equally influence colonization and
+##' extinction.
+##' @param a.e basal extiction coefficient for area.
+##' @param b.e extinction/area coefficient.
+##' @param c.i basal colonization coefficient for distance.
+##' @param d.i numeric, colonization/distance coefficient.
+##' @param e.i basal colonization coefficient for area.
+##' @param f.i colonization/area coefficient.
+##' @param g.e basal extinction coefficient for distance.
+##' @param h.e extinction/distance coefficient.
+##' @return 'bioGeoIsl' returns a graph with the rates of colonization and
+##' extinction in relation with the species richness for each island.
+##' 
+##' 'bioGeoIsl' also returns a invisible data frame with the values for area,
+##' distance and species richness (S) for each island.
+##' @author Alexandre Adalardo de Oliveira \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{animaColExt}} \code{\link{archip}},
+##' \url{http://ecovirtual.ib.usp.br}
+##' @references Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer
+##' Associates, 291pp.
+##' @keywords simulation island biogeography
+##' @importFrom stats coef lm 
+##' @examples
+##' 
+##' \dontrun{
+##' bioGeoIsl(area=c(5,10,50,80), dist=c(10,100,100,10), P=100, weight.A=.5, a=1, 
+##' b=-0.01, c=1, d=-0.01, e=0, f=.01, g=0, h=.01)
+##' }
+##' 
+##' @export bioGeoIsl
 bioGeoIsl=function(area, dist , P , weight.A=.5 , a.e=1, b.e=-.01, c.i=1, d.i=-.01,e.i=0, f.i=.01,g.e=0, h.e=.01)
 {
 dev.new()
@@ -124,6 +258,44 @@ invisible(ex)
 ### Neutral Theory ###
 ######################
 ## Null models - random walk simuation
+######################################
+##' Random Walk Simulations
+##' 
+##' Simulates random walk models.
+##' 
+##' Random walk is a stochastic process of a succession of random steps.
+##' 
+##' Zero is the absorption surface. When an individual simulation reaches zero,
+##' it means that the individual is dead.
+##' 
+##' See \url{ http://en.wikipedia.org/wiki/Random_walk}.
+##' 
+##' @param S number of individuals.
+##' @param step step size (number of steps on each time)
+##' @param tmax maximum simulation time.
+##' @param x1max maximum initial distance from absorption surface.
+##' @param alleq logical; if TRUE, all initial distance are equal. if FALSE,
+##' initial distances for each individual is a sample between 1 and maximum
+##' initial distance(x1max).
+##' @return 'randWalk' returns a graphic with the simulated trajectories of
+##' each individual.
+##' 
+##' 'randWalk' also returns an invisible matrix with the distance from de edge
+##' for each individual on each time.
+##' @author Alexandre Adalardo de Oliveira and Paulo Inacio Prado
+##' \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{extGame}}, \code{\link{simHub}},
+##' \url{http://ecovirtual.ib.usp.br}
+##' @references \url{ http://en.wikipedia.org/wiki/Random_walk}
+##' @keywords simulation Neutral Theory
+##' @examples
+##' 
+##' \dontrun{
+##' randWalk(S=100,step=2,tmax=2e5)
+##' randWalk(S=10,step=1,tmax=1e4, x1max=300, alleq=TRUE)
+##' }
+##' 
+##' @export randWalk
 randWalk <- function(S=1,step=1,tmax=1e5,x1max=200, alleq=FALSE){
   cont=round(tmax/100)
   sleep=0.01
@@ -150,6 +322,41 @@ randWalk <- function(S=1,step=1,tmax=1e5,x1max=200, alleq=FALSE){
   invisible(results)
 }
 ## Zero Sum Game
+
+
+##' Zero-sum game
+##' 
+##' Simulates a zero-sum game between two competitors with a fixed amount of
+##' resource.
+##' 
+##' A zero-sum game is a mathematical representation of a situation in which a
+##' participant's gain (or loss) of resource is exactly balanced by the losses
+##' (or gains) of the resource of the other participant(s). If the total gains
+##' of the participants are added up, and the total losses are subtracted, they
+##' will sum to zero.
+##' 
+##' @param bet bet size of each competitor on each time.
+##' @param total total amount of resource.
+##' @param tmax maximum game time.
+##' @return 'extGame' returns a graphic with the amount of resource of each
+##' competitor on each time.
+##' 
+##' 'extGame' also returns an invisible vector with the results of the loser on
+##' each time.
+##' @author Alexandre Adalardo de Oliveira and Paulo Inacio Prado
+##' \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{simHub}}, \code{\link{randWalk}},
+##' \url{http://ecovirtual.ib.usp.br}
+##' @references \url{http://en.wikipedia.org/wiki/Zero-sum_game}
+##' @keywords simulation neutral theory
+##' @examples
+##' 
+##' \dontrun{
+##' extGame(bet=1,total=20)
+##' extGame(bet=1,total=100)
+##' }
+##' 
+##' @export extGame
 extGame <- function(bet=1,total=100, tmax=2){
   X <- total/2
   results <- X
@@ -169,9 +376,64 @@ extGame <- function(bet=1,total=100, tmax=2){
   animaGame(results, total)
   invisible(results)
 }
+#####################################
+##' Neutral Theory of Biogeography
+##' 
+##' Simulates Community Dynamics as in the Neutral Theory of Biogeography
+##' 
+##' 'simHub1' is the model without immigration.
+##' 
+##' 'simHub2' incorporates immigration rate from the metacommunity
+##' 
+##' 'simHub3' incorporates immigration and speciation rates in the
+##' metacommunity.
+##' @name simHub
+##' @aliases simHub simHub1 simHub2 simHub3
+##' @param S number of species in the community.
+##' @param Sm number of species in the metacommunity.
+##' @param j individuals per species in the metacommunity.
+##' @param jm individuals per species in the metacommunity.
+##' @param D number of deaths per cycle.
+##' @param cycles number of cycles in the simulation.
+##' @param m colonization/immigration rate.
+##' @param nu speciation rate.
+##' @param m.weights Mortality weights for each species. Mortality rates of
+##' individuals of each species is proportional to species' abundances
+##' multiplied by these weights as in Yu et al. (1998). In neutral dynamics all
+##' weigths are equal. If length(m.weights)<S then species are divided in
+##' groups of (approximately) S/length(m.weights) and species of each group
+##' have a value in m.weights. This allows to create groups of species with
+##' different mortality probabilities and compare to the neutral dynamics.
+##' @param anima logical; if TRUE, the simulation frames of the metacommunity
+##' are shown.
+##' @return These functions returns a graph with the number of species in time
+##' (cycles) in the metacommunity.
+##' 
+##' They also return an invisible matrix with the results of species richness
+##' on each community per time.
+##' @author Alexandre Adalardo de Oliveira and Paulo Inacio Prado
+##' \email{ecovirtualpackage@@gmail.com}
+##' @seealso \code{\link{extGame}}, \code{\link{randWalk}},
+##' \url{http://ecovirtual.ib.usp.br}
+##' @references Hubbell, S.P. 2001. The Unified Neutral Theory of Biodiversity
+##' and Biogeography. Princeton University Pres, 448p.
+##' 
+##' Yu, D. W., Terborgh, J. W., and Potts, M. D. 1998. Can high tree species
+##' richness be explained by Hubbell's null model?. Ecology Letters, 1(3):
+##' 193--199.
+##' @keywords simulation Neutral Theory
+##' @examples
+##' 
+##' \dontrun{
+##' simHub1(S=10,j=10, D=1, cycles=5e3)
+##' simHub2(j=2,cycles=2e4,m=0.1)
+##' simHub3(Sm=200, jm=20, S= 10, j=100, D=1, cycles=1e4, m=0.01, nu=0.001, anima=TRUE)
+##' }
+##' 
 ##################################################
 ## Hubbell Neutral Model without imigration
 ##################################################
+##' @rdname simHub
 simHub1=function(S= 100, j=10, D=1, cycles=1e4, m.weights=1, anima=TRUE){
     if(length(m.weights)>S){
         m.weigths <- m.weights[1:S]
@@ -241,6 +503,7 @@ simHub1=function(S= 100, j=10, D=1, cycles=1e4, m.weights=1, anima=TRUE){
 }
 ##################################################
 ## Hubbell Neutral Model with immigration from a Metacommunity
+##' @rdname simHub
 simHub2=function(S= 100, j=10, D=1, cycles=1e4, m=0.01, anima=TRUE)
 { 
 if(cycles<200){cycles=200; cat("\n Minimum number of cycles: 200\n")}
@@ -326,6 +589,7 @@ par(op)
 ##################################################
 ## Hubbel Neutral Model with Immigration and speciation from a metacommunity
 ##################################################
+##' @rdname simHub
 simHub3=function(Sm=200, jm=20, S= 100, j=10, D=1, cycles=1e4, m=0.01, nu=0.001, anima=TRUE)
 {
 if(cycles<200){cycles=200; cat("\n Minimum number of cycles: 200\n")}

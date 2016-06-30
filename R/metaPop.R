@@ -1,8 +1,60 @@
-
 ###########################################
 ### Ecovirtual - Metapopulations Models ###
 ###########################################
+##' Metapopulation Models
+##' 
+##' Simulate metapopulation dynamics with propagules seed rain, internal
+##' colonization and rescue effect.
+##' 
+##' 'metaPop' is the seed rain metapopulation model, including only propagules
+##' seed rain from a external pool (no extinction).
+##' 
+##' 'metaCi' is the Internal Colonization model, where number of propagules
+##' depends on number of occupied patches, there is no external pool.
+##' 
+##' 'metaEr' is the Rescue Effect model, where extinction probability is
+##' negatively associated with number of occupied patches.
+##' 
+##' 'metaCiEr' includes both effects: Rescue Effect and Internal Colonization.
+##' 
+##' The number of patches in the simulated landscape is defined by rw*cl.
+##'
+##' @aliases metapopulation metaPop metaCi metaEr metaCiEr
+##' @param cl number of columns for the simulated landscape.
+##' @param rw number of rows for the simulated landscape.
+##' @param f0 initial proportion of occupied patches.
+##' @param pi probability of colonization.
+##' @param pe probability of extinction.
+##' @param ci colonization coefficient, represents the maximum probability of
+##' colonization (when f=1) and should be a number between 0 and 1.
+##' @param ce coefficient of extinction, represents the maximum probability of
+##' extinction (when f=0) and should be a number between 0 and 1.
+##' @param tmax maximum simulation time.
+##' @param anima show animation frames.
+##' @return Metapopulation functions return graphics with the simulation
+##' results. These functions also return an invisible array with the simulation
+##' data.
+##' @author Alexandre Adalardo de Oliveira and Paulo Inacio Prado
+##' \email{ecovirtualpackage@@gmail.com}
+##' @seealso \url{http://ecovirtual.ib.usp.br}
+##' @references Gotelli, N.J. 1991. Metapopulation models: the rescue effect,
+##' the propagule rain, and the core-satellite hypothesis. The American
+##' Naturalist 138:768-776.
+##' 
+##' Gotelli, N.J. 2008. A primer of Ecology. 4th ed. Sinauer Associates, 291pp.
+##' @keywords metapopulation simulation
+##' @examples
+##' 
+##' \dontrun{
+##' metaPop(cl=10,rw=10,f0=0.5,pi=0.3,pe=0.15, tmax=100)
+##' metaCi(cl=10,rw=10,f0=0.1,ci=1,pe=0.5, tmax=100)
+##' metaEr(cl=10, rw=10, f0=0.2, pi=0.2, ce=0.15, tmax=100)
+##' metaCiEr(cl=10, rw=10, f0=0.2, ci=0.2, ce=0.15, tmax=100)
+##' }
+##' 
+########################
 ### Propagulus Seed Rain
+########################
 metaPop <-function(cl,rw,f0,pi,pe, tmax, anima=TRUE)
 {
     if(pi>1 | pe>1 |pi<0 | pe<0)
@@ -37,6 +89,7 @@ invisible(paisag)
 ##################################################
 ## Propagulus seed rain with Internal Colonization
 ##################################################
+##' @rdname metaPop 
 metaCi <-function(cl,rw,f0,ci,pe, tmax, anima=TRUE)
 {
      if( pe>1 | pe<0)
@@ -82,6 +135,7 @@ invisible(paisag)
 ##################################################
 ## Propagulus Seed Rain with Rescue EFfect
 ##################################################
+##' @rdname metaPop 
 metaEr <-function(cl,rw,f0,pi,ce, tmax, anima=TRUE)
 {
      if( pi>1 | pi<0)
@@ -134,6 +188,7 @@ invisible(paisag)
 ##################################################
 ## Internal Colonization and Rescue Effect
 ##################################################
+##' @rdname metaPop 
 metaCiEr <-function(cl,rw,f0,ci,ce, tmax, anima=TRUE)
 {
      if(ci>1 | ci<0)
