@@ -296,31 +296,48 @@ invisible(ex)
 ##' }
 ##' 
 ##' @export randWalk
+
 randWalk <- function(S=1,step=1,tmax=1e5,x1max=200, alleq=FALSE){
-  cont=round(tmax/100)
-  sleep=0.01
-  if(cont>5e4){sleep=0}
-      if(alleq){
-                x1=rep(x1max,S)  
-               }else{
-                    x1 <- sample(1:x1max,S,replace=TRUE)
-                    }
-  results <- matrix(NA,nrow=1+tmax/cont,ncol=S) 
-  results[1,] <- x1
-  X <- x1
-  for(i in 2:(1+tmax/cont)){
-    for(j in 1:cont){
-      X[X<=0] <- NA
-      X <- X +sample(c(step,-1*step),S,replace=TRUE)
+    if(tmax >= 1e3){
+        sleep=0
+    }else{
+        sleep=0.01
     }
-    results[i,] <- X
-  }
-  results[is.na(results)] <- 0
-  time <- seq(0,tmax,by=cont)
-  dev.new()
-  animaRandWalk(rwData=results, time= time, sleep=sleep)
-  invisible(results)
+    if(alleq)
+    {
+        x1=rep(x1max,S)  
+    }else
+    {
+        x1 <- sample(1:x1max,S,replace=TRUE)
+    }
+
+    if(tmax >= 1e3)
+    {
+        results <-  matrix(NA,nrow=1000, ncol=S)
+        record <- round(seq(from= 2,to = tmax, len = 999))
+    }else{
+        results <- matrix(NA, nrow= tmax, ncol=S)
+        record <- 2:(tmax)
+    }
+    results[1,] <- x1
+    X = x1
+    for(i in 2:tmax)
+    {
+        X[X <= 0] <- NA
+        X <- X + sample(c(step,-1*step), S, replace=TRUE)
+        if(i %in% record)
+        {
+            pos <- which(record == i)+1
+            results[pos, ] <- X
+        }
+    }
+    results[is.na(results)] <- 0
+    time <- c(1,record)-1
+    dev.new()
+    animaRandWalk(rwData=results, time= time, sleep=sleep)
+    invisible(results)
 }
+
 ## Zero Sum Game
 
 
