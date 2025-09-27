@@ -86,7 +86,7 @@
 ########################################################
 ### Exponential growth - discrete and continuos growth ##
 #########################################################
-popExp <- function(N0,lamb,tmax, intt= 1) 
+popExp <- function(N0,lamb,tmax, intt= 1, plot=TRUE) 
 {
     ## logical tests for initial conditions
                                         #   N0 <- round(as.numeric(tclvalue(noVar)))
@@ -122,14 +122,20 @@ popExp <- function(N0,lamb,tmax, intt= 1)
                 ymax<-N0
                 ymin<-ntmax
             }
-    plot(seq(0,tmax, len=10), seq(ymin,ymax,len=10), type="n", main="Discrete and Continuous Exponential Growth", sub= expression(paste(lambda[adj],"=          ", r[adj], "=          ")), xlab="Time", ylab="Population Size (N)", cex.axis=1.3, cex.lab=1.3, xlim=c(0,tmax), ylim=c(ymin, ymax), bty="n")
-    title(sub=paste("        ", round(ladj,3),"            ",round(radj,3) ),cex.sub=0.7)
+    if(plot){
+        plot(seq(0,tmax, len=10), seq(ymin,ymax,len=10), type="n",
+             main="Discrete and Continuous Exponential Growth",
+             sub= expression(paste(lambda[adj],"=          ", r[adj], "=          ")),
+             xlab="Time", ylab="Population Size (N)",
+             cex.axis=1.3, cex.lab=1.3, xlim=c(0,tmax), ylim=c(ymin, ymax), bty="n")
+        title(sub=paste("        ", round(ladj,3),"            ",round(radj,3) ),cex.sub=0.7)
     ##segments(x0=resulta[- dim(resulta)[1],1], y0=resulta[- dim(resulta)[1],3], x1=resulta[- 1,1], y1=resulta[- dim(resulta)[1],3], lty=2, col="blue")
     ##segments(x0=resulta[- 1,1], y0=resulta[- dim(resulta)[1],3], x1=resulta[- 1,1], y1=resulta[- 1,3], lty=2, col="blue")
-    seqt=seq(0,tmax,len=1000)
-    radj02<-rexp0*tmax/1000
-    points(seqt, N0*exp(rexp0*seqt), type="l", lwd=2)
-    points(resulta[,1], resulta[,3],pch=16, col="blue")
+        seqt=seq(0,tmax,len=1000)
+        radj02<-rexp0*tmax/1000
+        points(seqt, N0*exp(rexp0*seqt), type="l", lwd=2)
+        points(resulta[,1], resulta[,3],pch=16, col="blue")
+        }
     invisible(resulta)
 }
  #popExp(N0=10,lamb=1.1,tmax=10, intt= 0.9) 
